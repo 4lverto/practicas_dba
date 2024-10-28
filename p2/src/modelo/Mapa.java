@@ -31,7 +31,6 @@ public class Mapa {
     private int[][] mapa;
 
     
-    
     /**
      * @brief Constructor por parámetro. Construye la matriz a partir de un 
      * fichero de texto plano, donde las dos primeras filas de este contienen el
