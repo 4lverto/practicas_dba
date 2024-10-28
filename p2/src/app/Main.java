@@ -1,18 +1,22 @@
 
 
-package p2;
+package app;
+
+import java.io.IOException;
+import modelo.Mapa;
 
 /**
- *
- * @author migue-maca
+ * @brief Clase que ejecuta el simulador.
  */
-public class P2 {
+public class Main {
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-        System.out.println("Hello World!");
+    public static void main(String[] args) throws IOException {
+        Mapa mapa = new Mapa("mapas/mapWithComplexObstacle2.txt");
+        
+        mapa.mostrarMapa();
     }
     
 }
