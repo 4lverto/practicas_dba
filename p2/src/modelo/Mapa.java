@@ -130,4 +130,19 @@ public class Mapa {
             // System.out.println();
         }
     }
+    
+    /**
+     * @brief Establece el valor de una casilla del mapa.
+     * 
+     * @param fila Fila de la casilla a modificar.
+     * @param columna Columna de la casilla a modificar.
+     * @param valor Valor a establecer en la casilla.
+     */
+    public void establecerCasilla(int fila, int columna, int valor) {
+        try {
+            mapa[fila][columna] = valor;
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Error: las coordenadas pasadas no son válidas");
+        }
+    }
 }

@@ -12,6 +12,10 @@ public class Main {
         Mapa mapa = new Mapa("mapas/mapWithComplexObstacle2.txt");
         
         mapa.mostrarMapa();
+        
+        mapa.establecerCasilla(1, 2, 1);
+        System.out.println();
+        mapa.mostrarMapa();
     }
     
 }
