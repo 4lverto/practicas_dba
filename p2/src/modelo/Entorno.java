@@ -1,5 +1,8 @@
 package modelo;
 
+import modelo.sensores.Sensor;
+import modelo.sensores.Energia;
+import modelo.sensores.Vision;
 import java.io.IOException;
 
 /**
