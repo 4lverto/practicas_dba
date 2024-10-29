@@ -106,10 +106,11 @@ public class Entorno {
     }
 
     /**
-     * @bief Muestra el entorno en la consola.
+     * @brief Devuelve el mapa en el estado en que se encuentre cuando se 
+     * realice la llamada.
      */
-    public void mostrarEntorno() {
-        mapa.mostrarMapa();
+    public Mapa obtenerMapa() {
+        return (mapa);
     }
 
     /**
