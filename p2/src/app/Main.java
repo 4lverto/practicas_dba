@@ -1,8 +1,10 @@
 package app;
 
+import controlador.Controlador;
 import java.io.IOException;
 import modelo.Mapa;
 import modelo.Posicion;
+import modelo.agentes.Agente;
 import modelo.sensores.Vision;
 import vista.Vista;
 import vista.VistaTexto;
@@ -61,10 +63,45 @@ public class Main {
 //            System.out.println();
 //        }
 
-        // Prueba de la vista textual (por terminal):
-        Mapa mapa = new Mapa("mapas/mapWithComplexObstacle2.txt");
-        Vista vistaTexto = new VistaTexto();
-        vistaTexto.actualizar(mapa);
+//        // Prueba de la vista textual (por terminal):
+//        Mapa mapa = new Mapa("mapas/mapWithComplexObstacle2.txt");
+//        Vista vistaTexto = new VistaTexto();
+//        vistaTexto.actualizar(mapa);
+
+
+
+        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
+        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
+        // El programa se usaría de la siguiente manera (en principio):
+        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
+        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
+        
+        // 1. Crear el agente:
+        
+        // Suponiendo que son posiciones válidas:
+        Posicion posAgente   = new Posicion(2, 4);
+        Posicion posObjetivo = new Posicion(8, 0);
+        Agente agente        = new Agente(
+                posAgente, 
+                posObjetivo,
+                "mapas/mapWithComplexObstacle2.txt");
+        
+        // 2. Crear el controlador:
+        Controlador controlador = new Controlador(agente);
+        
+        // 3. Crear y registrar las vistas:
+        controlador.registrarVista(new VistaTexto());
+        
+        // 4. Simular la partida:
+        controlador.iniciarSimulacion();
+        
+        // Mientras no se alcance el objetivo, seguir simulando:
+        while (!controlador.objetivoAlcanzado()) {
+            controlador.ejecutar();
+        }
+        
+        // 5. En este punto, el agente ha llegado a la casilla objetivo:
+        controlador.finalizarSimulacion();
     }
     
 }
