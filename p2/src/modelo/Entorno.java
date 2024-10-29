@@ -119,11 +119,8 @@ public class Entorno {
      * @return true si la posición es válida; false en caso contrario.
      */
     public boolean posEsValida(Posicion pos) {
-        int filas = mapa.obtenerNumFilas();
-        int columnas = mapa.obtenerNumColumnas();
-        int x = pos.obtenerX();
-        int y = pos.obtenerY();
-        
-        return (x >= 0 && x < filas && y >= 0 && y < columnas);
+        return (mapa.casillaEsValida(
+                pos.obtenerX(), 
+                pos.obtenerY()));
     }
 }
