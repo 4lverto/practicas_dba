@@ -19,6 +19,7 @@ public class Vision extends Sensor {
     public Vision() {
         // Inicializar la matriz de celdas contiguas según el entorno o el tamaño que desees.
         this.celdasContiguas = new int[3][3]; // Por ejemplo, una visión de 3x3 alrededor del agente.
+        
     }
 
     /**
@@ -29,6 +30,7 @@ public class Vision extends Sensor {
     public void actualizar() {
         // Aquí se podría implementar la lógica para actualizar las celdas visibles
         // alrededor de la posición del agente.
+        
     }
 
     /**

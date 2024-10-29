@@ -122,11 +122,12 @@ public class Mapa {
     public void mostrarMapa() {
         for (int i = 0; i < filas; i++) {
             for (int j = 0; j < columnas; j++) {
-                System.out.print(mapa[i][j] + "\t");
+                // Usamos tabulacioens para separar columnas
+                System.out.print(mapa[i][j] + "\t"); 
             }
             
             System.out.println();
-            System.out.println();
+            // System.out.println();
         }
     }
 }
