@@ -145,4 +145,18 @@ public class Mapa {
             System.out.println("Error: las coordenadas pasadas no son válidas");
         }
     }
+    
+    /**
+     * @brief Comprueba si una casilla es válida, es decir, si existe en la 
+     * matriz.
+     * 
+     * @param fila Fila de la casilla a consultar.
+     * @param columna Columna de la casilla a consultar.
+     * 
+     * @return 'true' en caso de que sea válida; 'false' en caso contrario.
+     */
+    public boolean casillaEsValida(int fila, int columna) {
+        return (fila >= 0 && fila < obtenerNumFilas() &&
+                columna >= 0 && columna < obtenerNumColumnas());
+    }
 }

@@ -1,6 +1,5 @@
 package modelo;
 
-import modelo.sensores.Sensor;
 import modelo.sensores.Energia;
 import modelo.sensores.Vision;
 import java.io.IOException;
@@ -26,24 +25,47 @@ public class Entorno {
     /**
      * @brief Sensor de energía del entorno.
      */
-    private Sensor energia;
+    private Energia energia;
     
     /**
      * @brief Sensor de visión del entorno.
      */
-    private Sensor vision;
-
+    private Vision vision;
+    
     /**
-     * @brief Constructor privado para evitar la creación de múltiples instancias.
+     * @brief Posición del agente en el mapa.
+     */
+    private Posicion posAgente;
+    
+    /**
+     * @brief Posición de la casilla objetivo en el mapa.
+     */
+    private Posicion posObjetivo;
+
+    
+    
+    /**
+     * @brief Constructor privado para evitar la creación de múltiples 
+     * instancias.
      * Inicializa el mapa a partir del archivo de texto especificado.
      * 
-     * @param nombreFicheroMapa Nombre del archivo que contiene los datos del mapa.
+     * @param nombreFicheroMapa Nombre del archivo que contiene los datos del 
+     * mapa.
+     * @param posAgente Posición inicial del agente en el mapa.
+     * @param posObjetivo Posición inicial de la casilla objetivo en el mapa.
+     * 
      * @throws IOException Si ocurre un error al leer el archivo.
      */
-    public Entorno(String nombreFicheroMapa) throws IOException {
-        mapa = new Mapa(nombreFicheroMapa);
-        energia = new Energia();
-        vision = new Vision();
+    public Entorno(
+            String nombreFicheroMapa, 
+            Posicion posAgente,
+            Posicion posObjetivo) throws IOException {
+        
+        this.mapa        = new Mapa(nombreFicheroMapa);
+        this.posAgente   = posAgente;
+        this.posObjetivo = posObjetivo;
+        this.energia     = new Energia();
+        this.vision      = new Vision(mapa, posAgente);
     }
 
     /**
@@ -51,13 +73,22 @@ public class Entorno {
      * utilizando el archivo de mapa proporcionado.
      * 
      * @param nombreFicheroMapa Nombre del archivo que contiene los datos del mapa.
+     * @param posAgente Posición inicial del agente en el mapa.
+     * @param posObjetivo Posición inicial de la casilla objetivo en el mapa.
+     * 
      * @return La instancia única de Entorno.
      * @throws IOException Si ocurre un error al leer el archivo.
      */
-    public static Entorno obtenerInstancia(String nombreFicheroMapa) throws IOException {
+    public static Entorno obtenerInstancia(
+            String nombreFicheroMapa, 
+            Posicion posAgente,
+            Posicion posObjetivo) throws IOException {
+        
         if (instancia == null) {
-            instancia = new Entorno(nombreFicheroMapa);
+            instancia = new Entorno(
+                    nombreFicheroMapa, posAgente, posObjetivo);
         }
+        
         return instancia;
     }
 
