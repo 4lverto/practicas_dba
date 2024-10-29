@@ -36,32 +36,24 @@ public class Controlador {
     
     /**
      * @brief Constructor por parámetros.
+     * 
      * @param agente Agente para la simulación.
      * @param vistas Array con las vistas de las que dispondrá el simulador.
      */
     public Controlador(Agente agente, ArrayList<Vista> vistas) {
         this.vistas = vistas;
-        
-        // Obtener la instancia del entorno de ejecución:
-        Runtime rt = Runtime.instance();
-        
-        // Configurar el perfil para el contenedor principal:
-        Profile p  = new ProfileImpl();
-        p.setParameter(Profile.MAIN_HOST, "localhost");
-        p.setParameter(Profile.CONTAINER_NAME, "1099");
-        
-        // Crear el contenedor de agentes:
-        ContainerController cc = rt.createMainContainer(p);
-        
-        try {
-            // Crear un agente:
-            controlador = cc.createNewAgent(
-                            "Agente", 
-                            "modelo.agentes.Agente",
-                            null);
-        } catch (StaleProxyException e) {
-            e.printStackTrace();
-        }
+        configurarControlador();
+    }
+    
+    /**
+     * @brief Constructor por parámetros (prescinde de recibir un array con las 
+     * vistas).
+     * 
+     * @param agente Agente para la simulación.
+     */
+    public Controlador(Agente agente) {
+        this.vistas = new ArrayList<>();
+        configurarControlador();
     }
     
     /**
@@ -134,7 +126,30 @@ public class Controlador {
      * @return 'true' si el agente está sobre la casilla objetivo; 'false' en 
      * otro caso.
      */
-    /*public boolean objetivoAlcanzado() {
+    public boolean objetivoAlcanzado() {
         return (agente.objetivoAlcanzado());
-    }*/
+    }
+    
+    private void configurarControlador() {
+        // Obtener la instancia del entorno de ejecución:
+        Runtime rt = Runtime.instance();
+        
+        // Configurar el perfil para el contenedor principal:
+        Profile p  = new ProfileImpl();
+        p.setParameter(Profile.MAIN_HOST, "localhost");
+        p.setParameter(Profile.CONTAINER_NAME, "1099");
+        
+        // Crear el contenedor de agentes:
+        ContainerController cc = rt.createMainContainer(p);
+        
+        try {
+            // Crear un agente:
+            controlador = cc.createNewAgent(
+                            "Agente", 
+                            "modelo.agentes.Agente",
+                            null);
+        } catch (StaleProxyException e) {
+            e.printStackTrace();
+        }
+    }
 }
