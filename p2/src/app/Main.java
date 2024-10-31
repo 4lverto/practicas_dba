@@ -81,7 +81,10 @@ public class Main {
         // Suponiendo que son posiciones válidas:
         Posicion posAgente   = new Posicion(2, 4);
         Posicion posObjetivo = new Posicion(8, 0);
-        Agente agente        = new Agente(posAgente, posObjetivo);
+        Agente agente        = new Agente(
+                posAgente, 
+                posObjetivo,
+                "mapas/mapWithComplexObstacle2.txt");
         
         // 2. Crear el controlador:
         Controlador controlador = new Controlador(agente);

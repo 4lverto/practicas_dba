@@ -9,6 +9,11 @@ import modelo.Posicion;
  * @brief Clase que representa nuestro agente.
  */
 public class Agente {
+    /**
+     * @brief Entorno de la simulación con el que interactuará el agente para 
+     * desplazarse por el mapa.
+     */
+    private Entorno entorno;
     
     /**
      * @brief Posición del agente.
@@ -18,7 +23,7 @@ public class Agente {
     /**
      * @brief Posición de la casilla objetivo.
      */
-    private final Posicion posObjetivo;
+    private Posicion posObjetivo;
 
     
     
@@ -30,10 +35,26 @@ public class Agente {
      */
     public Agente(
             Posicion posAgente, 
-            Posicion posObjetivo) throws IOException {
+            Posicion posObjetivo,
+            String nombreFicheroMapa) throws IOException {
         
         this.posAgente   = posAgente;
         this.posObjetivo = posObjetivo;
+        
+        // Crear el entorno:
+        entorno = Entorno.obtenerInstancia(
+                nombreFicheroMapa, 
+                posAgente, 
+                posObjetivo);
+    }
+    
+    /**
+     * @brief Consultor del entorno.
+     * 
+     * @return Instancia con el entorno actual.
+     */
+    public Entorno obtenerEntorno() {
+        return (entorno);
     }
     
     /**
