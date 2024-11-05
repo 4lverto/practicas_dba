@@ -1,6 +1,7 @@
 
 package vista;
 
+import modelo.Entorno;
 import modelo.Mapa;
 
 /**
@@ -8,16 +9,28 @@ import modelo.Mapa;
  * 
  * @brief Vista textual del simulador.
  */
-public class VistaTexto implements Vista {
+public class VistaTexto extends Vista {
 
     /**
-     * @brief Actualiza la vista con el estado del mapa recibido.
-     * Implementación del método de la interfaz Vista.
+     * Constructor por parámetros.
      * 
-     * @param mapa Mapa que visualizar.
+     * @param entorno Instancia del entorno.
+     */
+    public VistaTexto(Entorno entorno) {
+        this.entorno = entorno;
+        
+        // Añadirse al entorno (observado) como observador:
+        this.entorno.registrarVista(this);
+    }
+
+    /**
+     * @brief Actualiza la vista en función del estado del entorno.
+     * Implementación del método abstracto de Vista.
      */
     @Override
-    public void actualizar(Mapa mapa) {
+    public void actualizar() {
+        Mapa mapa = this.entorno.obtenerMapa();
+        
         for (int i = 0; i < mapa.obtenerNumFilas(); i++) {
             for (int j = 0; j < mapa.obtenerNumColumnas(); j++) {
                 System.out.print(mapa.obtenerCasilla(i, j) + "\t");

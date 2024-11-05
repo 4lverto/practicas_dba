@@ -1,16 +1,22 @@
 
 package vista;
 
-import modelo.Mapa;
+import modelo.Entorno;
 
 /**
- * @brief Interfaz que representa una vista del simulador.
+ * @brief Clase abstracta que representa una vista del simulador.
  */
-public interface Vista {
+public abstract class Vista {
     /**
-     * @brief Actualiza la vista con el estado del mapa recibido.
-     * 
-     * @param mapa Mapa que visualizar.
+     * @brief Instancia con el estado del entorno para poder observarlo (patrón 
+     * Observer).
      */
-    public void actualizar(Mapa mapa);
+    protected Entorno entorno;
+    
+    
+    
+    /**
+     * @brief Actualiza la vista en función del estado del entorno.
+     */
+    public abstract void actualizar();
 }

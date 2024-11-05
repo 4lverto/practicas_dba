@@ -216,7 +216,7 @@ public class Entorno {
      */
     public void notificarVistas() {
         for (Vista v : vistas) {
-            v.actualizar(mapa);
+            v.actualizar();
         }
     }
     
