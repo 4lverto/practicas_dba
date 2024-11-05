@@ -19,7 +19,8 @@ public abstract class Sensor {
     
     
     /**
-     * @brief Método abstracto para actualizar la información captada por el sensor.
+     * @brief Método abstracto para actualizar la información captada por el 
+     * sensor.
      */
     public abstract void actualizar();
 }

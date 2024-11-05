@@ -19,6 +19,8 @@ public class Energia extends Sensor{
     
     /**
      * @brief Constructor de Energia.
+     * 
+     * @param entorno Instancia del entorno.
      */
     public Energia(Entorno entorno) {
         this.pasos   = 0;

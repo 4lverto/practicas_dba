@@ -20,7 +20,9 @@ public class Vision extends Sensor {
     
 
     /**
-     * Constructor de Vision, inicializa la matriz de celdas contiguas.
+     * @brief Constructor de Vision, inicializa la matriz de celdas contiguas.
+     * 
+     * @param entorno Instancia del entorno.
      */
     public Vision(Entorno entorno) {
         // Inicializar la matriz de celdas contiguas según el entorno o el 
