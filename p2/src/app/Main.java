@@ -1,6 +1,7 @@
 package app;
 
 
+import controlador.Controlador;
 import java.io.IOException;
 import java.util.ArrayList;
 import modelo.Entorno;
@@ -16,9 +17,41 @@ import vista.VistaTexto;
  */
 public class Main {
     
+    /**
+     * @brief Método principal que contiene la lógica de ejecución del simulador.
+     * 
+     * @param args Argumentos.
+     * @throws IOException 
+     */
     public static void main(String[] args) throws IOException {
         //pruebasEntornoYSensores();
-        pruebaVistaTextual();
+        //pruebaVistaTextual();
+        
+        
+        
+        // Crear las posiciones del agente y de la casilla objetivo (hay que 
+        // tener cuidado de que sean válidas para el mapa elegido):
+        Posicion posAgente   = new Posicion(2, 4);
+        Posicion posObjetivo = new Posicion(7, 1);
+        
+        // Crear el entorno para pasarlo al controlador:
+        Entorno entorno = Entorno.obtenerInstancia(
+                posAgente, 
+                posObjetivo);
+        // Establecer el mapa:
+        entorno.establecerMapa("mapas/mapWithComplexObstacle2.txt");
+        
+        // Crear el controlador, el cual lanzará al agente (el entorno le llega
+        // al agente a través del controlador, con las posiciones y el mapa 
+        // debidamente inicializados):
+        Controlador controlador = new Controlador(
+                "Agente-DBA-P2",
+                "modelo.agentes.Agente",
+                entorno);
+        
+        // Iniciar la simulación. Esta terminará cuando el agente llegue a la 
+        // casilla objetivo (el agente lo controla internamente).
+        controlador.ejecutar();
     }
     
     
