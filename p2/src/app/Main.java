@@ -8,12 +8,20 @@ import modelo.Posicion;
 import modelo.sensores.Energia;
 import modelo.sensores.Sensor;
 import modelo.sensores.Vision;
+import vista.VistaTexto;
 
 
 /**
  * @brief Clase que ejecuta el simulador.
  */
 public class Main {
+    
+    public static void main(String[] args) throws IOException {
+        //pruebasEntornoYSensores();
+        pruebaVistaTextual();
+    }
+    
+    
     
     public static void pruebasEntornoYSensores() throws IOException {
         Posicion posAgente   = new Posicion(2, 3);
@@ -81,9 +89,23 @@ public class Main {
             System.out.println();
         }
     }
-
-    public static void main(String[] args) throws IOException {
-        pruebasEntornoYSensores();
-    }
     
+    public static void pruebaVistaTextual() throws IOException {
+        Posicion posAgente   = new Posicion(2, 3);
+        Posicion posObjetivo = new Posicion(7,1);
+        Entorno entorno      = Entorno.obtenerInstancia(posAgente, posObjetivo);
+        
+        entorno.establecerMapa("mapas/mapWithComplexObstacle2.txt");
+        
+        VistaTexto vista = new VistaTexto(entorno);
+        
+        // Cambio en el entorno:
+        Posicion pos = new Posicion(2, 4);
+        entorno.actualizarPercepciones(pos);
+        
+        // Cambio en el entorno:
+        pos = new Posicion(2, 5);
+        System.out.println();
+        entorno.actualizarPercepciones(pos);
+    }
 }
