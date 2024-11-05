@@ -103,25 +103,25 @@ public class Entorno {
     /**
      * @brief Actualiza las percepciones del agente según su posición.
      * 
-     * @param posAgente La nueva posición del agente tras haberla computado 
+     * @param nuevaPosAgente La nueva posición del agente tras haberla computado 
      * previamente.
      * 
      * @return Los sensores que puede consultar el agente tras haber sido 
      * debidamente actualizados.
      */
-    public ArrayList<Sensor> actualizarPercepciones(Posicion posAgente) {
-        // Actualizar la posición del agente en el mapa:
-        this.mapa.establecerCasilla(
-                posAgente.obtenerX(), 
-                posAgente.obtenerY(),
-                AGENTE);
-        
+    public ArrayList<Sensor> actualizarPercepciones(Posicion nuevaPosAgente) {   
         // Dejar libre la antigua casilla del agente:
         this.mapa.establecerCasilla(
                 this.posAgente.obtenerX(), 
                 this.posAgente.obtenerY(), 
                 LIBRE);
-        this.posAgente = posAgente;
+        this.posAgente = nuevaPosAgente;
+        
+        // Actualizar la posición del agente en el mapa:
+        this.mapa.establecerCasilla(
+                nuevaPosAgente.obtenerX(), 
+                nuevaPosAgente.obtenerY(),
+                AGENTE);
         
         // En este punto, se actualizan los observadores (sensores y vistas):
         notificarSensores();
