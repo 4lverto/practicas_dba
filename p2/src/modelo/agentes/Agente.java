@@ -1,14 +1,20 @@
 
 package modelo.agentes;
 
+import jade.core.Agent;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import modelo.Entorno;
 import modelo.Posicion;
+import modelo.sensores.Sensor;
+
 
 /**
  * @brief Clase que representa nuestro agente.
  */
-public class Agente {
+public class Agente extends Agent {
     /**
      * @brief Entorno de la simulación con el que interactuará el agente para 
      * desplazarse por el mapa.
@@ -16,45 +22,38 @@ public class Agente {
     private Entorno entorno;
     
     /**
-     * @brief Posición del agente.
+     * @brief Conjunto de sensores que podrá consultar el agente.
      */
-    private Posicion posAgente;
-    
-    /**
-     * @brief Posición de la casilla objetivo.
-     */
-    private Posicion posObjetivo;
+    private ArrayList<Sensor> sensores;
 
     
     
     /**
-     * @brief Constructor por parámetros.
-     * 
-     * @param posAgente Posición inicial del agente.
-     * @param posObjetivo Posición inicial de la casilla objetivo.
+     * @brief Implementación del método 'setup' de 'Agent' (JADE). Inicia el 
+     * agente y los comportamientos que va a desarrollar.
      */
-    public Agente(
-            Posicion posAgente, 
-            Posicion posObjetivo,
-            String nombreFicheroMapa) throws IOException {
+    @Override
+    protected void setup() {
+        this.sensores = new ArrayList<>();
         
-        this.posAgente   = posAgente;
-        this.posObjetivo = posObjetivo;
+        // Obtener y procesar los argumentos:
+        Object[] args = getArguments();
         
-        // Crear el entorno:
-        entorno = Entorno.obtenerInstancia(
-                nombreFicheroMapa, 
-                posAgente, 
-                posObjetivo);
-    }
-    
-    /**
-     * @brief Consultor del entorno.
-     * 
-     * @return Instancia con el entorno actual.
-     */
-    public Entorno obtenerEntorno() {
-        return (entorno);
+        if (args != null && args.length == 1) {
+            // Crear el entorno:
+            if (args[0] instanceof Entorno) {
+                entorno = (Entorno) args[0];
+            } else {
+                System.out.println("\nError: no se recibió el entorno.");
+            }
+        } else {
+            System.out.println("\nError: no se recibieron argumentos.");
+        }
+        
+        
+        // 
+        System.out.println("Soy el agente '" + getLocalName() + "'");
+        doDelete();
     }
     
     /**
@@ -64,6 +63,7 @@ public class Agente {
      * otro caso.
      */
     public boolean objetivoAlcanzado() {
-        return (posAgente.sonIguales(posObjetivo));
+        return (entorno.obtenerPosAgente().sonIguales(
+                entorno.obtenerPosObjetivo()));
     }
 }
