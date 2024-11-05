@@ -52,16 +52,16 @@ public class PanelMapa extends JPanel {
        for (int i = 0; i < mapa.obtenerNumFilas(); i++) {
            for (int j = 0; j < mapa.obtenerNumColumnas(); j++) {
                switch (mapa.obtenerCasilla(i, j)) {
-                   case 0: // Suelo libre
+                   case Mapa.LIBRE: // Suelo libre
                        g.setColor(Color.WHITE);
                        break;
-                   case 1: // Agente
+                   case Mapa.AGENTE: // Agente
                        g.setColor(Color.BLUE);
                        break;
-                   case 2: // Objetivo
+                   case Mapa.OBJETIVO: // Objetivo
                        g.setColor(Color.GREEN);
                        break;
-                   case -1: // Obstáculo
+                   case Mapa.OBSTACULO: // Obstáculo
                        g.setColor(Color.DARK_GRAY);
                        break;
 

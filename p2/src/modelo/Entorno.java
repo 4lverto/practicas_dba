@@ -16,16 +16,7 @@ import vista.Vista;
  * importantes.
  */
 public class Entorno {
-    
-    /**
-     * @brief Constantes que representan los diferentes elementos del entorno 
-     * del mapa.
-     */
-    private static final int OBSTACULO = -1;
-    private static final int AGENTE    = 1;
-    private static final int OBJETIVO  = 2;
-    private static final int LIBRE     = 0;
-    
+
     /**
      * @brief Instancia única de la clase Entorno (patrón Singleton).
      */
@@ -114,14 +105,14 @@ public class Entorno {
         this.mapa.establecerCasilla(
                 this.posAgente.obtenerX(), 
                 this.posAgente.obtenerY(), 
-                LIBRE);
+                Mapa.LIBRE);
         this.posAgente = nuevaPosAgente;
         
         // Actualizar la posición del agente en el mapa:
         this.mapa.establecerCasilla(
                 nuevaPosAgente.obtenerX(), 
                 nuevaPosAgente.obtenerY(),
-                AGENTE);
+                Mapa.AGENTE);
         
         // En este punto, se actualizan los observadores (sensores y vistas):
         notificarSensores();
@@ -144,12 +135,12 @@ public class Entorno {
         this.mapa.establecerCasilla(
                 this.posAgente.obtenerX(), 
                 this.posAgente.obtenerY(), 
-                AGENTE);
+                Mapa.AGENTE);
         
         this.mapa.establecerCasilla(
                 this.posObjetivo.obtenerX(), 
                 this.posObjetivo.obtenerY(), 
-                OBJETIVO);
+                Mapa.OBJETIVO);
     }
 
     /**

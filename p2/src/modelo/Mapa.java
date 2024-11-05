@@ -14,6 +14,15 @@ import java.io.IOException;
  * @brief Clase que representa un mapa bidimensional.
  */
 public class Mapa {
+    
+    /**
+     * @brief Constantes que representan los diferentes elementos del mapa.
+     */
+    public static final int OBSTACULO = -1;
+    public static final int AGENTE    = 1;
+    public static final int OBJETIVO  = 2;
+    public static final int LIBRE     = 0;
+    
     /**
      * @brief Número de filas del mapa.
      */
