@@ -1,16 +1,30 @@
 package modelo;
 
-import modelo.sensores.Energia;
-import modelo.sensores.Vision;
 import java.io.IOException;
+import java.util.ArrayList;
+import modelo.sensores.Sensor;
+import vista.Vista;
+
 
 /**
  * @class Entorno
  * 
- * @brief Clase que representa el entorno del sistema. Implementa el patrón Singleton
- * para asegurar que solo exista una única instancia operativa.
+ * @brief Clase que representa el entorno del sistema. Implementa el patrón 
+ * Singleton para asegurar que solo exista una única instancia operativa, así
+ * como el patrón Observer para permitir que tanto los sensores como las vistas
+ * sean actualizados automáticamente cada vez que se produzcan cambios 
+ * importantes.
  */
 public class Entorno {
+    
+    /**
+     * @brief Constantes que representan los diferentes elementos del entorno 
+     * del mapa.
+     */
+    private static final int OBSTACULO = -1;
+    private static final int AGENTE    = 1;
+    private static final int OBJETIVO  = 2;
+    private static final int LIBRE     = 0;
     
     /**
      * @brief Instancia única de la clase Entorno (patrón Singleton).
@@ -23,14 +37,14 @@ public class Entorno {
     private Mapa mapa;
     
     /**
-     * @brief Sensor de energía del entorno.
+     * @brief Conjunto de sensores que podrá consultar el agente.
      */
-    private Energia energia;
+    private ArrayList<Sensor> sensores;
     
     /**
-     * @brief Sensor de visión del entorno.
+     * @brief Conjunto de vistas del simulador.
      */
-    private Vision vision;
+    private ArrayList<Vista> vistas;
     
     /**
      * @brief Posición del agente en el mapa.
@@ -49,30 +63,26 @@ public class Entorno {
      * instancias.
      * Inicializa el mapa a partir del archivo de texto especificado.
      * 
-     * @param nombreFicheroMapa Nombre del archivo que contiene los datos del 
-     * mapa.
      * @param posAgente Posición inicial del agente en el mapa.
      * @param posObjetivo Posición inicial de la casilla objetivo en el mapa.
      * 
      * @throws IOException Si ocurre un error al leer el archivo.
      */
     public Entorno(
-            String nombreFicheroMapa, 
             Posicion posAgente,
             Posicion posObjetivo) throws IOException {
         
-        this.mapa        = new Mapa(nombreFicheroMapa);
         this.posAgente   = posAgente;
         this.posObjetivo = posObjetivo;
-        this.energia     = new Energia();
-        this.vision      = new Vision(mapa, posAgente);
+        
+        this.sensores    = new ArrayList<>();
+        this.vistas      = new ArrayList<>();
     }
 
     /**
-     * @brief Obtiene la instancia única de la clase Entorno. Si no existe, la crea
-     * utilizando el archivo de mapa proporcionado.
+     * @brief Obtiene la instancia única de la clase Entorno. Si no existe, la 
+     * crea utilizando el archivo de mapa proporcionado.
      * 
-     * @param nombreFicheroMapa Nombre del archivo que contiene los datos del mapa.
      * @param posAgente Posición inicial del agente en el mapa.
      * @param posObjetivo Posición inicial de la casilla objetivo en el mapa.
      * 
@@ -80,29 +90,66 @@ public class Entorno {
      * @throws IOException Si ocurre un error al leer el archivo.
      */
     public static Entorno obtenerInstancia(
-            String nombreFicheroMapa, 
             Posicion posAgente,
             Posicion posObjetivo) throws IOException {
         
         if (instancia == null) {
-            instancia = new Entorno(
-                    nombreFicheroMapa, posAgente, posObjetivo);
+            instancia = new Entorno(posAgente, posObjetivo);
         }
         
-        return instancia;
+        return (instancia);
     }
 
     /**
      * @brief Actualiza las percepciones del agente según su posición.
      * 
-     * @param posAgente La posición actual del agente en el entorno.
-     * @return La posición actualizada del agente.
+     * @param posAgente La nueva posición del agente tras haberla computado 
+     * previamente.
+     * 
+     * @return Los sensores que puede consultar el agente tras haber sido 
+     * debidamente actualizados.
      */
-    public Posicion actualizarPercepciones(Posicion posAgente) {
-        energia.actualizar();
-        vision.actualizar();
-        // Aquí se podrían añadir otras actualizaciones específicas
-        return posAgente;
+    public ArrayList<Sensor> actualizarPercepciones(Posicion posAgente) {
+        // Actualizar la posición del agente en el mapa:
+        this.mapa.establecerCasilla(
+                posAgente.obtenerX(), 
+                posAgente.obtenerY(),
+                AGENTE);
+        
+        // Dejar libre la antigua casilla del agente:
+        this.mapa.establecerCasilla(
+                this.posAgente.obtenerX(), 
+                this.posAgente.obtenerY(), 
+                LIBRE);
+        this.posAgente = posAgente;
+        
+        // En este punto, se actualizan los observadores (sensores y vistas):
+        notificarSensores();
+        notificarVistas();
+        
+        return (sensores); // Se devuelven los sensores actualizados.
+    }
+    
+    /**
+     * @brief Crea el mapa a partir de un fichero.
+     * 
+     * @param nombreFicheroMapa Nombre del archivo que contiene los datos del 
+     * mapa.
+     * @throws IOException 
+     */
+    public void establecerMapa(String nombreFicheroMapa) throws IOException {
+        this.mapa = new Mapa(nombreFicheroMapa);
+        
+        // Colocar al agente y a la casilla objetivo en el mapa:
+        this.mapa.establecerCasilla(
+                this.posAgente.obtenerX(), 
+                this.posAgente.obtenerY(), 
+                AGENTE);
+        
+        this.mapa.establecerCasilla(
+                this.posObjetivo.obtenerX(), 
+                this.posObjetivo.obtenerY(), 
+                OBJETIVO);
     }
 
     /**
@@ -111,6 +158,24 @@ public class Entorno {
      */
     public Mapa obtenerMapa() {
         return (mapa);
+    }
+    
+    /**
+     * @brief Consultor para la posición del agente.
+     * 
+     * @return Posición actual del agente.
+     */
+    public Posicion obtenerPosAgente() {
+        return (this.posAgente);
+    }
+    
+    /**
+     * @brief Consultor para la posición de la casilla objetivo.
+     * 
+     * @return Posición de la casilla objetivo.
+     */
+    public Posicion obtenerPosObjetivo() {
+        return (this.posObjetivo);
     }
 
     /**
@@ -123,5 +188,63 @@ public class Entorno {
         return (mapa.casillaEsValida(
                 pos.obtenerX(), 
                 pos.obtenerY()));
+    }
+    
+    /**
+     * @brief Registra una vista (observador) en el array de vistas.
+     * 
+     * @param vista Vista a añadir.
+     */
+    public void registrarVista(Vista vista) {
+        vistas.add(vista);
+    }
+    
+    /**
+     * @brief Elimina una vista (observador) del array de vistas.
+     * 
+     * @param vista Vista a eliminar.
+     */
+    public void eliminarVista(Vista vista) {
+        vistas.remove(vista);
+    }
+    
+    /**
+     * @brief Notifica a cada vista que ha habido un cambio, desencadenando que
+     * cada una de estas vistas se actualice en consecuencia, permitiendo, de 
+     * esta manera, que automáticamente se plasmen visualmente los cambios en el 
+     * mapa.
+     */
+    public void notificarVistas() {
+        for (Vista v : vistas) {
+            v.actualizar(mapa);
+        }
+    }
+    
+    /**
+     * @brief Registra un sensor (observador) en el array de sensores.
+     * 
+     * @param sensor Sensor a añadir.
+     */
+    public void registrarSensor(Sensor sensor) {
+        sensores.add(sensor);
+    }
+    
+    /**
+     * @brief Elimina un sensor (observador) del array de sensores.
+     * 
+     * @param sensor Sensor a eliminar.
+     */
+    public void eliminarSensor(Sensor sensor) {
+        sensores.remove(sensor);
+    }
+    
+    /**
+     * @brief Notifica a cada sensor que ha habido un cambio, desencadenando que
+     * cada uno de estos sensores se actualice en consecuencia.
+     */
+    public void notificarSensores() {
+        for (Sensor s : sensores) {
+            s.actualizar();
+        }
     }
 }
