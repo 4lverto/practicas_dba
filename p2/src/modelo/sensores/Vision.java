@@ -1,5 +1,6 @@
 package modelo.sensores;
 
+import modelo.Entorno;
 import modelo.Mapa;
 import modelo.Posicion;
 
@@ -7,7 +8,7 @@ import modelo.Posicion;
  * @class Vision
  * 
  * @brief Clase que representa un sensor de visión.
- *   Este sensor obtiene las celdas contiguas visibles alrededor del agente.
+ * Este sensor obtiene las celdas contiguas visibles alrededor del agente.
  */
 public class Vision extends Sensor {
     
@@ -16,36 +17,41 @@ public class Vision extends Sensor {
      */
     private int[][] celdasContiguas;
     
-    /**
-     * @brief Mapa en el que se efectuará la visión.
-     */
-    private Mapa mapa;
-    
-    /**
-     * @brief Posición del agente en el mapa.
-     */
-    private Posicion posAgente;
-    
     
 
     /**
      * Constructor de Vision, inicializa la matriz de celdas contiguas.
      */
-    public Vision(Mapa mapa, Posicion posAgente) {
-        // Inicializar la matriz de celdas contiguas según el entorno o el tamaño que desees.
-        this.celdasContiguas = new int[3][3]; // Por ejemplo, una visión de 3x3 alrededor del agente.
-        this.mapa            = mapa;
-        this.posAgente       = posAgente;
+    public Vision(Entorno entorno) {
+        // Inicializar la matriz de celdas contiguas según el entorno o el 
+        // tamaño que desees:
+        // Por ejemplo, una visión de 3x3 alrededor del agente:
+        this.celdasContiguas = new int[3][3];
+        this.entorno         = entorno;
+        
+        // Añadirse al entorno (observado) como observador:
+        this.entorno.registrarSensor(this);
     }
 
+    /**
+     * Obtiene la matriz de celdas contiguas visibles.
+     * 
+     * @return Matriz de celdas contiguas visibles alrededor del agente.
+     */
+    public int[][] obtenerVision() {
+        return celdasContiguas;
+    }
+    
     /**
      * Actualiza el sensor de visión. (En una implementación real, este método
      * debería llenar celdasContiguas con los datos de las celdas visibles).
      */
     @Override
     public void actualizar() {
-        int x = posAgente.obtenerX();
-        int y = posAgente.obtenerY();
+        Posicion posAgente = entorno.obtenerPosAgente();
+        int x              = posAgente.obtenerX();
+        int y              = posAgente.obtenerY();
+        Mapa mapa          = entorno.obtenerMapa();
         
         
         // Actualizar la diagonal superior izquierda:
@@ -104,24 +110,12 @@ public class Vision extends Sensor {
         } else {
             celdasContiguas[1][0] = -1;
         }
-    }
-
-    /**
-     * Obtiene la matriz de celdas contiguas visibles.
-     * 
-     * @return Matriz de celdas contiguas visibles alrededor del agente.
-     */
-    public int[][] obtenerVision() {
-        return celdasContiguas;
-    }
-    
-    /**
-     * @brief Actualiza la posición del agente, de manera que la actualización 
-     * de las casillas contiguas en el mapa pueda efectuarse.
-     * 
-     * @param pos Posición actual del agente.
-     */
-    public void actualizarPosAgente(Posicion pos) {
-        posAgente = pos;
+        
+        // Actualizar su posición en particular:
+        if (mapa.casillaEsValida(x, y)) {
+            celdasContiguas[1][1] = mapa.obtenerCasilla(x, y);
+        } else {
+            celdasContiguas[1][1] = -1;
+        }
     }
 }

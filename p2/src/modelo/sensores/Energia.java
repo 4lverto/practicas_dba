@@ -1,12 +1,13 @@
 package modelo.sensores;
 
+import modelo.Entorno;
+
 /**
  * @class Energia
  * 
- * @brief Clase que representa el sensor de Energía. Este sensor cuenta los pasos del agente.
+ * @brief Clase que representa el sensor de Energía. Este sensor cuenta los 
+ * pasos del agente.
  */
-
-
 public class Energia extends Sensor{
     
     /**
@@ -14,12 +15,17 @@ public class Energia extends Sensor{
      */
     private int pasos;
     
+    
+    
     /**
      * @brief Constructor de Energia.
      */
-    public Energia() {
-        this.pasos = 0;
-    
+    public Energia(Entorno entorno) {
+        this.pasos   = 0;
+        this.entorno = entorno;
+        
+        // Añadirse al entorno (observado) como observador:
+        this.entorno.registrarSensor(this);
     }
     
     /**
@@ -35,7 +41,7 @@ public class Energia extends Sensor{
      * 
      * @return Número de pasos realizados.
      */
-    public int obtenerEerngia(){
+    public int obtenerEnergia(){
         return this.pasos;
     } 
     
