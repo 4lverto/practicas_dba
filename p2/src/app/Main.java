@@ -1,7 +1,7 @@
 package app;
 
 
-import controlador.PanelConfiguracionControlador;
+import vista.PanelConfiguracionControlador;
 import controlador.Controlador;
 import java.io.IOException;
 import java.util.ArrayList;

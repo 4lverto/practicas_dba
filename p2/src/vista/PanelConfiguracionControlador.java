@@ -1,6 +1,7 @@
 
-package controlador;
+package vista;
 
+import controlador.Controlador;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -34,7 +35,7 @@ public class PanelConfiguracionControlador extends JFrame {
     /**
      * @brief Array con los mapas disponibles.
      */
-    private static final String[] ficherosMapas = {
+    private static final String[] FICHEROS_MAPAS = {
             "mapas/mapWithoutObstacle.txt",
             "mapas/mapWithHorizontalWall.txt",
             "mapas/mapWithVerticalWall.txt",
@@ -82,7 +83,7 @@ public class PanelConfiguracionControlador extends JFrame {
 
         // Selector para los mapas:
         JLabel etiquetaElegirMapa  = new JLabel("Elegir mapa: ");
-        JComboBox<String> opciones = new JComboBox<>(this.ficherosMapas);
+        JComboBox<String> opciones = new JComboBox<>(this.FICHEROS_MAPAS);
 
         // Campos para seleccionar las coordenadas de las posicones del agente
         // y de la casilla objetivo:
