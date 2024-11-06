@@ -59,7 +59,7 @@ public class Entorno {
      * 
      * @throws IOException Si ocurre un error al leer el archivo.
      */
-    public Entorno(
+    private Entorno(
             Posicion posAgente,
             Posicion posObjetivo) throws IOException {
         
@@ -170,15 +170,16 @@ public class Entorno {
     }
 
     /**
-     * @brief Verifica si una posición es válida dentro del mapa.
+     * @brief Verifica si una posición es válida dentro del mapa (está dentro de
+     * sus límites y es una casilla libre).
      * 
      * @param pos La posición a verificar.
-     * @return true si la posición es válida; false en caso contrario.
+     * @return 'true' si la posición es válida, es decir es una casilla libre; 
+     * 'false' en caso contrario.
      */
     public boolean posEsValida(Posicion pos) {
-        return (mapa.casillaEsValida(
-                pos.obtenerX(), 
-                pos.obtenerY()));
+        return (mapa.casillaEsValida(pos.obtenerX(), pos.obtenerY()) &&
+                mapa.obtenerCasilla(pos.obtenerX(), pos.obtenerY()) == Mapa.LIBRE);
     }
     
     /**

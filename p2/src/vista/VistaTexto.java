@@ -21,6 +21,7 @@ public class VistaTexto extends Vista {
         
         // Añadirse al entorno (observado) como observador:
         this.entorno.registrarVista(this);
+        actualizar(); // Para que se muestre desde el principio.
     }
 
     /**
