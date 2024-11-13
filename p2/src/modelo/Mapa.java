@@ -39,6 +39,15 @@ public class Mapa {
      */
     private int[][] mapa;
 
+     /**
+     * @brief Constructor sin parámetros. Inicializa el mapa vacío.
+     */
+    public Mapa(int filas, int columnas) {
+        // Inicializar mapa con un tamaño predeterminado o vacío
+        this.filas = filas;
+        this.columnas = columnas;
+        this.mapa = new int[filas][columnas]; // matriz vacía
+    }
     
     /**
      * @brief Constructor por parámetro. Construye la matriz a partir de un 

@@ -15,7 +15,8 @@ import modelo.sensores.Vision;
 public class Agente extends Agent {
     private Entorno entorno;
     private ArrayList<Sensor> sensores;
-    private Mapa mapaMemoria;
+    private Mapa mapaMemoria;  
+
 
     @Override
     protected void setup() {
@@ -23,15 +24,16 @@ public class Agente extends Agent {
         Object[] args = getArguments();
         if (args != null && args.length == 1 && args[0] instanceof Entorno) {
             entorno = (Entorno) args[0];
-            this.mapaMemoria = entorno.obtenerMapa();
-            this.sensores = entorno.actualizarPercepciones(entorno.obtenerPosAgente());
+            this.mapaMemoria = new Mapa(10,10);
+            this.sensores = this.entorno.actualizarPercepciones(entorno.obtenerPosAgente());
+
         } else {
             System.out.println("\nError: no se recibió el entorno.");
             doDelete();
             return;
         }
 
-        addBehaviour(new TickerBehaviour(this, 1000) {
+        addBehaviour(new TickerBehaviour(this, 2000) {
             @Override
             protected void onTick() {
                 if (!objetivoAlcanzado()) {
@@ -85,23 +87,7 @@ public class Agente extends Agent {
         }
 
         if (mejorMovimiento != null) {
-             this.sensores = entorno.actualizarPercepciones(mejorMovimiento);
-    
-            // Casteo de la primer entrada de la lista de sensores a Vision
-            Vision visionSensor = (Vision) this.sensores.get(0);
-
-            // Obtener la matriz de celdas contiguas
-            int[][] celdasContiguas = visionSensor.obtenerVision();
-
-            // Mostrar todas las celdas contiguas
-            for (int i = 0; i < celdasContiguas.length; i++) {
-                for (int j = 0; j < celdasContiguas[i].length; j++) {
-                    // Mostrar el valor de cada celda de la matriz
-                    System.out.print(celdasContiguas[i][j] + " ");
-                }
-                // Salto de línea para cada fila
-                System.out.println();
-            }
+            this.sensores = this.entorno.actualizarPercepciones(mejorMovimiento);
         }
 
     }
@@ -111,6 +97,34 @@ public class Agente extends Agent {
     }
 
     public void actualizarMemoria() {
-        //this.mapaMemoria.mostrarMapa();
+        int x = this.entorno.obtenerPosAgente().obtenerX();
+        int y = this.entorno.obtenerPosAgente().obtenerY();
+
+        // Obtener visión del sensor (suponemos que siempre existe al menos un sensor en la lista)
+        Vision sensorVision = (Vision) this.sensores.get(0);
+        int[][] celdasContiguas = sensorVision.obtenerVision();
+
+        // Recorrer la matriz de celdas contiguas y actualizar el mapa solo con valores válidos
+        for (int i = 0; i < celdasContiguas.length; i++) {
+            for (int j = 0; j < celdasContiguas[i].length; j++) {
+
+                if (celdasContiguas[i][j] != -1) {
+                    int nuevaX = x + (i - 1);  // Ajustar el índice para la posición relativa
+                    int nuevaY = y + (j - 1);  // Ajustar el índice para la posición relativa
+
+                    if (mapaMemoria.casillaEsValida(nuevaX, nuevaY)) {
+                        // Establecer el valor en la memoria
+                        mapaMemoria.establecerCasilla(nuevaX, nuevaY, celdasContiguas[i][j]);
+
+
+                        if (i != 4 || j != 4) {  // Excluir la posición central (4,4) del rastro
+                            mapaMemoria.establecerCasilla(nuevaX, nuevaY, 1);
+                        }
+                    }
+                }
+            }
+        }
+        this.mapaMemoria.mostrarMapa();
     }
+
 }
