@@ -13,6 +13,7 @@ import modelo.Mapa;
 import modelo.sensores.Vision;
 
 public class Agente extends Agent {
+
     private Entorno entorno;
     private ArrayList<Sensor> sensores;
     private Mapa mapaMemoria;
@@ -30,7 +31,7 @@ public class Agente extends Agent {
             return;
         }
 
-        addBehaviour(new TickerBehaviour(this, 2000) {
+        addBehaviour(new TickerBehaviour(this, 1000) {
             @Override
             protected void onTick() {
                 if (!objetivoAlcanzado()) {
@@ -52,23 +53,13 @@ public class Agente extends Agent {
         Posicion posActual = entorno.obtenerPosAgente();
         Posicion posObjetivo = entorno.obtenerPosObjetivo();
 
-        // Movimientos posibles: abajo, arriba, derecha, izquierda y diagonales
-        Map<Accion, Posicion> movimientos = new EnumMap<>(Accion.class);
-        movimientos.put(Accion.ABAJO, new Posicion(1, 0));
-        movimientos.put(Accion.ARRIBA, new Posicion(-1, 0));
-        movimientos.put(Accion.DERECHA, new Posicion(0, 1));
-        movimientos.put(Accion.IZQUIERDA, new Posicion(0, -1));
-        movimientos.put(Accion.DIAGONAL_ARRIBA_DERECHA, new Posicion(-1, 1));
-        movimientos.put(Accion.DIAGONAL_ARRIBA_IZQUIERDA, new Posicion(-1, -1));
-        movimientos.put(Accion.DIAGONAL_ABAJO_DERECHA, new Posicion(1, 1));
-        movimientos.put(Accion.DIAGONAL_ABAJO_IZQUIERDA, new Posicion(1, -1));
-
+        // Posibles movimientos según las acciones del enum
         Posicion mejorMovimiento = null;
         int mejorDistancia = Integer.MAX_VALUE;
 
-        // Evaluar cada posible movimiento
-        for (Map.Entry<Accion, Posicion> entry : movimientos.entrySet()) {
-            Posicion delta = entry.getValue();
+        // Evaluar cada acción del enumerado Accion
+        for (Accion accion : Accion.values()) {
+            Posicion delta = accion.obtenerDelta();  // Llamar al método que obtiene el delta
             Posicion movimiento = new Posicion(posActual.obtenerX() + delta.obtenerX(), posActual.obtenerY() + delta.obtenerY());
 
             // Verificar si el movimiento es válido (dentro de los límites del mapa y no es un obstáculo)
@@ -102,29 +93,29 @@ public class Agente extends Agent {
         int x = this.entorno.obtenerPosAgente().obtenerX();
         int y = this.entorno.obtenerPosAgente().obtenerY();
 
-        // Obtener visión del sensor (suponemos que siempre existe al menos un sensor en la lista)
         Vision sensorVision = (Vision) this.sensores.get(0);
         int[][] celdasContiguas = sensorVision.obtenerVision();
 
-        // Recorrer la matriz de celdas contiguas y actualizar el mapa solo con valores válidos
+        actualizarMapaConVision(x, y, celdasContiguas);
+        this.mapaMemoria.mostrarMapa();
+    }
+
+    private void actualizarMapaConVision(int x, int y, int[][] celdasContiguas) {
         for (int i = 0; i < celdasContiguas.length; i++) {
             for (int j = 0; j < celdasContiguas[i].length; j++) {
+                int nuevaX = x + (i - 1);
+                int nuevaY = y + (j - 1);
 
-                if (celdasContiguas[i][j] != -1) {
-                    int nuevaX = x + (i - 1);  // Ajustar el índice para la posición relativa
-                    int nuevaY = y + (j - 1);  // Ajustar el índice para la posición relativa
-
-                    if (mapaMemoria.casillaEsValida(nuevaX, nuevaY)) {
-                        // Establecer el valor en la memoria
-                        mapaMemoria.establecerCasilla(nuevaX, nuevaY, celdasContiguas[i][j]);
-
-                        if (i != 4 || j != 4) {  // Excluir la posición central (4,4) del rastro
-                            mapaMemoria.establecerCasilla(nuevaX, nuevaY, 1);
-                        }
-                    }
+                if (mapaMemoria.casillaEsValida(nuevaX, nuevaY)) {
+                    int valorCasilla = obtenerValorParaCasilla(celdasContiguas[i][j]);
+                    mapaMemoria.establecerCasilla(nuevaX, nuevaY, valorCasilla);
                 }
             }
         }
-        this.mapaMemoria.mostrarMapa();
     }
+
+    private int obtenerValorParaCasilla(int valorSensor) {
+        return valorSensor == 0 ? 1 : valorSensor;
+    }
+
 }
