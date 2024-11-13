@@ -2,7 +2,9 @@ package modelo.agentes;
 
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.Map;
 import modelo.Entorno;
 import modelo.Posicion;
 import modelo.sensores.Sensor;
@@ -15,26 +17,28 @@ public class Agente extends Agent {
     private ArrayList<Sensor> sensores;
     private Mapa mapaMemoria;  
 
+
     @Override
     protected void setup() {
+        
         Object[] args = getArguments();
         if (args != null && args.length == 1 && args[0] instanceof Entorno) {
             entorno = (Entorno) args[0];
-            this.mapaMemoria = new Mapa(10, 10);
+            this.mapaMemoria = new Mapa(10,10);
             this.sensores = this.entorno.actualizarPercepciones(entorno.obtenerPosAgente());
+
         } else {
             System.out.println("\nError: no se recibió el entorno.");
             doDelete();
             return;
         }
 
-        // Comportamiento que se repite cada 2 segundos
         addBehaviour(new TickerBehaviour(this, 2000) {
             @Override
             protected void onTick() {
                 if (!objetivoAlcanzado()) {
                     actualizarMemoria();
-                    ejecutarAlgoritmoAEstrella();
+                    decidirMovimiento();
                 } else {
                     System.out.println("¡Objetivo alcanzado!");
                     myAgent.doDelete();
@@ -47,119 +51,84 @@ public class Agente extends Agent {
         return entorno.obtenerPosAgente().sonIguales(entorno.obtenerPosObjetivo());
     }
 
-    // Implementación del algoritmo A*
-    public void ejecutarAlgoritmoAEstrella() {
-        Posicion inicio = entorno.obtenerPosAgente();
-        Posicion objetivo = entorno.obtenerPosObjetivo();
+    public void decidirMovimiento() {
+        Posicion posActual = entorno.obtenerPosAgente();
+        Posicion posObjetivo = entorno.obtenerPosObjetivo();
 
-        PriorityQueue<Nodo> openList = new PriorityQueue<>(Comparator.comparingInt(n -> n.f));
-        Set<Posicion> closedList = new HashSet<>();
+        Map<Accion, Posicion> movimientos = new EnumMap<>(Accion.class);
+        movimientos.put(Accion.ABAJO, new Posicion(1, 0));
+        movimientos.put(Accion.ARRIBA, new Posicion(-1, 0));
+        movimientos.put(Accion.DERECHA, new Posicion(0, 1));
+        movimientos.put(Accion.IZQUIERDA, new Posicion(0, -1));
+        movimientos.put(Accion.DIAGONAL_ARRIBA_DERECHA, new Posicion(-1, 1));
+        movimientos.put(Accion.DIAGONAL_ARRIBA_IZQUIERDA, new Posicion(-1, -1));
+        movimientos.put(Accion.DIAGONAL_ABAJO_DERECHA, new Posicion(1, 1));
+        movimientos.put(Accion.DIAGONAL_ABAJO_IZQUIERDA, new Posicion(1, -1));
 
-        Nodo nodoInicio = new Nodo(inicio, 0, calcularDistanciaManhattan(inicio, objetivo), null);
-        openList.add(nodoInicio);
+        Posicion mejorMovimiento = null;
+        int mejorDistancia = Integer.MAX_VALUE;
 
-        Nodo nodoFinal = null;
+        for (Map.Entry<Accion, Posicion> entry : movimientos.entrySet()) {
+            Posicion delta = entry.getValue();
+            Posicion movimiento = new Posicion(posActual.obtenerX() + delta.obtenerX(), posActual.obtenerY() + delta.obtenerY());
 
-        while (!openList.isEmpty()) {
-            Nodo nodoActual = openList.poll();
-            closedList.add(nodoActual.posicion);
-
-            // Si se llega al objetivo
-            if (nodoActual.posicion.sonIguales(objetivo)) {
-                nodoFinal = nodoActual;
-                break;
-            }
-
-            // Explorar vecinos
-            for (Accion accion : Accion.values()) {
-                Posicion vecino = obtenerPosicionVecino(nodoActual.posicion, accion);
-
-                if (vecino == null || !entorno.posEsValida(vecino) || closedList.contains(vecino)) {
-                    continue;
+            if (entorno.posEsValida(movimiento)) {
+                if (movimiento.sonIguales(posObjetivo)) {
+                    mejorMovimiento = movimiento;
+                    break;
                 }
 
-                int gNuevo = nodoActual.g + 1;
-                int hNuevo = calcularDistanciaManhattan(vecino, objetivo);
-                Nodo vecinoNodo = new Nodo(vecino, gNuevo, hNuevo, nodoActual);
-
-                openList.add(vecinoNodo);
+                int distancia = calcularDistanciaManhattan(movimiento, posObjetivo);
+                if (distancia < mejorDistancia) {
+                    mejorDistancia = distancia;
+                    mejorMovimiento = movimiento;
+                }
             }
         }
 
-        if (nodoFinal != null) {
-            // Mover al agente al siguiente paso en el camino encontrado
-            Nodo siguientePaso = nodoFinal;
-            while (siguientePaso.padre != null && siguientePaso.padre.padre != null) {
-                siguientePaso = siguientePaso.padre;
-            }
-
-            // Actualizar la posición del agente en el entorno
-            entorno.actualizarPercepciones(siguientePaso.posicion);
-            System.out.println("Moviendo a la posición: " + siguientePaso.posicion.obtenerX() + ", " + siguientePaso.posicion.obtenerY());
-        } else {
-            System.out.println("No se encontró un camino al objetivo.");
+        if (mejorMovimiento != null) {
+            this.sensores = this.entorno.actualizarPercepciones(mejorMovimiento);
         }
+
     }
 
-    // Calcula la distancia Manhattan entre dos posiciones
     private int calcularDistanciaManhattan(Posicion p1, Posicion p2) {
         return Math.abs(p1.obtenerX() - p2.obtenerX()) + Math.abs(p1.obtenerY() - p2.obtenerY());
     }
 
-    // Obtener la nueva posición según la acción
-    private Posicion obtenerPosicionVecino(Posicion actual, Accion accion) {
-        switch (accion) {
-            case ABAJO: return new Posicion(actual.obtenerX() + 1, actual.obtenerY());
-            case ARRIBA: return new Posicion(actual.obtenerX() - 1, actual.obtenerY());
-            case DERECHA: return new Posicion(actual.obtenerX(), actual.obtenerY() + 1);
-            case IZQUIERDA: return new Posicion(actual.obtenerX(), actual.obtenerY() - 1);
-            case DIAGONAL_ARRIBA_DERECHA: return new Posicion(actual.obtenerX() - 1, actual.obtenerY() + 1);
-            case DIAGONAL_ARRIBA_IZQUIERDA: return new Posicion(actual.obtenerX() - 1, actual.obtenerY() - 1);
-            case DIAGONAL_ABAJO_DERECHA: return new Posicion(actual.obtenerX() + 1, actual.obtenerY() + 1);
-            case DIAGONAL_ABAJO_IZQUIERDA: return new Posicion(actual.obtenerX() + 1, actual.obtenerY() - 1);
-            default: return null;
-        }
-    }
-
     public void actualizarMemoria() {
-        int x = entorno.obtenerPosAgente().obtenerX();
-        int y = entorno.obtenerPosAgente().obtenerY();
+        int x = this.entorno.obtenerPosAgente().obtenerX();
+        int y = this.entorno.obtenerPosAgente().obtenerY();
 
-        Vision sensorVision = (Vision) sensores.get(0);
+        // Obtener visión del sensor (suponemos que siempre existe al menos un sensor en la lista)
+        Vision sensorVision = (Vision) this.sensores.get(0);
         int[][] celdasContiguas = sensorVision.obtenerVision();
 
+        // Recorrer la matriz de celdas contiguas y actualizar el mapa solo con valores válidos
         for (int i = 0; i < celdasContiguas.length; i++) {
             for (int j = 0; j < celdasContiguas[i].length; j++) {
+
                 if (celdasContiguas[i][j] != -1) {
-                    int nuevaX = x + (i - 1);
-                    int nuevaY = y + (j - 1);
+                    int nuevaX = x + (i - 1);  // Ajustar el índice para la posición relativa
+                    int nuevaY = y + (j - 1);  // Ajustar el índice para la posición relativa
 
                     if (mapaMemoria.casillaEsValida(nuevaX, nuevaY)) {
+                        // Establecer el valor en la memoria
                         mapaMemoria.establecerCasilla(nuevaX, nuevaY, celdasContiguas[i][j]);
-                        if (i != 4 || j != 4) {
+
+
+                        if (i != 4 || j != 4) {  // Excluir la posición central (4,4) del rastro
                             mapaMemoria.establecerCasilla(nuevaX, nuevaY, 1);
                         }
                     }
                 }
             }
         }
-        mapaMemoria.mostrarMapa();
+        this.mapaMemoria.mostrarMapa();
     }
 
-    // Clase interna para los nodos del algoritmo A*
-    class Nodo {
-        Posicion posicion;
-        int g; // costo desde el inicio hasta el nodo actual
-        int h; // estimación heurística al objetivo
-        int f; // g + h
-        Nodo padre;
-
-        Nodo(Posicion posicion, int g, int h, Nodo padre) {
-            this.posicion = posicion;
-            this.g = g;
-            this.h = h;
-            this.f = g + h;
-            this.padre = padre;
-        }
-    }
 }
+
+
+
+
