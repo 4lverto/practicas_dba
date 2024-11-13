@@ -170,6 +170,15 @@ public class Entorno {
     }
 
     /**
+    * @brief Consultor para obtener la lista de sensores actuales.
+    * 
+    * @return Una copia de la lista de sensores registrados.
+    */
+   public ArrayList<Sensor> obtenerSensores() {
+       return new ArrayList<>(sensores); // Devuelve una copia para proteger la encapsulación.
+   }
+
+    /**
      * @brief Verifica si una posición es válida dentro del mapa (está dentro de
      * sus límites y es una casilla libre).
      * 
@@ -178,8 +187,9 @@ public class Entorno {
      * 'false' en caso contrario.
      */
     public boolean posEsValida(Posicion pos) {
-        return (mapa.casillaEsValida(pos.obtenerX(), pos.obtenerY()) &&
-                mapa.obtenerCasilla(pos.obtenerX(), pos.obtenerY()) == Mapa.LIBRE);
+        return (mapa.casillaEsValida(pos.obtenerX(), pos.obtenerY()) && (
+                mapa.obtenerCasilla(pos.obtenerX(), pos.obtenerY()) == Mapa.LIBRE || 
+                mapa.obtenerCasilla(pos.obtenerX(), pos.obtenerY()) == Mapa.OBJETIVO));
     }
     
     /**

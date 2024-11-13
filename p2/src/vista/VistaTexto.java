@@ -32,13 +32,13 @@ public class VistaTexto extends Vista {
     public void actualizar() {
         Mapa mapa = this.entorno.obtenerMapa();
         
-        for (int i = 0; i < mapa.obtenerNumFilas(); i++) {
-            for (int j = 0; j < mapa.obtenerNumColumnas(); j++) {
-                System.out.print(mapa.obtenerCasilla(i, j) + "\t");
-            }
-            
-            // Para separar entre filas:
-            System.out.println();
-        }
+//        for (int i = 0; i < mapa.obtenerNumFilas(); i++) {
+//            for (int j = 0; j < mapa.obtenerNumColumnas(); j++) {
+//                System.out.print(mapa.obtenerCasilla(i, j) + "\t");
+//            }
+//            
+//            // Para separar entre filas:
+//            System.out.println();
+//        }
     }
 }
