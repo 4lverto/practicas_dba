@@ -19,6 +19,8 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import modelo.Entorno;
 import modelo.Posicion;
+import modelo.sensores.Energia;
+import modelo.sensores.Vision;
 import vista.VistaGrafica;
 import vista.VistaTexto;
 
@@ -103,12 +105,12 @@ public class PanelConfiguracionControlador extends JFrame {
         // Etiqueta y campo para la fila de la casilla objetivo:
         JLabel etiquetaFilaObjetivo = new JLabel("Fila: ");
         JSpinner campoFilaObjetivo  = new JSpinner(
-                new SpinnerNumberModel(0, 0, this.topeDimensionMapa, 1));
+                new SpinnerNumberModel(6, 0, this.topeDimensionMapa, 1));
         
         // Etiqueta y campo para la columna de la casilla objetivo:
         JLabel etiquetaColumnaObjetivo = new JLabel("Columna: ");
         JSpinner campoColumnaObjetivo  = new JSpinner(
-                new SpinnerNumberModel(0, 0, this.topeDimensionMapa, 1));
+                new SpinnerNumberModel(6, 0, this.topeDimensionMapa, 1));
 
         // Botón para aplicar la configuración y ejecutar el simulador:
         JButton botonEjecutar = new JButton("Ejecutar");
@@ -144,6 +146,10 @@ public class PanelConfiguracionControlador extends JFrame {
                     VistaTexto vistaTextual   = new VistaTexto(entorno);
                     VistaGrafica vistaGrafica = new VistaGrafica(entorno);
                     
+                    Vision sensorVision = new Vision(entorno);
+                    Energia sensorEnergia = new Energia(entorno);
+
+  
                     // Crear el controlador, el cual lanzará al agente (el 
                     // entorno le llega al agente a través del controlador, con 
                     // las posiciones y el mapa debidamente inicializados):

@@ -55,14 +55,12 @@ public class Vision extends Sensor {
         int y              = posAgente.obtenerY();
         Mapa mapa          = entorno.obtenerMapa();
         
-        
         // Actualizar la diagonal superior izquierda:
         if (mapa.casillaEsValida((x-1), (y-1))) {
             celdasContiguas[0][0] = mapa.obtenerCasilla(x-1, y-1);
         } else {
             celdasContiguas[0][0] = -1;
         }
-        
         
         // Actualizar la celda de arriba:
         if (mapa.casillaEsValida((x-1), y)) {

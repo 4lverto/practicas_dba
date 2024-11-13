@@ -3,6 +3,7 @@ package modelo;
 import java.io.IOException;
 import java.util.ArrayList;
 import modelo.sensores.Sensor;
+import modelo.sensores.Vision;
 import vista.Vista;
 
 
@@ -168,15 +169,6 @@ public class Entorno {
     public Posicion obtenerPosObjetivo() {
         return (this.posObjetivo);
     }
-
-    /**
-    * @brief Consultor para obtener la lista de sensores actuales.
-    * 
-    * @return Una copia de la lista de sensores registrados.
-    */
-   public ArrayList<Sensor> obtenerSensores() {
-       return new ArrayList<>(sensores); // Devuelve una copia para proteger la encapsulación.
-   }
 
     /**
      * @brief Verifica si una posición es válida dentro del mapa (está dentro de

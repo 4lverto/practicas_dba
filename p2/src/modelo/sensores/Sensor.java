@@ -17,7 +17,6 @@ public abstract class Sensor {
     protected Entorno entorno;
 
     
-    
     /**
      * @brief Método abstracto para actualizar la información captada por el 
      * sensor.

@@ -1,16 +1,9 @@
 package app;
 
 import vista.PanelConfiguracionControlador;
-import controlador.Controlador;
+
 import java.io.IOException;
-import java.util.ArrayList;
-import modelo.Entorno;
-import modelo.Posicion;
-import modelo.sensores.Energia;
-import modelo.sensores.Sensor;
-import modelo.sensores.Vision;
-import vista.VistaGrafica;
-import vista.VistaTexto;
+
 
 
 /**
