@@ -15,18 +15,15 @@ import modelo.sensores.Vision;
 public class Agente extends Agent {
     private Entorno entorno;
     private ArrayList<Sensor> sensores;
-    private Mapa mapaMemoria;  
-
+    private Mapa mapaMemoria;
 
     @Override
     protected void setup() {
-        
         Object[] args = getArguments();
         if (args != null && args.length == 1 && args[0] instanceof Entorno) {
             entorno = (Entorno) args[0];
-            this.mapaMemoria = new Mapa(10,10);
+            this.mapaMemoria = new Mapa(10, 10);
             this.sensores = this.entorno.actualizarPercepciones(entorno.obtenerPosAgente());
-
         } else {
             System.out.println("\nError: no se recibió el entorno.");
             doDelete();
@@ -55,6 +52,7 @@ public class Agente extends Agent {
         Posicion posActual = entorno.obtenerPosAgente();
         Posicion posObjetivo = entorno.obtenerPosObjetivo();
 
+        // Movimientos posibles: abajo, arriba, derecha, izquierda y diagonales
         Map<Accion, Posicion> movimientos = new EnumMap<>(Accion.class);
         movimientos.put(Accion.ABAJO, new Posicion(1, 0));
         movimientos.put(Accion.ARRIBA, new Posicion(-1, 0));
@@ -68,16 +66,20 @@ public class Agente extends Agent {
         Posicion mejorMovimiento = null;
         int mejorDistancia = Integer.MAX_VALUE;
 
+        // Evaluar cada posible movimiento
         for (Map.Entry<Accion, Posicion> entry : movimientos.entrySet()) {
             Posicion delta = entry.getValue();
             Posicion movimiento = new Posicion(posActual.obtenerX() + delta.obtenerX(), posActual.obtenerY() + delta.obtenerY());
 
+            // Verificar si el movimiento es válido (dentro de los límites del mapa y no es un obstáculo)
             if (entorno.posEsValida(movimiento)) {
+                // Si el movimiento lleva directamente al objetivo, seleccionarlo
                 if (movimiento.sonIguales(posObjetivo)) {
                     mejorMovimiento = movimiento;
                     break;
                 }
 
+                // Calcular la distancia Manhattan al objetivo
                 int distancia = calcularDistanciaManhattan(movimiento, posObjetivo);
                 if (distancia < mejorDistancia) {
                     mejorDistancia = distancia;
@@ -86,10 +88,10 @@ public class Agente extends Agent {
             }
         }
 
+        // Si se encontró un movimiento válido, actualizar la memoria
         if (mejorMovimiento != null) {
             this.sensores = this.entorno.actualizarPercepciones(mejorMovimiento);
         }
-
     }
 
     private int calcularDistanciaManhattan(Posicion p1, Posicion p2) {
@@ -116,7 +118,6 @@ public class Agente extends Agent {
                         // Establecer el valor en la memoria
                         mapaMemoria.establecerCasilla(nuevaX, nuevaY, celdasContiguas[i][j]);
 
-
                         if (i != 4 || j != 4) {  // Excluir la posición central (4,4) del rastro
                             mapaMemoria.establecerCasilla(nuevaX, nuevaY, 1);
                         }
@@ -126,9 +127,4 @@ public class Agente extends Agent {
         }
         this.mapaMemoria.mostrarMapa();
     }
-
 }
-
-
-
-
