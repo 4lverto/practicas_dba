@@ -44,6 +44,7 @@ public class Controlador {
         
         // Configurar el perfil para el contenedor principal:
         Profile p  = new ProfileImpl();
+        p.setParameter(Profile.GUI, "false");
         p.setParameter(Profile.MAIN_HOST, "localhost");
         p.setParameter(Profile.CONTAINER_NAME, "1099");
         

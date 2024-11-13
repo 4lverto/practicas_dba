@@ -63,7 +63,7 @@ public class PanelConfiguracionControlador extends JFrame {
         
         // Configuración de la ventana:
         setTitle("Panel de configuración");
-        setSize(600, 400);
+        setSize(800, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 

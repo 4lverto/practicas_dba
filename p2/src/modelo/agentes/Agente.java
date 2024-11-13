@@ -1,69 +1,83 @@
-
 package modelo.agentes;
 
 import jade.core.Agent;
-import java.io.IOException;
+import jade.core.behaviours.CyclicBehaviour;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import modelo.Entorno;
 import modelo.Posicion;
 import modelo.sensores.Sensor;
 
-
-/**
- * @brief Clase que representa nuestro agente.
- */
 public class Agente extends Agent {
-    /**
-     * @brief Entorno de la simulación con el que interactuará el agente para 
-     * desplazarse por el mapa.
-     */
     private Entorno entorno;
-    
-    /**
-     * @brief Conjunto de sensores que podrá consultar el agente.
-     */
     private ArrayList<Sensor> sensores;
 
-    
-    
-    /**
-     * @brief Implementación del método 'setup' de 'Agent' (JADE). Inicia el 
-     * agente y los comportamientos que va a desarrollar.
-     */
     @Override
     protected void setup() {
         this.sensores = new ArrayList<>();
         
-        // Obtener y procesar los argumentos:
         Object[] args = getArguments();
-        
-        if (args != null && args.length == 1) {
-            // Crear el entorno:
-            if (args[0] instanceof Entorno) {
-                entorno = (Entorno) args[0];
-            } else {
-                System.out.println("\nError: no se recibió el entorno.");
-            }
+        if (args != null && args.length == 1 && args[0] instanceof Entorno) {
+            entorno = (Entorno) args[0];
         } else {
-            System.out.println("\nError: no se recibieron argumentos.");
+            System.out.println("\nError: no se recibió el entorno.");
+            doDelete();
+            return;
         }
         
-        
-        // 
-        System.out.println("Soy el agente '" + getLocalName() + "'");
-        doDelete();
+        // Agregar comportamiento cíclico para el movimiento del agente
+        addBehaviour(new MovimientoCiclico());
     }
-    
-    /**
-     * @brief Devuelve si el agente ha llegado a la casilla objetivo.
-     * 
-     * @return 'true' si el agente está sobre la casilla objetivo; 'false' en 
-     * otro caso.
-     */
+
     public boolean objetivoAlcanzado() {
-        return (entorno.obtenerPosAgente().sonIguales(
-                entorno.obtenerPosObjetivo()));
+        return entorno.obtenerPosAgente().sonIguales(entorno.obtenerPosObjetivo());
+    }
+
+    public void decidirMovimiento() {
+        Posicion posActual = entorno.obtenerPosAgente();
+        Posicion posObjetivo = entorno.obtenerPosObjetivo();
+        
+        Posicion[] movimientos = {
+            new Posicion(posActual.obtenerX() + 1, posActual.obtenerY()),  // Abajo
+            new Posicion(posActual.obtenerX() - 1, posActual.obtenerY()),  // Arriba
+            new Posicion(posActual.obtenerX(), posActual.obtenerY() + 1),  // Derecha
+            new Posicion(posActual.obtenerX(), posActual.obtenerY() - 1)   // Izquierda
+        };
+        
+        Posicion mejorMovimiento = null;
+        int mejorDistancia = Integer.MAX_VALUE;
+
+        for (Posicion movimiento : movimientos) {
+            if (entorno.posEsValida(movimiento)) {
+                int distancia = calcularDistanciaManhattan(movimiento, posObjetivo);
+                if (distancia < mejorDistancia) {
+                    mejorDistancia = distancia;
+                    mejorMovimiento = movimiento;
+                }
+            }
+        }
+
+        if (mejorMovimiento != null) {
+            entorno.actualizarPercepciones(mejorMovimiento);
+        }
+    }
+
+    private int calcularDistanciaManhattan(Posicion p1, Posicion p2) {
+        return Math.abs(p1.obtenerX() - p2.obtenerX()) + Math.abs(p1.obtenerY() - p2.obtenerY());
+    }
+
+    /**
+     * @class MovimientoCiclico
+     * @brief Comportamiento cíclico que permite al agente decidir y ejecutar su movimiento en cada iteración.
+     */
+    private class MovimientoCiclico extends CyclicBehaviour {
+        @Override
+        public void action() {
+            if (!objetivoAlcanzado()) {
+                decidirMovimiento();
+            } else {
+                System.out.println("¡Objetivo alcanzado!");
+                myAgent.doDelete();  // Terminar agente una vez alcanzado el objetivo
+            }
+        }
     }
 }

@@ -44,7 +44,7 @@ public class Posicion {
      * 
      * @return Coordenada x de la posición.
      */
-    public int obtenerX() {
+   public int obtenerX() {
         return x;
     }
 
