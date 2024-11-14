@@ -3,8 +3,6 @@ package modelo.agentes;
 import jade.core.Agent;
 import jade.core.behaviours.TickerBehaviour;
 import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.Map;
 import modelo.Entorno;
 import modelo.Posicion;
 import modelo.sensores.Sensor;
