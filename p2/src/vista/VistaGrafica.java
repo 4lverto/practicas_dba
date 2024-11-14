@@ -26,8 +26,6 @@ public class VistaGrafica extends Vista {
      */
     private PanelMapa panelMapa;
 
-    
-    
     /**
      * @brief Constructor por parámetro. Inicializa la vista y crea la ventana
      * principal con una configuración por defecto.

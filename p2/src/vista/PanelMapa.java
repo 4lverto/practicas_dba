@@ -11,7 +11,8 @@ import modelo.Mapa;
 /**
  * @class PanelMapa
  * 
- * @brief Clase que representa el panel del mapa.
+ * @brief Clase que representa el panel del mapa, y que mostrará cada celda
+ * de un color específico según su tipo. 
  */
 public class PanelMapa extends JPanel {
     
@@ -24,8 +25,6 @@ public class PanelMapa extends JPanel {
      * @brief Mapa a representar.
      */
    private Mapa mapa;
-
-
 
    /**
     * @brief Constructor por parámetro. Establece las dimensiones del panel.
