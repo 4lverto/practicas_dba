@@ -128,51 +128,11 @@ public class Agente extends Agent {
      * @brief Función que usaremos para tomar la decisión de qué movimiento realizar
      */
     public void decidirMovimiento() {
-        // Recuperamos las posiciones actuales
-        Posicion posActual = entorno.obtenerPosAgente();
-        Posicion posObjetivo = entorno.obtenerPosObjetivo();
-
-        // Posibles movimientos según las acciones del enum
-        Posicion mejorMovimiento = null;
-        int mejorDistancia = Integer.MAX_VALUE; // Será un valor alto casi infinito
-
-        // Evaluar cada acción del enumerado Accion
-        for (Accion accion : Accion.values()) { // Para cada Acción posible:
-            Posicion delta = accion.obtenerDelta();  // Llamar al método que obtiene el delta
-            // Calculamos la que sería la nueva posición agregándo delta a la posición actual
-            Posicion movimiento = new Posicion(posActual.obtenerX() + delta.obtenerX(), posActual.obtenerY() + delta.obtenerY());
-
-            // Verificar si el movimiento es válido (dentro de los límites del mapa y no es un obstáculo)
-            if (entorno.posEsValida(movimiento)) {
-                // Si el movimiento lleva directamente al objetivo, seleccionarlo
-                if (movimiento.sonIguales(posObjetivo)) {
-                    mejorMovimiento = movimiento;
-                    break;
-                }
-
-                // Calcular la distancia Manhattan al objetivo
-                int distancia = calcularDistanciaManhattan(movimiento, posObjetivo);
-                if (distancia < mejorDistancia) {
-                    mejorDistancia = distancia;
-                    mejorMovimiento = movimiento;
-                }
-            }
+        ArrayList<Posicion> camino = Astar.busqueda(mapaMemoria, entorno.obtenerPosAgente(), entorno.obtenerPosObjetivo());
+        
+        if (camino != null) {
+            this.sensores = this.entorno.actualizarPercepciones(camino.get(camino.size()-2));
         }
-
-        // Si se encontró un movimiento válido, actualizar la memoria
-        if (mejorMovimiento != null) {
-            this.sensores = this.entorno.actualizarPercepciones(mejorMovimiento);
-        }
-    }
-    
-    /**
-     * @brief Calcula la distancia Manhattan entre 2 posiciones
-     * @param p1 Primera posición
-     * @param p2 Segunda posición
-     * @return Distancia Manhattan entre p1 y p2
-     */
-    private int calcularDistanciaManhattan(Posicion p1, Posicion p2) {
-        return Math.abs(p1.obtenerX() - p2.obtenerX()) + Math.abs(p1.obtenerY() - p2.obtenerY());
     }
     
     /**
