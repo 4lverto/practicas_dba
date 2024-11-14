@@ -85,6 +85,8 @@ public class Entorno {
             Posicion posAgente,
             Posicion posObjetivo) throws IOException {
         
+        // De esta forma fomentamos el patrón Singleton, pues si ya existe
+        // una instancia del Entorno no damos opción a crear otra.
         if (instancia == null) {
             instancia = new Entorno(posAgente, posObjetivo);
         }
@@ -102,11 +104,13 @@ public class Entorno {
      * debidamente actualizados.
      */
     public ArrayList<Sensor> actualizarPercepciones(Posicion nuevaPosAgente) {   
+        
         // Dejar libre la antigua casilla del agente:
         this.mapa.establecerCasilla(
                 this.posAgente.obtenerX(), 
                 this.posAgente.obtenerY(), 
                 Mapa.LIBRE);
+        
         this.posAgente = nuevaPosAgente;
         
         // Actualizar la posición del agente en el mapa:
@@ -130,6 +134,9 @@ public class Entorno {
      * @throws IOException 
      */
     public void establecerMapa(String nombreFicheroMapa) throws IOException {
+        
+        // En el propio constructor del mapa se gestionará el atribuirle un
+        // valor específico a cada casilla
         this.mapa = new Mapa(nombreFicheroMapa);
         
         // Colocar al agente y a la casilla objetivo en el mapa:
