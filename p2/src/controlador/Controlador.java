@@ -11,10 +11,11 @@ import modelo.Entorno;
 
 
 /**
- * @brief Clase que representa el controlador del simulador. Esta se encargará 
- * de abstraer todo el proceso, lanzando el agente y desencadenando las 
- * actualizaciones de las vistas (las cuales se hacen automáticamente cuando hay
- * un cambio importante en el entorno).
+ * @brief Clase que representa el controlador del simulador. 
+ * 
+ * 
+ * Permite la creación, configuración y lanzamiento del agente en un entorno 
+ * JADE. Configura el perfil de JADE y gestiona el ciclo de vida del agente.
  */
 public class Controlador {
     
@@ -22,16 +23,14 @@ public class Controlador {
      * @brief Controlador para la creación y el lanzamiento del agente.
      */
     private AgentController controlador;
-
-    
     
     /**
      * @brief Constructor por parámetros.
      * 
-     * @param nombreAgente Nombre que se asociará con el agente.
+     * @param nombreAgente Nombre que se asignará al agente.
      * @param agente Agente para la simulación (nombre de la clase del agente,
      * teniendo en cuenta el/los paquete/s en el/los que esta se encuentra).
-     * @param entorno Instancia del entorno para pasarla al agente de cara a 
+     * @param entorno Instancia del entorno para pasársela al agente de cara a 
      * iniciarlo.
      */
     public Controlador(

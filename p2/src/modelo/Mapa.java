@@ -50,11 +50,12 @@ public class Mapa {
     }
     
     /**
-     * @brief Constructor por parámetro. Construye la matriz a partir de un 
-     * fichero de texto plano, donde las dos primeras filas de este contienen el
-     * número de filas y columnas (respectivamente) de la matriz y el resto de
-     * líneas son los caracteres que conforman la matriz, separados por 
-     * tabuladores.
+     * @brief Constructor por parámetro.
+     * 
+     * Construye la matriz a partir de un fichero de texto plano, donde las 
+     * dos primeras filas de este contienen el número de filas y columnas 
+     * (respectivamente) de la matriz y el resto de líneas son los caracteres
+     * que conforman la matriz, separados por tabuladores.
      * 
      * @param nombreFicheroMapa Nombre del fichero que contiene los datos del 
      * mapa

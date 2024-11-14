@@ -4,6 +4,8 @@ package modelo;
  * @class Posicion
  * 
  * @brief Clase que representa una posición en el mapa.
+ * 
+ * Representa una ubicación específica en el mapa mediante coordenadas (x,y).
  */
 public class Posicion {
     

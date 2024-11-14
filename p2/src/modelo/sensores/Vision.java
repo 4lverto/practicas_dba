@@ -14,11 +14,16 @@ public class Vision extends Sensor {
     
     /**
      * @brief Matriz de enteros que representa las celdas contiguas visibles.
+     * 
+     * Cada posición de esta matriz representa el estado de una casilla:
+     * -1 si está fuera de límites
+     * 0 si la casilla está libre
+     * 1 corresponderá a la posición del agente
+     * 2 corresponderá a la casilla objetivo
+     * -1 para cualquier otro obstáculo
      */
     private int[][] celdasContiguas;
     
-    
-
     /**
      * @brief Constructor de Vision, inicializa la matriz de celdas contiguas.
      * 
@@ -30,13 +35,12 @@ public class Vision extends Sensor {
         // Por ejemplo, una visión de 3x3 alrededor del agente:
         this.celdasContiguas = new int[3][3];
         this.entorno         = entorno;
-        
         // Añadirse al entorno (observado) como observador:
         this.entorno.registrarSensor(this);
     }
 
     /**
-     * Obtiene la matriz de celdas contiguas visibles.
+     * @brief Obtiene la matriz de celdas contiguas visibles.
      * 
      * @return Matriz de celdas contiguas visibles alrededor del agente.
      */
@@ -45,8 +49,12 @@ public class Vision extends Sensor {
     }
     
     /**
-     * Actualiza el sensor de visión. (En una implementación real, este método
-     * debería llenar celdasContiguas con los datos de las celdas visibles).
+     * @brief Actualiza la matriz de visión con el estado de las celdas que el
+     * agente tiene a su alrededor
+     * 
+     * Obtenemos la posición actual del agente y revisamos las celdas contiguas
+     * en las 8 direcciones cardinales y diagonales, así como su posición, 
+     * actualizando cada celda en la matriz de visión.
      */
     @Override
     public void actualizar() {

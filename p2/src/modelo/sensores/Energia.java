@@ -15,8 +15,6 @@ public class Energia extends Sensor{
      */
     private int pasos;
     
-    
-    
     /**
      * @brief Constructor de Energia.
      * 
@@ -32,6 +30,8 @@ public class Energia extends Sensor{
     
     /**
      * @brief Actualiza el sensor de energía aumentando el contador de pasos.
+     * 
+     * Se llamará cada vez que el agente se mueva
      */
     @Override
     public void actualizar(){
