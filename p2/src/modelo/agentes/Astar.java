@@ -70,9 +70,7 @@ public class Astar {
      * 
      * Este metodo se llama solo desde el metodo busqueda una vez se ha llegado a la salida
      */
-    private static ArrayList<Posicion> obtenerCamino(
-            Celda[][] celdas,
-            Posicion dest) {
+    private static ArrayList<Posicion> obtenerCamino(Celda[][] celdas, Posicion dest) {
         System.out.println("Camino:  ");
 
         ArrayList<Posicion> camino = new ArrayList<>();
