@@ -68,4 +68,9 @@ public class Posicion {
     public boolean sonIguales(Posicion otra) {
         return this.x == otra.x && this.y == otra.y;
     }
+    
+    @Override
+    public String toString(){
+        return "(" + obtenerX() + "," + obtenerY() + ")";
+    }
 }

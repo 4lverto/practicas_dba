@@ -1,4 +1,3 @@
-
 package vista;
 
 import modelo.Entorno;
@@ -12,8 +11,6 @@ public abstract class Vista {
      * Observer).
      */
     protected Entorno entorno;
-    
-    
     
     /**
      * @brief Actualiza la vista en función del estado del entorno.

@@ -1,20 +1,29 @@
 
 package vista;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import javax.swing.JPanel;
+import javax.swing.*;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+
 import modelo.Mapa;
 
 
 /**
  * @class PanelMapa
  * 
- * @brief Clase que representa el panel del mapa.
+ * @brief Clase que representa el panel del mapa, y que mostrará cada celda
+ * de un color específico según su tipo. 
  */
 public class PanelMapa extends JPanel {
     
+    private Image imagenLibre;
+    private Image imagenObstaculo;
+    private Image imagenObjetivo;
+    private Image imagenVisitada;
+    private Image imagenAgente;
+       
     /**
      * @brief Factor a aplicar para el dimensionado del panel.
      */
@@ -25,57 +34,72 @@ public class PanelMapa extends JPanel {
      */
    private Mapa mapa;
 
-
-
    /**
     * @brief Constructor por parámetro. Establece las dimensiones del panel.
     * 
     * @param mapa Mapa a representar.
     */
    public PanelMapa(Mapa mapa) {
-       this.mapa = mapa;
-
-       setPreferredSize(new Dimension(
+        this.mapa = mapa;
+        
+        setPreferredSize(new Dimension(
                mapa.obtenerNumColumnas() * FACTOR, 
                mapa.obtenerNumFilas() * FACTOR));
-   }
+
+        // Cargar las imágenes desde el sistema de archivos
+        try {
+            imagenLibre = ImageIO.read(new File("resources/LIBRE.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
+            imagenAgente = ImageIO.read(new File("resources/AGENTE3.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
+            imagenObjetivo = ImageIO.read(new File("resources/OBJETIVO2.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
+            imagenObstaculo = ImageIO.read(new File("resources/OBSTACULO.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
+            imagenVisitada = ImageIO.read(new File("resources/VISITADO.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
    /**
     * Método sobreescrito de JPanel para pintar el componente.
     * 
     * @param g Objeto con los gráficos para personalizar el panel.
     */
-   @Override
-   protected void paintComponent(Graphics g) {
-       super.paintComponent(g);
+  @Override
+protected void paintComponent(Graphics g) {
+    super.paintComponent(g);
 
-       for (int i = 0; i < mapa.obtenerNumFilas(); i++) {
-           for (int j = 0; j < mapa.obtenerNumColumnas(); j++) {
-               switch (mapa.obtenerCasilla(i, j)) {
-                   case Mapa.LIBRE: // Suelo libre
-                       g.setColor(Color.WHITE);
-                       break;
-                   case Mapa.AGENTE: // Agente
-                       g.setColor(Color.BLUE);
-                       break;
-                   case Mapa.OBJETIVO: // Objetivo
-                       g.setColor(Color.GREEN);
-                       break;
-                   case Mapa.OBSTACULO: // Obstáculo
-                       g.setColor(Color.DARK_GRAY);
-                       break;
+    for (int i = 0; i < mapa.obtenerNumFilas(); i++) {
+        for (int j = 0; j < mapa.obtenerNumColumnas(); j++) {
+            // Elegir la imagen adecuada según el tipo de casilla
+            Image imagen = null;
+            switch (mapa.obtenerCasilla(i, j)) {
+                case Mapa.LIBRE:
+                    imagen = imagenLibre;
+                    break;
+                case Mapa.OBSTACULO:
+                    imagen = imagenObstaculo;
+                    break;
+                case Mapa.OBJETIVO:
+                    imagen = imagenObjetivo;
+                    break;
+                case Mapa.VISITADA:
+                    imagen = imagenVisitada;
+                    break;
+                case Mapa.AGENTE:
+                    imagen = imagenAgente;
+                    break;
+                default:
+                    imagen = imagenLibre; // o alguna imagen para casillas desconocidas
+                    break;
+            }
 
-                   default: // Casilla desconocida
-                       g.setColor(Color.RED);
-                       break;
-               }
+            // Dibujar la imagen en la posición de la celda
+            if (imagen != null) {
+                g.drawImage(imagen, j * FACTOR, i * FACTOR, FACTOR, FACTOR, this);
+            }
+        }
+    }
+}
 
-               g.fillRect(j * FACTOR, i * FACTOR, FACTOR, FACTOR);
-               g.setColor(Color.BLACK);
-               g.drawRect(j * FACTOR, i * FACTOR, FACTOR, FACTOR);
-           }
-       }
-   }
 
    /**
     * @brief Modificar para el mapa.

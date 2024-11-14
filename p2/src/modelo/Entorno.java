@@ -109,7 +109,7 @@ public class Entorno {
         this.mapa.establecerCasilla(
                 this.posAgente.obtenerX(), 
                 this.posAgente.obtenerY(), 
-                Mapa.LIBRE);
+                Mapa.VISITADA);
         
         this.posAgente = nuevaPosAgente;
         

@@ -54,7 +54,6 @@ public class PanelConfiguracionControlador extends JFrame {
     private int topeDimensionMapa;
 
     
-    
     /**
      * @brief Constructor por parámetro.
      * 
@@ -78,7 +77,9 @@ public class PanelConfiguracionControlador extends JFrame {
      * diferentes elementos a este.
      */
     private void iniciarComponentes() {
-        // Crear un panel para contener los componentes:
+        // Crear un panel que actuará como contenedor de todos los elementos de la IU gráfica.
+        // Los elementos "grid" servirán para realizar la distribución de los componentes
+        // en el panel
         JPanel panel = new JPanel();
         panel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -111,14 +112,20 @@ public class PanelConfiguracionControlador extends JFrame {
         JLabel etiquetaColumnaObjetivo = new JLabel("Columna: ");
         JSpinner campoColumnaObjetivo  = new JSpinner(
                 new SpinnerNumberModel(6, 0, this.topeDimensionMapa, 1));
-
+        
+        // ////////////////////////////////////////// //
+        // LÓGICA DE EJECUCIÓN AL PRESIONAR EL BOTÓN: //
+        // ////////////////////////////////////////// //
+        
         // Botón para aplicar la configuración y ejecutar el simulador:
         JButton botonEjecutar = new JButton("Ejecutar");
-
-        // Lógica a ejecutar al presionar el botón:
+        
         botonEjecutar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                
+                // Recuperamos los valores seleccionados por el usuario para el mapa,
+                // las coordenadas del agente y las del objetivo.
                 String mapaSeleccionado = (String) opciones.getSelectedItem();
                 int filaAgente          = (Integer) campoFilaAgente.getValue();
                 int columnaAgente       = (Integer) campoColumnaAgente.getValue();
@@ -128,12 +135,14 @@ public class PanelConfiguracionControlador extends JFrame {
                 // Preparar lo necesario para iniciar la simulación mediante el
                 // controlador:
                 
-                // Crear las posiciones del agente y de la casilla objetivo:
+                // Crear instancias de Posicion para el agente y el objetivo
                 Posicion posAgente   = new Posicion(filaAgente, columnaAgente);
                 Posicion posObjetivo = new Posicion(filaObjetivo, columnaObjetivo);
                 Entorno entorno;
                 
                 try {
+                    
+                    // Creamos y configuramos el entorno
                     entorno = Entorno.obtenerInstancia(
                             posAgente,
                             posObjetivo);
@@ -162,11 +171,13 @@ public class PanelConfiguracionControlador extends JFrame {
                     // llegue a la casilla objetivo (el agente lo controla 
                     // internamente):
                     controlador.ejecutar();
+                    
                 } catch (IOException ex) {
                     Logger.getLogger(
                             PanelConfiguracionControlador.class.getName()).log(
                                     Level.SEVERE, null, ex);
                 }
+                
                 
                 dispose(); // Cerrar el panel de configuración.
             }
