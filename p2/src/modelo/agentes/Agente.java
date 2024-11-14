@@ -135,6 +135,7 @@ public class Agente extends Agent {
         }
     }
     
+    /**
      * @brief Actualiza la memoria del agente con la infromación de sus sensores
      * 
      * La memoria del agente se actualiza con los datos obtenidos de su sensor
