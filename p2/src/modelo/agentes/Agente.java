@@ -37,6 +37,11 @@ public class Agente extends Agent {
      * @brief Mapa que almacena la memoria del agente sobre el entorno
      */
     private Mapa mapaMemoria;
+    
+    /**
+     * @brief Lista de posiciones por las que ha pasado el agente
+     */
+    private ArrayList<Posicion> trazaRecorrido;
         
     /**
      * @brief Métood de configuración incial del agente, llamado al inicio.
@@ -51,6 +56,9 @@ public class Agente extends Agent {
         
         // Inicialización del entorno 
         Object[] args = getArguments();
+        
+        // Inicializo la traza de recorrido
+        trazaRecorrido = new ArrayList<>();
         
         // El único argumento que se espera recibir es la instancia de Entorno.
         if (args != null && args.length == 1 && args[0] instanceof Entorno) {
@@ -79,6 +87,7 @@ public class Agente extends Agent {
                     
                     // Aquí podríamos mostrar la "energía" gastada (pasos para llegar)
                     System.out.println(enCuantosPasosHeLlegado());
+                    mostrarTraza();
                     
                     myAgent.doDelete();
                 }
@@ -123,8 +132,18 @@ public class Agente extends Agent {
 
         return texto;
     }
-
-
+    
+    public void mostrarTraza(){
+        System.out.println("Inicio de la simulacion en la posicion: " + trazaRecorrido.get(0));
+        System.out.println("Objetivo alcanzado en la posición: " + trazaRecorrido.get(trazaRecorrido.size()-1));
+        System.out.println("Recorrido seguido por el agente:");
+        
+        for(int i=0;i<trazaRecorrido.size()-1;i++){
+            System.out.print(trazaRecorrido.get(i) + " -> ");
+        }
+        
+        System.out.println("y finalmente... " + trazaRecorrido.get(trazaRecorrido.size()-1));
+    }
     
     /**
      * @brief Función que usaremos para tomar la decisión de qué movimiento realizar
@@ -164,6 +183,7 @@ public class Agente extends Agent {
         // Si se encontró un movimiento válido, actualizar la memoria
         if (mejorMovimiento != null) {
             this.sensores = this.entorno.actualizarPercepciones(mejorMovimiento);
+            this.trazaRecorrido.add(mejorMovimiento);
         }
     }
     
