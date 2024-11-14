@@ -63,7 +63,9 @@ public class PanelMapa extends JPanel {
                    case Mapa.OBSTACULO: // Obstáculo
                        g.setColor(Color.DARK_GRAY);
                        break;
-
+                   case Mapa.VISITADA:
+                       g.setColor(Color.YELLOW);
+                       break;
                    default: // Casilla desconocida
                        g.setColor(Color.RED);
                        break;
