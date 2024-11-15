@@ -111,9 +111,8 @@ public class Astar {
             return new ArrayList();
         }
 
-        if (mapa.obtenerCasilla(origen.obtenerX(), origen.obtenerY()) == -1
-                || mapa.obtenerCasilla(dest.obtenerX(), dest.obtenerY()) == -1) {
-            System.out.println("Origen o destino bloqueados...");
+        if (mapa.obtenerCasilla(origen.obtenerX(), origen.obtenerY()) == -1) {
+            System.out.println("Origen bloqueado...");
             return new ArrayList();
         }
 
@@ -170,6 +169,10 @@ public class Astar {
                                 && (addX != addY || (mapa.obtenerCasilla(i+addX,j) != -1 || mapa.obtenerCasilla(i,j+addY) != -1))) {   //Comprobacion bloqueo diagonales
                             celdas[adyacente.obtenerX()][adyacente.obtenerY()].padre = new Posicion(i, j);
                             System.out.println("Se ha encontrado el destino");
+                            if (mapa.obtenerCasilla(dest.obtenerX(), dest.obtenerY()) == -1) {
+                                System.out.println("Destino bloqueado...");
+                                return new ArrayList();
+                            }
                             return obtenerCamino(celdas, dest);
                                 
                         } else if (!cerrados[adyacente.obtenerX()][adyacente.obtenerY()]                //Si no se ha explorado ya
