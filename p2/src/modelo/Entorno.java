@@ -240,6 +240,15 @@ public class Entorno {
     }
     
     /**
+     * @brief Devuelve los sensores del entorno con el estado actual de los sensores
+     * 
+     * @return Array con lo sensores disponibles en el entorno
+     */
+    public ArrayList<Sensor> obtenerSensores(){
+        return sensores;
+    }
+    
+    /**
      * @brief Notifica a cada sensor que ha habido un cambio, desencadenando que
      * cada uno de estos sensores se actualice en consecuencia.
      */

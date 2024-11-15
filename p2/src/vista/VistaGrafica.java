@@ -1,6 +1,7 @@
 package vista;
 
 import modelo.Entorno;
+import modelo.sensores.Energia;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
@@ -41,7 +42,7 @@ public class VistaGrafica extends Vista {
         reproducirMusica("resources/fondo.wav"); // Ruta relativa
 
         this.ventana   = new JFrame("Prática 2 de DBA");
-        this.panelMapa = new PanelMapa(entorno.obtenerMapa());
+        this.panelMapa = new PanelMapa(entorno);
         
         // Configuración de la ventana principal:
         int anchoVentana = 
@@ -64,7 +65,9 @@ public class VistaGrafica extends Vista {
      */
     @Override
     public void actualizar() {
+        Energia sensorEnergia = (Energia)entorno.obtenerSensores().get(1);
         this.panelMapa.establecerMapa(this.entorno.obtenerMapa());
+        this.panelMapa.actualizarInformacion(this.entorno.obtenerPosAgente().obtenerX(), this.entorno.obtenerPosAgente().obtenerY(), sensorEnergia.obtenerEnergia()-1);
         this.panelMapa.repaint(); // Para repintar la pantalla.
     }
 
