@@ -36,7 +36,7 @@ public class PanelMapa extends JPanel {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                pintarMapa(g);
+                pintarMapa(g, entorno);
             }
         };
 
@@ -101,7 +101,7 @@ public class PanelMapa extends JPanel {
         }
     }
 
-    private void pintarMapa(Graphics g) {
+    private void pintarMapa(Graphics g, Entorno entorno) {
         for (int i = 0; i < mapa.obtenerNumFilas(); i++) {
             for (int j = 0; j < mapa.obtenerNumColumnas(); j++) {
                 Image imagen = null;
@@ -112,14 +112,8 @@ public class PanelMapa extends JPanel {
                     case Mapa.OBSTACULO:
                         imagen = imagenObstaculo;
                         break;
-                    case Mapa.OBJETIVO:
-                        imagen = imagenObjetivo;
-                        break;
                     case Mapa.VISITADA:
                         imagen = imagenVisitada;
-                        break;
-                    case Mapa.AGENTE:
-                        imagen = imagenAgente;
                         break;
                     default:
                         imagen = imagenLibre;
@@ -131,6 +125,8 @@ public class PanelMapa extends JPanel {
                 }
             }
         }
+        g.drawImage(imagenObjetivo, entorno.obtenerPosObjetivo().obtenerY() * FACTOR, entorno.obtenerPosObjetivo().obtenerX() * FACTOR, FACTOR, FACTOR, this);
+        g.drawImage(imagenAgente, entorno.obtenerPosAgente().obtenerY() * FACTOR, entorno.obtenerPosAgente().obtenerX() * FACTOR, FACTOR, FACTOR, this);
     }
 
     public void actualizarInformacion(int x, int y, int energiaGastada) {
