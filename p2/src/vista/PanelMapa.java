@@ -1,52 +1,79 @@
-
 package vista;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
+import modelo.Entorno;
 import modelo.Mapa;
 
-
-/**
- * @class PanelMapa
- * 
- * @brief Clase que representa el panel del mapa, y que mostrará cada celda
- * de un color específico según su tipo. 
- */
 public class PanelMapa extends JPanel {
-    
     private Image imagenLibre;
     private Image imagenObstaculo;
     private Image imagenObjetivo;
     private Image imagenVisitada;
     private Image imagenAgente;
-       
-    /**
-     * @brief Factor a aplicar para el dimensionado del panel.
-     */
-    private static final int FACTOR = 65;
-    
-    /**
-     * @brief Mapa a representar.
-     */
-   private Mapa mapa;
 
-   /**
-    * @brief Constructor por parámetro. Establece las dimensiones del panel.
-    * 
-    * @param mapa Mapa a representar.
-    */
-   public PanelMapa(Mapa mapa) {
-        this.mapa = mapa;
-        
-        setPreferredSize(new Dimension(
-               mapa.obtenerNumColumnas() * FACTOR, 
-               mapa.obtenerNumFilas() * FACTOR));
+    private static final int FACTOR = 78;
+    private Mapa mapa;
 
-        // Cargar las imágenes desde el sistema de archivos
+
+    // Componentes para la información adicional
+    private JLabel etiquetaPosicion;
+    private JLabel etiquetaCasillasVisitadas;
+    private JLabel etiquetaEnergiaGastada;
+
+    public PanelMapa(Entorno entorno) {
+        this.mapa = entorno.obtenerMapa();
+
+        setLayout(new BorderLayout());
+        setBackground(Color.DARK_GRAY); // Fondo general oscuro
+
+        // Panel para el mapa
+        JPanel panelMapa = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                pintarMapa(g);
+            }
+        };
+
+        panelMapa.setPreferredSize(new Dimension(
+                mapa.obtenerNumColumnas() * FACTOR,
+                mapa.obtenerNumFilas() * FACTOR));
+        panelMapa.setBackground(Color.BLACK); // Fondo negro para el mapa
+        add(panelMapa, BorderLayout.CENTER);
+
+        // Panel para la información adicional
+        JPanel panelInformacion = new JPanel();
+        panelInformacion.setLayout(new BoxLayout(panelInformacion, BoxLayout.Y_AXIS));
+        panelInformacion.setBackground(Color.GRAY); // Fondo gris para el panel de información
+        panelInformacion.setBorder(new EmptyBorder(10, 10, 10, 10)); // Margen interno
+
+        etiquetaPosicion = crearEtiquetaEstilizada("Posición actual: (0, 0)");
+        etiquetaCasillasVisitadas = crearEtiquetaEstilizada("Casillas visitadas: 0");
+        etiquetaEnergiaGastada = crearEtiquetaEstilizada("Energía gastada: 0");
+
+        // Añadimos un título al panel de información
+        JLabel tituloInformacion = crearEtiquetaEstilizada("Estado del Agente");
+        tituloInformacion.setFont(new Font("Arial", Font.BOLD, 16));
+        tituloInformacion.setForeground(Color.WHITE);
+        tituloInformacion.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        panelInformacion.add(tituloInformacion);
+        panelInformacion.add(Box.createRigidArea(new Dimension(0, 10))); // Espacio entre título y contenido
+        panelInformacion.add(etiquetaPosicion);
+        panelInformacion.add(Box.createRigidArea(new Dimension(0, 5))); // Espacio entre etiquetas
+        panelInformacion.add(etiquetaCasillasVisitadas);
+        panelInformacion.add(Box.createRigidArea(new Dimension(0, 5))); // Espacio entre etiquetas
+        panelInformacion.add(etiquetaEnergiaGastada);
+
+        add(panelInformacion, BorderLayout.EAST);
+
+        // Cargar las imágenes
         try {
             imagenLibre = ImageIO.read(new File("resources/LIBRE.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
             imagenAgente = ImageIO.read(new File("resources/AGENTE3.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
@@ -58,64 +85,59 @@ public class PanelMapa extends JPanel {
         }
     }
 
-   /**
-    * Método sobreescrito de JPanel para pintar el componente.
-    * 
-    * @param g Objeto con los gráficos para personalizar el panel.
-    */
-  @Override
-protected void paintComponent(Graphics g) {
-    super.paintComponent(g);
+    private void pintarMapa(Graphics g) {
+        for (int i = 0; i < mapa.obtenerNumFilas(); i++) {
+            for (int j = 0; j < mapa.obtenerNumColumnas(); j++) {
+                Image imagen = null;
+                switch (mapa.obtenerCasilla(i, j)) {
+                    case Mapa.LIBRE:
+                        imagen = imagenLibre;
+                        break;
+                    case Mapa.OBSTACULO:
+                        imagen = imagenObstaculo;
+                        break;
+                    case Mapa.OBJETIVO:
+                        imagen = imagenObjetivo;
+                        break;
+                    case Mapa.VISITADA:
+                        imagen = imagenVisitada;
+                        break;
+                    case Mapa.AGENTE:
+                        imagen = imagenAgente;
+                        break;
+                    default:
+                        imagen = imagenLibre;
+                        break;
+                }
 
-    for (int i = 0; i < mapa.obtenerNumFilas(); i++) {
-        for (int j = 0; j < mapa.obtenerNumColumnas(); j++) {
-            // Elegir la imagen adecuada según el tipo de casilla
-            Image imagen = null;
-            switch (mapa.obtenerCasilla(i, j)) {
-                case Mapa.LIBRE:
-                    imagen = imagenLibre;
-                    break;
-                case Mapa.OBSTACULO:
-                    imagen = imagenObstaculo;
-                    break;
-                case Mapa.OBJETIVO:
-                    imagen = imagenObjetivo;
-                    break;
-                case Mapa.VISITADA:
-                    imagen = imagenVisitada;
-                    break;
-                case Mapa.AGENTE:
-                    imagen = imagenAgente;
-                    break;
-                default:
-                    imagen = imagenLibre; // o alguna imagen para casillas desconocidas
-                    break;
-            }
-
-            // Dibujar la imagen en la posición de la celda
-            if (imagen != null) {
-                g.drawImage(imagen, j * FACTOR, i * FACTOR, FACTOR, FACTOR, this);
+                if (imagen != null) {
+                    g.drawImage(imagen, j * FACTOR, i * FACTOR, FACTOR, FACTOR, this);
+                }
             }
         }
     }
-}
 
+    public void actualizarInformacion(int x, int y, int casillasVisitadas, int energiaGastada) {
+        etiquetaPosicion.setText("Posición actual: (" + x + ", " + y + ")");
+        etiquetaCasillasVisitadas.setText("Casillas visitadas: " + casillasVisitadas);
+        etiquetaEnergiaGastada.setText("Energía gastada: " + energiaGastada);
+        repaint();
+    }
 
-   /**
-    * @brief Modificar para el mapa.
-    * 
-    * @param mapa Mapa nuevo a asignar.
-    */
-   public void establecerMapa(Mapa mapa) {
-       this.mapa = mapa;
-   }
-   
-   /**
-    * @brief Consultor para el factor del panel.
-    * 
-    * @return Factor del panel.
-    */
-   public static int obtenerFactor() {
-       return (FACTOR);
-   }
+    public void establecerMapa(Mapa mapa) {
+        actualizarInformacion(WIDTH, WIDTH, ALLBITS, HEIGHT);
+        this.mapa = mapa;
+    }
+
+    public static int obtenerFactor() {
+        return FACTOR;
+    }
+
+    private JLabel crearEtiquetaEstilizada(String texto) {
+        JLabel etiqueta = new JLabel(texto);
+        etiqueta.setFont(new Font("Arial", Font.PLAIN, 14));
+        etiqueta.setForeground(Color.WHITE);
+        etiqueta.setAlignmentX(Component.LEFT_ALIGNMENT);
+        return etiqueta;
+    }
 }
