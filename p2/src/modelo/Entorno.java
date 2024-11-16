@@ -140,15 +140,15 @@ public class Entorno {
         this.mapa = new Mapa(nombreFicheroMapa);
         
         // Colocar al agente y a la casilla objetivo en el mapa:
-        this.mapa.establecerCasilla(
-                this.posAgente.obtenerX(), 
-                this.posAgente.obtenerY(), 
-                Mapa.AGENTE);
+        //this.mapa.establecerCasilla(
+        //        this.posAgente.obtenerX(), 
+        //        this.posAgente.obtenerY(), 
+        //        Mapa.AGENTE);
         
-        this.mapa.establecerCasilla(
-                this.posObjetivo.obtenerX(), 
-                this.posObjetivo.obtenerY(), 
-                Mapa.OBJETIVO);
+        //this.mapa.establecerCasilla(
+        //        this.posObjetivo.obtenerX(), 
+        //        this.posObjetivo.obtenerY(), 
+        //        Mapa.OBJETIVO);
     }
 
     /**
@@ -237,6 +237,15 @@ public class Entorno {
      */
     public void eliminarSensor(Sensor sensor) {
         sensores.remove(sensor);
+    }
+    
+    /**
+     * @brief Devuelve los sensores del entorno con el estado actual de los sensores
+     * 
+     * @return Array con lo sensores disponibles en el entorno
+     */
+    public ArrayList<Sensor> obtenerSensores(){
+        return sensores;
     }
     
     /**

@@ -130,7 +130,7 @@ public class Agente extends Agent {
     public void decidirMovimiento() {
         ArrayList<Posicion> camino = Astar.busqueda(mapaMemoria, entorno.obtenerPosAgente(), entorno.obtenerPosObjetivo());
         
-        if (camino != null) {
+        if (camino != null && !camino.isEmpty()) {
             this.sensores = this.entorno.actualizarPercepciones(camino.get(camino.size()-2));
         }
     }
