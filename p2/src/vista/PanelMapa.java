@@ -9,22 +9,46 @@ import javax.imageio.ImageIO;
 import modelo.Entorno;
 import modelo.Mapa;
 
+/**
+ * @class PanelMapa
+ * 
+ * @brief Clase que representa el panel del mapa, y que mostrará cada celda
+ * de un color específico según su tipo. 
+ */
 public class PanelMapa extends JPanel {
-    private Image imagenLibre;
-    private Image imagenObstaculo;
-    private Image imagenObjetivo;
-    private Image imagenVisitada;
-    private Image imagenAgente;
-
+    
+    /**
+     * @brief Factor a aplicar para el dimensionado del panel.
+     */
     private static final int FACTOR = 75;
+    
+    /**
+     * @brief Imágenes que representan los diferentes tipos de casillas del mapa.
+     */
+    private static Image IMAGEN_LIBRE;
+    private static Image IMAGEN_OBSTACULO;
+    private static Image IMAGEN_OBJETIVO;
+    private static Image IMAGEN_VISITADA;
+    private static Image IMAGEN_AGENTE;
+    
+    /**
+     * @brief Mapa a representar.
+     */
     private Mapa mapa;
 
-    // Componentes para la información adicional
+    /** 
+     * @brief Componentes para la información adicional.
+     */
     private JLabel etiquetaPosicion;    
     private JLabel etiquetaObjetivo;
     private JLabel etiquetaEnergiaGastada;
     private JTextArea areaHistorico;
 
+    /**
+    * @brief Constructor por parámetro. Establece las dimensiones del panel.
+    * 
+    * @param mapa Mapa a representar.
+    */
     public PanelMapa(Entorno entorno) {
         this.mapa = entorno.obtenerMapa();
 
@@ -91,32 +115,38 @@ public class PanelMapa extends JPanel {
 
         // Cargar las imágenes
         try {
-            imagenLibre = ImageIO.read(new File("resources/LIBRE.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
-            imagenAgente = ImageIO.read(new File("resources/AGENTE3.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
-            imagenObjetivo = ImageIO.read(new File("resources/OBJETIVO2.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
-            imagenObstaculo = ImageIO.read(new File("resources/OBSTACULO.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
-            imagenVisitada = ImageIO.read(new File("resources/VISITADO.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
+            IMAGEN_LIBRE = ImageIO.read(new File("resources/LIBRE.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
+            IMAGEN_AGENTE = ImageIO.read(new File("resources/AGENTE3.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
+            IMAGEN_OBJETIVO = ImageIO.read(new File("resources/OBJETIVO2.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
+            IMAGEN_OBSTACULO = ImageIO.read(new File("resources/OBSTACULO.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
+            IMAGEN_VISITADA = ImageIO.read(new File("resources/VISITADO.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+    * @brief Pinta los elemetos en el mapa con cierto estilo.
+    * 
+    * @param g Objeto con los gráficos para personalizar el panel.
+    * @param entorno Entorno del simulador.
+    */
     private void pintarMapa(Graphics g, Entorno entorno) {
         for (int i = 0; i < mapa.obtenerNumFilas(); i++) {
             for (int j = 0; j < mapa.obtenerNumColumnas(); j++) {
                 Image imagen = null;
                 switch (mapa.obtenerCasilla(i, j)) {
                     case Mapa.LIBRE:
-                        imagen = imagenLibre;
+                        imagen = IMAGEN_LIBRE;
                         break;
                     case Mapa.OBSTACULO:
-                        imagen = imagenObstaculo;
+                        imagen = IMAGEN_OBSTACULO;
                         break;
                     case Mapa.VISITADA:
-                        imagen = imagenVisitada;
+                        imagen = IMAGEN_VISITADA;
                         break;
                     default:
-                        imagen = imagenLibre;
+                        imagen = IMAGEN_LIBRE;
                         break;
                 }
 
@@ -125,10 +155,19 @@ public class PanelMapa extends JPanel {
                 }
             }
         }
-        g.drawImage(imagenObjetivo, entorno.obtenerPosObjetivo().obtenerY() * FACTOR, entorno.obtenerPosObjetivo().obtenerX() * FACTOR, FACTOR, FACTOR, this);
-        g.drawImage(imagenAgente, entorno.obtenerPosAgente().obtenerY() * FACTOR, entorno.obtenerPosAgente().obtenerX() * FACTOR, FACTOR, FACTOR, this);
+        g.drawImage(IMAGEN_OBJETIVO, entorno.obtenerPosObjetivo().obtenerY() * FACTOR, entorno.obtenerPosObjetivo().obtenerX() * FACTOR, FACTOR, FACTOR, this);
+        g.drawImage(IMAGEN_AGENTE, entorno.obtenerPosAgente().obtenerY() * FACTOR, entorno.obtenerPosAgente().obtenerX() * FACTOR, FACTOR, FACTOR, this);
     }
 
+    /**
+     * @brief Actualiza la información acerca del estado del agente en la 
+     * simulación.
+     * 
+     * @param x Primer elemento de la coordenada de la posición del agente.
+     * @param y Segundo elemento de la coordenada de la posición del agente.
+     * @param energiaGastada Número de pasos dados por el agente hasta el 
+     * momento.
+     */
     public void actualizarInformacion(int x, int y, int energiaGastada) {
         etiquetaPosicion.setText("Posición actual: (" + x + ", " + y + ")");
         etiquetaEnergiaGastada.setText("Energía gastada: " + energiaGastada);
@@ -140,14 +179,31 @@ public class PanelMapa extends JPanel {
         repaint();
     }
 
+    /**
+    * @brief Modificar para el mapa.
+    * 
+    * @param mapa Mapa nuevo a asignar.
+    */
     public void establecerMapa(Mapa mapa) {
         this.mapa = mapa;
     }
 
+    /**
+    * @brief Consultor para el factor del panel.
+    * 
+    * @return Factor del panel.
+    */
     public static int obtenerFactor() {
         return FACTOR;
     }
 
+    /**
+     * @brief Crea una etiqueta con ciertos atributos de estilo.
+     * 
+     * @param texto Texto para la etiqueta.
+     * 
+     * @return La etiqueta estilizada con el texto pasado.
+     */
     private JLabel crearEtiquetaEstilizada(String texto) {
         JLabel etiqueta = new JLabel(texto);
         etiqueta.setFont(new Font("SansSerif", Font.PLAIN, 16));
@@ -156,6 +212,13 @@ public class PanelMapa extends JPanel {
         return etiqueta;
     }
     
+    /**
+     * @brief Crea una etiqueta estilizada para el objetivo.
+     * 
+     * @param texto Texto para la etiqueta.
+     * 
+     * @return La etiqueta estilizada con el texto pasado para el objetivo.
+     */
     private JLabel crearEtiquetaEstilizadaObjetivo(String texto) {
         JLabel etiqueta = new JLabel(texto);
         etiqueta.setFont(new Font("SansSerif", Font.PLAIN, 16));
