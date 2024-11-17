@@ -68,7 +68,6 @@ public class Agente extends Agent {
         
     }
     
-   
     /**
      * @brief Función que usaremos para tomar la decisión de qué movimiento realizar
      */
