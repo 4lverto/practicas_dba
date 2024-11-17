@@ -1,13 +1,12 @@
 package modelo.agentes;
 
 import jade.core.Agent;
-import jade.core.behaviours.TickerBehaviour;
 import java.util.ArrayList;
 import modelo.Entorno;
 import modelo.Posicion;
 import modelo.sensores.Sensor;
-import modelo.Accion;
 import modelo.Mapa;
+import modelo.comportamientos.*;
 import modelo.sensores.Vision;
 import modelo.sensores.Energia;
 
@@ -62,68 +61,14 @@ public class Agente extends Agent {
             return;
         }
         
-        // Definimos un comportamiento periódico para poder ver la traza de movimientos
-        addBehaviour(new TickerBehaviour(this, 1000) {
-            @Override
-            protected void onTick() {
-                
-                // Si áun no alcanzamos el objetivo, actualizamos memoria y decidimos
-                // el siguiente movimiento
-                if (!objetivoAlcanzado()) {
-                    actualizarMemoria();
-                    decidirMovimiento();
-                } else { // En caso contrario significa que hemos logrado el objetivo
-                    System.out.println("¡Objetivo alcanzado! :D ");
-                    
-                    // Aquí podríamos mostrar la "energía" gastada (pasos para llegar)
-                    System.out.println(enCuantosPasosHeLlegado());
-                    
-                    myAgent.doDelete();
-                }
-            }
-        });
+        
+        addBehaviour(new ActualizarMemoria(this));        
+        addBehaviour(new DecidirMovimiento(this));
+        addBehaviour(new PasosTotales(this));
+        
     }
     
-    /**
-     * @brief Función que se utilizará para comprobar si hemos alcanzado el objetivo
-     * @return True si la posición actual del agente es igual a la del objetivo y False en caso contrario
-     */
-    public boolean objetivoAlcanzado() {
-        return entorno.obtenerPosAgente().sonIguales(entorno.obtenerPosObjetivo());
-    }
-
-    /**
-     * @brief Mostramos el número de pasos o gasto de energía que nos ha supuesto alcanzar el obejivo
-     * @return Texto finalizando la ejecución
-     */
-    public String enCuantosPasosHeLlegado() {
-        // Buscar el sensor de tipo Energia en la lista de sensores
-        Energia sensorEnergia = null;
-
-        // Uso del bucle for tradicional para recorrer la lista de sensores
-        for (int i = 0; i < this.sensores.size(); i++) {
-            Sensor sensor = this.sensores.get(i);
-            if (sensor instanceof Energia) {
-                sensorEnergia = (Energia) sensor;
-                break;
-            }
-        }
-
-        // Asignación de numPasos usando if-else
-        int numPasos;
-        if (sensorEnergia != null) {
-            numPasos = sensorEnergia.obtenerEnergia()-1;
-        } else {
-            numPasos = 0;
-        }
-
-        String texto = "He gastado la friolera de " + numPasos + " puntos de energia";
-
-        return texto;
-    }
-
-
-    
+   
     /**
      * @brief Función que usaremos para tomar la decisión de qué movimiento realizar
      */
@@ -214,5 +159,24 @@ public class Agente extends Agent {
         
         return valorCasilla;
     }
-
+    
+     /**
+     * @brief Función que se utilizará para comprobar si hemos alcanzado el objetivo
+     * @return True si la posición actual del agente es igual a la del objetivo y False en caso contrario
+     */
+    public boolean objetivoAlcanzado() {
+        return entorno.obtenerPosAgente().sonIguales(entorno.obtenerPosObjetivo());
+    }
+    
+    /**
+     * @brief Devuelve el numero de pasos gastado por el 
+     * @return
+     */
+    public int obtenerPasosTotales(){
+        if(this.objetivoAlcanzado()){
+            Energia energia =  (Energia) this.sensores.get(1);
+            return energia.obtenerEnergia()-1;
+        }
+        return -1;
+    }
 }
