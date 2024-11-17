@@ -140,15 +140,15 @@ public class Entorno {
         this.mapa = new Mapa(nombreFicheroMapa);
         
         // Colocar al agente y a la casilla objetivo en el mapa:
-        this.mapa.establecerCasilla(
-                this.posAgente.obtenerX(), 
-                this.posAgente.obtenerY(), 
-                Mapa.AGENTE);
+        //this.mapa.establecerCasilla(
+        //        this.posAgente.obtenerX(), 
+        //        this.posAgente.obtenerY(), 
+        //        Mapa.AGENTE);
         
-        this.mapa.establecerCasilla(
-                this.posObjetivo.obtenerX(), 
-                this.posObjetivo.obtenerY(), 
-                Mapa.OBJETIVO);
+        //this.mapa.establecerCasilla(
+        //        this.posObjetivo.obtenerX(), 
+        //        this.posObjetivo.obtenerY(), 
+        //        Mapa.OBJETIVO);
     }
 
     /**
