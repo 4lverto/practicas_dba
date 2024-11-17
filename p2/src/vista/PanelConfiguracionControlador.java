@@ -44,7 +44,8 @@ public class PanelConfiguracionControlador extends JFrame {
             "mapas/mapWithDiagonalWall.txt",
             "mapas/mapWithComplexObstacle1.txt", 
             "mapas/mapWithComplexObstacle2.txt", 
-            "mapas/mapWithComplexObstacle3.txt"
+            "mapas/mapWithComplexObstacle3.txt",
+            "mapas/mapWithCustomComplexObstacle.txt"
     };
     
     /**
