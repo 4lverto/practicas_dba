@@ -4,3 +4,23 @@
 p2/APDescription.txt
 p2/APDescription.txt
 p2/MTPs-1099.txt
+
+# Ignorar carpetas de salida de Doxygen:
+/html/
+/latex/
+/rtf/
+/man/
+/xml/
+/doxygen/
+
+# Ignorar archivos temporales de LaTeX por la generación de PDF:
+*.aux
+*.log
+*.out
+*.toc
+*.pdf
+*.synctex.gz
+
+# Ignorar otros directorios/archivos relacionados con la documentación:
+Doxyfile
+doc/
