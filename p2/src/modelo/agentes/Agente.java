@@ -46,26 +46,28 @@ public class Agente extends Agent {
     @Override
     protected void setup() {
         
-        // Inicialización del entorno 
+        // Inicializar el entorno:
         Object[] args = getArguments();
         
-        // El único argumento que se espera recibir es la instancia de Entorno.
+        // El único argumento que se espera recibir es la instancia de Entorno:
         if (args != null && args.length == 1 && args[0] instanceof Entorno) {
             entorno = (Entorno) args[0]; // Asigamos a entorno
             this.mapaMemoria = new Mapa(10, 10); // Inicializamos la memoria
-            // Configuramos el estado inicial llamando a actualizarPercepciones(posición actual)
-            this.sensores = this.entorno.actualizarPercepciones(entorno.obtenerPosAgente());
+            // Configuramos el estado inicial llamando a 
+            // actualizarPercepciones(posición actual)
+            this.sensores = 
+                    this.entorno.actualizarPercepciones(entorno.obtenerPosAgente());
         } else {
             System.out.println("\nError: no se recibió el entorno.");
             doDelete();
             return;
         }
         
-        
+        // Añadir los comportamientos de los que dispone el agente para que los 
+        // lleve a cabo:
         addBehaviour(new ActualizarMemoria(this));        
         addBehaviour(new DecidirMovimiento(this));
         addBehaviour(new PasosTotales(this));
-        
     }
     
     /**
