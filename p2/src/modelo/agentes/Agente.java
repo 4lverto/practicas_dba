@@ -34,7 +34,13 @@ public class Agente extends Agent {
      * @brief Mapa que almacena la memoria del agente sobre el entorno
      */
     private Mapa mapaMemoria;
-        
+    
+    /**
+     * @brief Lista de posiciones por las que ha pasado el agente
+     */
+    // private ArrayList<Posicion> trazaRecorrido;
+    
+    
     /**
      * @brief Métood de configuración incial del agente, llamado al inicio.
      * 
@@ -57,6 +63,9 @@ public class Agente extends Agent {
             // actualizarPercepciones(posición actual)
             this.sensores = 
                     this.entorno.actualizarPercepciones(entorno.obtenerPosAgente());
+            
+            // Inicializamos la traza de recorrido
+            //trazaRecorrido = new ArrayList<>();
         } else {
             System.out.println("\nError: no se recibió el entorno.");
             doDelete();
@@ -170,14 +179,28 @@ public class Agente extends Agent {
     }
     
     /**
-     * @brief Devuelve el numero de pasos gastado por el 
-     * @return
+     * @brief Devuelve el numero de pasos gastado por el agente
+     * @return Número de pasos necesitados para alcanzar (o no) el obejtivo
      */
     public int obtenerPasosTotales(){
         if(this.objetivoAlcanzado()){
             Energia energia =  (Energia) this.sensores.get(1);
+            
             return energia.obtenerEnergia()-1;
         }
         return -1;
     }
+    
+    /**
+     * @brief Mostrará la traza de pasos seguida
+     
+    public void mostrarTraza(){
+        System.out.println("Recorrido seguido por el agente:");
+        
+        for(int i=0;i<trazaRecorrido.size()-1;i++){
+            System.out.print(trazaRecorrido.get(i) + " -> ");
+        }
+        
+        System.out.println("y finalmente... " + trazaRecorrido.get(trazaRecorrido.size()-1));
+    }*/
 }

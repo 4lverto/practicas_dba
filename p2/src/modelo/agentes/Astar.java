@@ -71,7 +71,7 @@ public class Astar {
      * Este metodo se llama solo desde el metodo busqueda una vez se ha llegado a la salida
      */
     private static ArrayList<Posicion> obtenerCamino(Celda[][] celdas, Posicion dest) {
-        System.out.println("Camino:  ");
+        // System.out.println("Camino:  ");
 
         ArrayList<Posicion> camino = new ArrayList<>();
 
@@ -86,9 +86,10 @@ public class Astar {
             col = siguiente.obtenerY();
         } while (celdas[fila][col].padre != siguiente);
 
+        /*
         for (Posicion pos : camino) {
             System.out.println("{"+pos.obtenerX()+","+pos.obtenerY()+"}\n");
-        }
+        }*/
 
         return camino;
     }
@@ -168,9 +169,9 @@ public class Astar {
                         if (adyacente.sonIguales(dest) //Si es el destino se devuelve el camino encontrado
                                 && (addX != addY || (mapa.obtenerCasilla(i+addX,j) != -1 || mapa.obtenerCasilla(i,j+addY) != -1))) {   //Comprobacion bloqueo diagonales
                             celdas[adyacente.obtenerX()][adyacente.obtenerY()].padre = new Posicion(i, j);
-                            System.out.println("Se ha encontrado el destino");
+                            System.out.println("Seguimos buscando el objetivo...");
                             if (mapa.obtenerCasilla(dest.obtenerX(), dest.obtenerY()) == -1) {
-                                System.out.println("Destino bloqueado...");
+                                System.out.println("Destino bloqueado -> Esta sobre un muro!!!...");
                                 return new ArrayList();
                             }
                             return obtenerCamino(celdas, dest);

@@ -37,8 +37,10 @@ public class PasosTotales extends Behaviour {
     @Override
     public void action() {
         if(agente.objetivoAlcanzado()){
-            System.out.println("Objetivo Alcanzado, se han dado un total de " + 
-                    (agente.obtenerPasosTotales()));
+            System.out.println("Objetivo Alcanzado, se han necesitado un total de " + 
+                    (agente.obtenerPasosTotales()) + " pasos.");
+            
+            System.out.println("Revisa la traza seguida en la interfaz grafica");
         }
     }
 
