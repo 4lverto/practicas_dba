@@ -19,11 +19,11 @@ public class Main {
      */
     public static void main(String[] args) throws IOException {
         
-        // Creamos una instancia de PanelConfiguracionControlador proporcionándole como parámetro
-        // un valor de convifugración del tamaño del mapa.
-        PanelConfiguracionControlador config = new PanelConfiguracionControlador(9);
+        // Creamos una instancia de PanelConfiguracionControlador proporcionándole 
+        // como parámetro un valor de configuración del tamaño del mapa:
+        PanelConfiguracionControlador config = new PanelConfiguracionControlador(50);
         
-        // Desplegamos la interfaz gráfica y comienzo de la simulación
+        // Desplegamos la interfaz gráfica y comienza la simulación:
         config.iniciar();   
     }
 }

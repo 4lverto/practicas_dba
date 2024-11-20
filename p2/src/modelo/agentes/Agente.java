@@ -58,7 +58,7 @@ public class Agente extends Agent {
         // El único argumento que se espera recibir es la instancia de Entorno:
         if (args != null && args.length == 1 && args[0] instanceof Entorno) {
             entorno = (Entorno) args[0]; // Asigamos a entorno
-            this.mapaMemoria = new Mapa(10, 10); // Inicializamos la memoria
+            this.mapaMemoria = new Mapa(100, 100); // Inicializamos la memoria
             // Configuramos el estado inicial llamando a 
             // actualizarPercepciones(posición actual)
             this.sensores = 
@@ -111,7 +111,7 @@ public class Agente extends Agent {
         // Añadimos a la memoria del agente estas celdasContiguas teniendo
         // en cuenta la posición desde donde las vemos.
         actualizarMapaConVision(x, y, celdasContiguas);
-        this.mapaMemoria.mostrarMapa();
+        //this.mapaMemoria.mostrarMapa();
     }
 
     /**
