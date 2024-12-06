@@ -7,7 +7,7 @@ import jade.lang.acl.ACLMessage;
 public class EmisorAgent extends Agent{
     @Override
     protected void setup(){
-        ACLMessage msg = new ACLMessage();
+        ACLMessage msg = new ACLMessage(ACLMessage.INFORM);
 
         msg.addReceiver(new AID("alberto-receptor",AID.ISLOCALNAME));
         msg.setContent("Hola agente");
@@ -22,3 +22,4 @@ public class EmisorAgent extends Agent{
         System.out.println("\n-Emisor: El agente " + getLocalName() + " ha finalizado. \n");
     }
 }
+

@@ -34,5 +34,4 @@ public class Tutorial_alberto {
         AgentController receptor = cc.createNewAgent("alberto-receptor", ReceptorAgent.class.getCanonicalName(), null);
         receptor.start();
     }
-    
 }
