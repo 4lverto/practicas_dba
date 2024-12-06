@@ -15,7 +15,7 @@ import tutorial_alberto.ReceptorAgent;
 public class Tutorial_alberto {
 
     public static void main(String[] args) throws StaleProxyException {
-        System.out.println("Hola mundo");
+        System.out.println("Empieza la ejecucion...");
         
         // Obtener la instancia del entorno de ejecución:
         Runtime rt = Runtime.instance();
