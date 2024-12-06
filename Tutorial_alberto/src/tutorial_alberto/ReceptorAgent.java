@@ -8,11 +8,11 @@ public class ReceptorAgent extends Agent{
     protected void setup(){
         ACLMessage msg = blockingReceive();
         
-        System.out.println("\nEl receptor recibe este mensaje: '" + msg.getContent() + "'");
+        System.out.println("\nEl receptor recibe este mensaje: \n->'" + msg.getContent() + "'");
         
         ACLMessage respuesta = msg.createReply();
         
-        respuesta.setContent("\nBien!!, que alegria verte :D");
+        respuesta.setContent("Bien!!, que alegria verte :D");
         send(respuesta);
         
         doDelete();
