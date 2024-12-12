@@ -38,14 +38,8 @@ public class PanelConfiguracionControlador extends JFrame {
      * @brief Array con los mapas disponibles.
      */
     private static final String[] FICHEROS_MAPAS = {
-            "mapas/mapWithoutObstacle.txt",
-            "mapas/mapWithHorizontalWall.txt",
-            "mapas/mapWithVerticalWall.txt",
-            "mapas/mapWithDiagonalWall.txt",
-            "mapas/mapWithComplexObstacle1.txt", 
-            "mapas/mapWithComplexObstacle2.txt", 
-            "mapas/mapWithComplexObstacle3.txt",
-            "mapas/mapWithCustomComplexObstacle.txt"
+            "mapas/100x100-conObstaculos.txt",
+            "mapas/100x100-sinObstaculos.txt"
     };
     
     /**
