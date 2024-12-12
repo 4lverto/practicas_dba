@@ -39,9 +39,9 @@ public class VistaGrafica extends Vista {
         this.entorno.registrarVista(this);
         
         // Reproducir la música de fondo al iniciar
-        reproducirMusica("resources/fondo.wav"); // Ruta relativa
+        // reproducirMusica("resources/fondo.wav"); // Ruta relativa
 
-        this.ventana   = new JFrame("Prática 2 de DBA");
+        this.ventana   = new JFrame("Prática 3 de DBA");
         this.panelMapa = new PanelMapa(entorno);
         
         // Configuración de la ventana principal:
