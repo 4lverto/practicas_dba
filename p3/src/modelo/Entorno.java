@@ -44,9 +44,40 @@ public class Entorno {
     private Posicion posAgente;
     
     /**
+     * @brief Posición de Santa Claus en el mapa
+     */
+    private Posicion posSantaClaus;
+    
+    /**
+     * @brief Posición de Rudolph
+     */
+    private Posicion posRudolph;
+    
+    
+    /**
+     * @brief Posición del Elfo Traductor
+     */
+    private Posicion posElfo;
+    
+    /**
+     * @brief Posicion de cada reno
+     */
+    private Posicion posReno1;
+    private Posicion posReno2;
+    private Posicion posReno3;
+    private Posicion posReno4;
+    private Posicion posReno5;
+    private Posicion posReno6;
+    private Posicion posReno7;
+    private Posicion posReno8;
+    
+    
+    /**
      * @brief Posición de la casilla objetivo en el mapa.
      */
     private Posicion posObjetivo;
+    
+    
 
     
     
@@ -62,10 +93,25 @@ public class Entorno {
      */
     private Entorno(
             Posicion posAgente,
-            Posicion posObjetivo) throws IOException {
+            Posicion posObjetivo,Posicion posReno1, Posicion posReno2,
+            Posicion posReno3, Posicion posReno4, Posicion posReno5,
+            Posicion posReno6, Posicion posReno7, Posicion posReno8,
+            Posicion posElfo, Posicion posRudolph,
+            Posicion posSantaClaus) throws IOException {
         
         this.posAgente   = posAgente;
         this.posObjetivo = posObjetivo;
+        this.posElfo=posElfo;
+        this.posRudolph=posRudolph;
+        this.posSantaClaus=posSantaClaus;
+        this.posReno1=posReno1;
+        this.posReno2=posReno2;
+        this.posReno3=posReno3;
+        this.posReno4=posReno4;
+        this.posReno5=posReno5;
+        this.posReno6=posReno6;
+        this.posReno7=posReno7;
+        this.posReno8=posReno8;
         
         this.sensores    = new ArrayList<>();
         this.vistas      = new ArrayList<>();
@@ -83,12 +129,21 @@ public class Entorno {
      */
     public static Entorno obtenerInstancia(
             Posicion posAgente,
-            Posicion posObjetivo) throws IOException {
+            Posicion posObjetivo,Posicion posReno1, Posicion posReno2,
+            Posicion posReno3, Posicion posReno4, Posicion posReno5,
+            Posicion posReno6, Posicion posReno7, Posicion posReno8,
+            Posicion posElfo, Posicion posRudolph,
+            Posicion posSantaClaus) throws IOException {
         
         // De esta forma fomentamos el patrón Singleton, pues si ya existe
         // una instancia del Entorno no damos opción a crear otra.
         if (instancia == null) {
-            instancia = new Entorno(posAgente, posObjetivo);
+            instancia = new Entorno(posAgente,
+            posObjetivo, posReno1,  posReno2,
+            posReno3,  posReno4,  posReno5,
+            posReno6,  posReno7,  posReno8,
+            posElfo,  posRudolph,
+            posSantaClaus);
         }
         
         return (instancia);

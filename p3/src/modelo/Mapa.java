@@ -23,6 +23,10 @@ public class Mapa {
     public static final int OBJETIVO  = 2;
     public static final int LIBRE     = 0;
     public static final int VISITADA  = 3;
+    public static final int RENO      = 4;
+    public static final int ELFO      = 5;
+    public static final int SANTACLAUS= 6;
+    public static final int RUDOLPH   = 7;
     
     /**
      * @brief Número de filas del mapa.
