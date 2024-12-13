@@ -232,6 +232,50 @@ public class Entorno {
         return (this.posObjetivo);
     }
 
+    public Posicion obtenerPosReno1(){
+        return (this.posReno1);
+    }
+    
+    public Posicion obtenerPosReno2(){
+        return (this.posReno2);
+    }
+    
+    public Posicion obtenerPosReno3(){
+        return (this.posReno3);
+    }
+    
+    public Posicion obtenerPosReno4(){
+        return (this.posReno4);
+    }
+    
+    public Posicion obtenerPosReno5(){
+        return (this.posReno5);
+    }
+    
+    public Posicion obtenerPosReno6(){
+        return (this.posReno6);
+    }
+    
+    public Posicion obtenerPosReno7(){
+        return (this.posReno7);
+    }
+    
+    public Posicion obtenerPosReno8(){
+        return (this.posReno8);
+    }
+  
+    public Posicion obtenerPosElfo(){
+        return (this.posElfo);
+    }  
+    
+    public Posicion obtenerPosRudolph(){
+        return (this.posRudolph);
+    }
+    
+    public Posicion obtenerPosSantaClaus(){
+        return (this.posSantaClaus);
+    }
+    
     /**
      * @brief Verifica si una posición es válida dentro del mapa (está dentro de
      * sus límites y es una casilla libre).
