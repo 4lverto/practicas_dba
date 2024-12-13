@@ -20,7 +20,7 @@ public class PanelMapa extends JPanel {
     /**
      * @brief Factor a aplicar para el dimensionado del panel.
      */
-    private static final int FACTOR = 20;
+    private static final int FACTOR = 50;
     
     /**
      * @brief Imágenes que representan los diferentes tipos de casillas del mapa.
@@ -166,6 +166,7 @@ public class PanelMapa extends JPanel {
                         break;
                     case Mapa.RUDOLPH:
                         imagen = IMAGEN_RUDOLPH;
+                        break;
                     default:
                         imagen = IMAGEN_LIBRE;
                         break;
@@ -178,6 +179,21 @@ public class PanelMapa extends JPanel {
         }
         g.drawImage(IMAGEN_OBJETIVO, entorno.obtenerPosObjetivo().obtenerY() * FACTOR, entorno.obtenerPosObjetivo().obtenerX() * FACTOR, FACTOR, FACTOR, this);
         g.drawImage(IMAGEN_AGENTE, entorno.obtenerPosAgente().obtenerY() * FACTOR, entorno.obtenerPosAgente().obtenerX() * FACTOR, FACTOR, FACTOR, this);
+        g.drawImage(IMAGEN_SANTACLAUS, entorno.obtenerPosSantaClaus().obtenerY() * FACTOR, entorno.obtenerPosSantaClaus().obtenerX() * FACTOR, FACTOR, FACTOR, this);
+        g.drawImage(IMAGEN_ELFO, entorno.obtenerPosElfo().obtenerY() * FACTOR, entorno.obtenerPosElfo().obtenerX() * FACTOR, FACTOR, FACTOR, this);
+        g.drawImage(IMAGEN_RUDOLPH, entorno.obtenerPosRudolph().obtenerY() * FACTOR, entorno.obtenerPosRudolph().obtenerX() * FACTOR, FACTOR, FACTOR, this);
+        
+        g.drawImage(IMAGEN_RENO, entorno.obtenerPosReno1().obtenerY() * FACTOR, entorno.obtenerPosReno1().obtenerX() * FACTOR, FACTOR, FACTOR, this);
+        g.drawImage(IMAGEN_RENO, entorno.obtenerPosReno2().obtenerY() * FACTOR, entorno.obtenerPosReno2().obtenerX() * FACTOR, FACTOR, FACTOR, this);
+        g.drawImage(IMAGEN_RENO, entorno.obtenerPosReno3().obtenerY() * FACTOR, entorno.obtenerPosReno3().obtenerX() * FACTOR, FACTOR, FACTOR, this);
+        g.drawImage(IMAGEN_RENO, entorno.obtenerPosReno4().obtenerY() * FACTOR, entorno.obtenerPosReno4().obtenerX() * FACTOR, FACTOR, FACTOR, this);
+        g.drawImage(IMAGEN_RENO, entorno.obtenerPosReno5().obtenerY() * FACTOR, entorno.obtenerPosReno5().obtenerX() * FACTOR, FACTOR, FACTOR, this);
+        g.drawImage(IMAGEN_RENO, entorno.obtenerPosReno6().obtenerY() * FACTOR, entorno.obtenerPosReno6().obtenerX() * FACTOR, FACTOR, FACTOR, this);
+        g.drawImage(IMAGEN_RENO, entorno.obtenerPosReno7().obtenerY() * FACTOR, entorno.obtenerPosReno7().obtenerX() * FACTOR, FACTOR, FACTOR, this);
+        g.drawImage(IMAGEN_RENO, entorno.obtenerPosReno8().obtenerY() * FACTOR, entorno.obtenerPosReno8().obtenerX() * FACTOR, FACTOR, FACTOR, this);
+        
+    
+    
     }
 
     /**
