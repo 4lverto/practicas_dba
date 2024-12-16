@@ -20,7 +20,7 @@ public class PanelMapa extends JPanel {
     /**
      * @brief Factor a aplicar para el dimensionado del panel.
      */
-    private static final int FACTOR = 75;
+    private static final int FACTOR = 50;
     
     /**
      * @brief Imágenes que representan los diferentes tipos de casillas del mapa.
@@ -30,6 +30,10 @@ public class PanelMapa extends JPanel {
     private static Image IMAGEN_OBJETIVO;
     private static Image IMAGEN_VISITADA;
     private static Image IMAGEN_AGENTE;
+    private static Image IMAGEN_SANTACLAUS;
+    private static Image IMAGEN_ELFO;
+    private static Image IMAGEN_RUDOLPH;
+    private static Image IMAGEN_RENO; // ¿1 mismo reno u 8 distintos?
     
     /**
      * @brief Mapa a representar.
@@ -116,10 +120,16 @@ public class PanelMapa extends JPanel {
         // Cargar las imágenes
         try {
             IMAGEN_LIBRE = ImageIO.read(new File("resources/LIBRE.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
-            IMAGEN_AGENTE = ImageIO.read(new File("resources/AGENTE3.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
-            IMAGEN_OBJETIVO = ImageIO.read(new File("resources/OBJETIVO2.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
+            IMAGEN_AGENTE = ImageIO.read(new File("resources/AGENTE2.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
+            IMAGEN_OBJETIVO = ImageIO.read(new File("resources/SANTA.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
             IMAGEN_OBSTACULO = ImageIO.read(new File("resources/OBSTACULO.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
             IMAGEN_VISITADA = ImageIO.read(new File("resources/VISITADO.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
+            IMAGEN_SANTACLAUS = ImageIO.read(new File("resources/VISITADO.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
+            IMAGEN_ELFO = ImageIO.read(new File("resources/ELFO.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
+            IMAGEN_RUDOLPH = ImageIO.read(new File("resources/RUDOLPH.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
+            IMAGEN_RENO = ImageIO.read(new File("resources/RENO.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
+            
+        
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -145,6 +155,18 @@ public class PanelMapa extends JPanel {
                     case Mapa.VISITADA:
                         imagen = IMAGEN_VISITADA;
                         break;
+                    case Mapa.RENO:
+                        imagen = IMAGEN_RENO;
+                        break;
+                    case Mapa.ELFO:
+                        imagen = IMAGEN_ELFO;
+                        break;
+                    case Mapa.SANTACLAUS:
+                        imagen = IMAGEN_SANTACLAUS;
+                        break;
+                    case Mapa.RUDOLPH:
+                        imagen = IMAGEN_RUDOLPH;
+                        break;
                     default:
                         imagen = IMAGEN_LIBRE;
                         break;
@@ -157,6 +179,21 @@ public class PanelMapa extends JPanel {
         }
         g.drawImage(IMAGEN_OBJETIVO, entorno.obtenerPosObjetivo().obtenerY() * FACTOR, entorno.obtenerPosObjetivo().obtenerX() * FACTOR, FACTOR, FACTOR, this);
         g.drawImage(IMAGEN_AGENTE, entorno.obtenerPosAgente().obtenerY() * FACTOR, entorno.obtenerPosAgente().obtenerX() * FACTOR, FACTOR, FACTOR, this);
+        g.drawImage(IMAGEN_SANTACLAUS, entorno.obtenerPosSantaClaus().obtenerY() * FACTOR, entorno.obtenerPosSantaClaus().obtenerX() * FACTOR, FACTOR, FACTOR, this);
+        g.drawImage(IMAGEN_ELFO, entorno.obtenerPosElfo().obtenerY() * FACTOR, entorno.obtenerPosElfo().obtenerX() * FACTOR, FACTOR, FACTOR, this);
+        g.drawImage(IMAGEN_RUDOLPH, entorno.obtenerPosRudolph().obtenerY() * FACTOR, entorno.obtenerPosRudolph().obtenerX() * FACTOR, FACTOR, FACTOR, this);
+        
+        g.drawImage(IMAGEN_RENO, entorno.obtenerPosReno1().obtenerY() * FACTOR, entorno.obtenerPosReno1().obtenerX() * FACTOR, FACTOR, FACTOR, this);
+        g.drawImage(IMAGEN_RENO, entorno.obtenerPosReno2().obtenerY() * FACTOR, entorno.obtenerPosReno2().obtenerX() * FACTOR, FACTOR, FACTOR, this);
+        g.drawImage(IMAGEN_RENO, entorno.obtenerPosReno3().obtenerY() * FACTOR, entorno.obtenerPosReno3().obtenerX() * FACTOR, FACTOR, FACTOR, this);
+        g.drawImage(IMAGEN_RENO, entorno.obtenerPosReno4().obtenerY() * FACTOR, entorno.obtenerPosReno4().obtenerX() * FACTOR, FACTOR, FACTOR, this);
+        g.drawImage(IMAGEN_RENO, entorno.obtenerPosReno5().obtenerY() * FACTOR, entorno.obtenerPosReno5().obtenerX() * FACTOR, FACTOR, FACTOR, this);
+        g.drawImage(IMAGEN_RENO, entorno.obtenerPosReno6().obtenerY() * FACTOR, entorno.obtenerPosReno6().obtenerX() * FACTOR, FACTOR, FACTOR, this);
+        g.drawImage(IMAGEN_RENO, entorno.obtenerPosReno7().obtenerY() * FACTOR, entorno.obtenerPosReno7().obtenerX() * FACTOR, FACTOR, FACTOR, this);
+        g.drawImage(IMAGEN_RENO, entorno.obtenerPosReno8().obtenerY() * FACTOR, entorno.obtenerPosReno8().obtenerX() * FACTOR, FACTOR, FACTOR, this);
+        
+    
+    
     }
 
     /**

@@ -21,7 +21,7 @@ public class Main {
         
         // Creamos una instancia de PanelConfiguracionControlador proporcionándole 
         // como parámetro un valor de configuración del tamaño del mapa:
-        PanelConfiguracionControlador config = new PanelConfiguracionControlador(50);
+        PanelConfiguracionControlador config = new PanelConfiguracionControlador(100);
         
         // Desplegamos la interfaz gráfica y comienza la simulación:
         config.iniciar();   
