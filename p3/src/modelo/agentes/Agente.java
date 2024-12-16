@@ -1,12 +1,16 @@
 package modelo.agentes;
 
+import modelo.comportamientos.agente.DecidirMovimiento;
+import modelo.comportamientos.agente.ActualizarMemoria;
+import modelo.comportamientos.agente.PasosTotales;
 import jade.core.Agent;
+import jade.lang.acl.ACLMessage;
 import java.util.ArrayList;
 import modelo.Entorno;
 import modelo.Posicion;
 import modelo.sensores.Sensor;
 import modelo.Mapa;
-import modelo.comportamientos.*;
+import modelo.comportamientos.agente.SolicitarTraduccionElfo;
 import modelo.sensores.Vision;
 import modelo.sensores.Energia;
 
@@ -34,6 +38,14 @@ public class Agente extends Agent {
      * @brief Mapa que almacena la memoria del agente sobre el entorno
      */
     private Mapa mapaMemoria;
+
+    // Para la comunicación (falta documentar):
+    private final int TOTAL_RENOS = 8;
+    private String codigoSecreto  = "";
+    private int renosRescatados   = 0;
+    private Posicion posSanta;
+    ACLMessage mensajeSanta;
+    ACLMessage mensajeRudolph;
     
     /**
      * @brief Lista de posiciones por las que ha pasado el agente
@@ -51,6 +63,7 @@ public class Agente extends Agent {
      */
     @Override
     protected void setup() {
+        System.out.println("Iniciando AgenteBuscador...");
         
         // Inicializar el entorno:
         Object[] args = getArguments();
@@ -77,7 +90,52 @@ public class Agente extends Agent {
         addBehaviour(new ActualizarMemoria(this));        
         addBehaviour(new DecidirMovimiento(this));
         addBehaviour(new PasosTotales(this));
+        
+        // Iniciar el flujo de comunicación (por ahora lo he puesto aquí):
+        addBehaviour(new SolicitarTraduccionElfo(this));
     }
+    
+    // Nuevos métodos para la P3 (falta documentarlos):
+    public final int totalRenos() {
+        return (this.TOTAL_RENOS);
+    }
+    
+    public void establecerCodigoSecreto(String codigoSecreto) {
+        this.codigoSecreto = codigoSecreto;
+    }
+    
+    public String obtenerCodigoSecreto() {
+        return (this.codigoSecreto);
+    }
+    
+    public void rescatarReno() {
+        this.renosRescatados ++;
+    }
+    
+    public int numRenosRescatados() {
+        return (this.renosRescatados);
+    }
+    
+    public void establecerPosSanta(int x, int y) {
+        this.posSanta = new Posicion(x, y);
+    }
+    
+    public void modificarMensajeSanta(ACLMessage mensajeSanta) {
+        this.mensajeSanta = mensajeSanta;
+    }
+    
+    public ACLMessage obtenerMensajeSanta() {
+        return (this.mensajeSanta);
+    }
+    
+    public void modificarMensajeRudolph(ACLMessage mensajeRudolph) {
+        this.mensajeRudolph = mensajeRudolph;
+    }
+    
+    public ACLMessage obtenerMensajeRudolph() {
+        return (this.mensajeRudolph);
+    }
+    
     
     /**
      * @brief Función que usaremos para tomar la decisión de qué movimiento realizar
