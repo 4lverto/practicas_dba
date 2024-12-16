@@ -106,7 +106,7 @@ public class PanelConfiguracionControlador extends JFrame {
         // Etiqueta y campo para la columna de la casilla objetivo:
         JLabel etiquetaColumnaObjetivo = new JLabel("Columna: ");
         JSpinner campoColumnaObjetivo  = new JSpinner(
-                new SpinnerNumberModel(6, 0, this.topeDimensionMapa, 1));
+                new SpinnerNumberModel(14, 0, this.topeDimensionMapa, 1));
         
         // SANTA CLAUS, RUDOLPH...
         
