@@ -42,6 +42,5 @@ public class EstablecerCanalSeguroRudolph extends OneShotBehaviour {
         
         this.agente.modificarMensajeRudolph(solicitud);
         this.agente.send(solicitud);
-        this.agente.addBehaviour(new EsperarConfirmacionCanalSeguro(this.agente));
     }
 }

@@ -3,6 +3,7 @@ package modelo.agentes;
 import modelo.comportamientos.agente.DecidirMovimiento;
 import modelo.comportamientos.agente.ActualizarMemoria;
 import modelo.comportamientos.agente.PasosTotales;
+import jade.core.behaviours.SequentialBehaviour;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import java.util.ArrayList;
@@ -10,7 +11,8 @@ import modelo.Entorno;
 import modelo.Posicion;
 import modelo.sensores.Sensor;
 import modelo.Mapa;
-import modelo.comportamientos.agente.SolicitarTraduccionElfo;
+import modelo.comportamientos.agente.AgenteSolicitarTraduccion;
+import modelo.comportamientos.agente.ProponerMisionSanta;
 import modelo.sensores.Vision;
 import modelo.sensores.Energia;
 
@@ -42,6 +44,7 @@ public class Agente extends Agent {
     // Para la comunicación (falta documentar):
     private final int TOTAL_RENOS = 8;
     private String codigoSecreto  = "";
+    private String mensajeTraducido = "";
     private int renosRescatados   = 0;
     private Posicion posSanta;
     ACLMessage mensajeSanta;
@@ -90,12 +93,18 @@ public class Agente extends Agent {
         //addBehaviour(new DecidirMovimiento(this));
         //addBehaviour(new PasosTotales(this));
         
+        SequentialBehaviour comportamientos = new SequentialBehaviour();
+        
+        comportamientos.addSubBehaviour(new AgenteSolicitarTraduccion("Bro Estoy dispuesto a ofrecerme voluntario para la misión En Plan", "Traduccion inicial", this));
+        comportamientos.addSubBehaviour(new ProponerMisionSanta(this));
+        
+        
         // Iniciar el flujo de comunicación (por ahora lo he puesto aquí):
-        addBehaviour(new SolicitarTraduccionElfo());
+        addBehaviour(comportamientos);
     }
     
                                     // ////////////////// //
-                                    // NUEVOS MÉTODOS(P2) //
+                                    // NUEVOS MÉTODOS(P3) //
                                     // ////////////////// //
 
     
@@ -109,6 +118,14 @@ public class Agente extends Agent {
     
     public String obtenerCodigoSecreto() {
         return (this.codigoSecreto);
+    }
+    
+    public void establecerMensajeTraducido(String mensaje) {
+        this.mensajeTraducido = mensaje;
+    }
+    
+    public String obtenerMensajeTraducido() {
+        return (this.mensajeTraducido);
     }
     
     public void rescatarReno() {

@@ -1,31 +1,32 @@
-
 package modelo.comportamientos.agente;
 
 import jade.core.AID;
 import jade.core.behaviours.*;
 import jade.lang.acl.ACLMessage;
 import java.text.Normalizer;
-import modelo.agentes.Agente;
+import modelo.agentes.SantaClaus;
 
 /**
- * @class ProponerMisionSanta
- * 
- * @brief Comportamiento para proponerse el Agente Buscador como voluntario para 
- * la misión ante Santa Claus.
+ * @class SolicitarTraduccionElfo
+ *
+ * @brief Comportamiento para solicitar traducción al Elfo Traductor. Este
+ * comportamiento desencadena todo el flujo de la comunicación entre todos
+ * nuestros agentes.
  */
-public class ProponerMisionSanta extends OneShotBehaviour {
-    
-    /**
-     * @brief Instancia del agente.
-     */
-    private Agente agente;
+public class SantaSolicitarTraduccion extends OneShotBehaviour {
+
+    private final String id;
+    private final SantaClaus agente;
 
     /**
      * @brief Constructor por defecto.
-     * 
-     * @param agente Agente que se toma para la copia.
+     *
+     * @param id id de conversacion.
+     * @param mensaje mensaje a traducir
+     * @param agente agente
      */
-    public ProponerMisionSanta(Agente agente) {
+    public SantaSolicitarTraduccion(String id, SantaClaus agente) {
+        this.id = id;
         this.agente = agente;
     }
 
@@ -46,25 +47,23 @@ public class ProponerMisionSanta extends OneShotBehaviour {
      */
     @Override
     public void action() {
-        ACLMessage msg = new ACLMessage(ACLMessage.PROPOSE);
-        msg.addReceiver(new AID("Santa", AID.ISLOCALNAME));
+        ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
+        msg.addReceiver(new AID("Elfo", AID.ISLOCALNAME));
         msg.setContent(agente.obtenerMensajeTraducido());
-        msg.setConversationId("Evaluacion");
+        msg.setConversationId(id);
         agente.send(msg);
 
         msg = this.myAgent.blockingReceive();
 
-        if (msg.getConversationId().equals("Evaluacion")
-                && msg.getPerformative() == ACLMessage.ACCEPT_PROPOSAL) {
+        if (msg.getConversationId().equals(id)
+                && msg.getPerformative() == ACLMessage.INFORM) {
             String contenido = normalizarTexto(msg.getContent());
-            System.out.println("Respuesta recibida a peticion: " + contenido);
+            System.out.println("\n Traducción recibida: " + contenido);
             agente.establecerMensajeTraducido(contenido);
         } else {
-            if (msg.getPerformative() == ACLMessage.REJECT_PROPOSAL)
-                System.out.println("Peticion denegada por santa");
-            else
-                System.out.println("Error en el protocolo de conversacion");
+            System.out.println("Error en el protocolo de conversacion");
             agente.doDelete();
         }
     }
+
 }

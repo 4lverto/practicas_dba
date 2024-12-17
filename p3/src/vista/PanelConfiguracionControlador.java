@@ -42,15 +42,15 @@ public class PanelConfiguracionControlador extends JFrame {
 
     private static final String[] Nombres_Agentes = {
         "Agente",
-        "Elfo"
-        //"Santa",
+        "Elfo",
+        "Santa"
         //"Rudolph"
     };
     
     private static final String[] Clases_Agentes = {
         "modelo.agentes.Agente",
-        "modelo.agentes.ElfoTraductor"
-        //"modelo.agentes.SantaClaus",
+        "modelo.agentes.ElfoTraductor",
+        "modelo.agentes.SantaClaus"
         //"modelo.agentes.Rudolph"
     };
 
