@@ -4,9 +4,9 @@ package modelo.agentes;
 import jade.core.Agent;
 import jade.core.behaviours.SequentialBehaviour;
 import jade.lang.acl.ACLMessage;
-import modelo.comportamientos.agente.SantaSolicitarTraduccion;
-import modelo.comportamientos.agente.EvaluarMision;
-import modelo.comportamientos.agente.EnviarEvaluacion;
+import modelo.comportamientos.santaclaus.SantaSolicitarTraduccion;
+import modelo.comportamientos.santaclaus.EvaluarMision;
+import modelo.comportamientos.santaclaus.EnviarEvaluacion;
 
 /**
  *

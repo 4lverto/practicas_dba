@@ -2,7 +2,7 @@ package modelo.agentes;
 
 import jade.core.Agent;
 
-import modelo.comportamientos.agente.Traducir;
+import modelo.comportamientos.elfotraductor.Traducir;
 import java.text.Normalizer;
 
 /**

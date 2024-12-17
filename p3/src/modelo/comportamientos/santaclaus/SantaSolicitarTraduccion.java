@@ -1,4 +1,4 @@
-package modelo.comportamientos.agente;
+package modelo.comportamientos.santaclaus;
 
 import jade.core.AID;
 import jade.core.behaviours.*;
