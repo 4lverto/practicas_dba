@@ -1,8 +1,6 @@
 package modelo.agentes;
 
-import modelo.comportamientos.agente.DecidirMovimiento;
-import modelo.comportamientos.agente.ActualizarMemoria;
-import modelo.comportamientos.agente.PasosTotales;
+
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import java.util.ArrayList;
@@ -10,7 +8,8 @@ import modelo.Entorno;
 import modelo.Posicion;
 import modelo.sensores.Sensor;
 import modelo.Mapa;
-import modelo.comportamientos.agente.SolicitarTraduccionElfo;
+
+import modelo.comunicacion.ComunicacionAgente;
 import modelo.sensores.Vision;
 import modelo.sensores.Energia;
 
@@ -63,7 +62,6 @@ public class Agente extends Agent {
      */
     @Override
     protected void setup() {
-        System.out.println("Iniciando AgenteBuscador...");
         
         // Inicializar el entorno:
         Object[] args = getArguments();
@@ -91,7 +89,7 @@ public class Agente extends Agent {
         //addBehaviour(new PasosTotales(this));
         
         // Iniciar el flujo de comunicación (por ahora lo he puesto aquí):
-        addBehaviour(new SolicitarTraduccionElfo());
+        addBehaviour(new ComunicacionAgente(this));
     }
     
                                     // ////////////////// //

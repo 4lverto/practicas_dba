@@ -41,8 +41,8 @@ public class PanelConfiguracionControlador extends JFrame {
     };
 
     private static final String[] Nombres_Agentes = {
-        "Agente",
-        "Elfo"
+        "AB",
+        "ET"
         //"Santa",
         //"Rudolph"
     };
