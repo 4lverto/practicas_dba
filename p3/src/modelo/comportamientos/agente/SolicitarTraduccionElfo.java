@@ -35,11 +35,19 @@ public class SolicitarTraduccionElfo extends OneShotBehaviour {
     @Override
     public void action() {
         ACLMessage solicitud = new ACLMessage(ACLMessage.REQUEST);
-            solicitud.addReceiver(new AID("ET", AID.ISLOCALNAME));
-            solicitud.setContent("{\"action\": \"translate\", \"message\": "
-                    + "\"Bro Estoy dispuesto a ofrecerme voluntario para la misión En Plan\"}");
-            this.agente.send(solicitud);
-            this.agente.addBehaviour(new EsperarTraduccionElfo(this.agente));
+        solicitud.addReceiver(new AID("ET", AID.ISLOCALNAME));
+        
+        String contenido = "Bro Estoy dispuesto a ofrecerme voluntario para la mision En Plan";
+        solicitud.setContent(contenido);
+        
+        System.out.println("\n\t DEBUG -> Enviando mensaje al Elfo Traductor: " + contenido);
+        
+        solicitud.setConversationId("translation-request");
+        
+        this.agente.send(solicitud);
+        this.agente.addBehaviour(new EsperarTraduccionElfo(this.agente));
+        
+        System.out.println("\n AGENTE BUSCADOR -> Mensaje enviado al Elfo Traductor para traduccion" + contenido);
     }
     
 }

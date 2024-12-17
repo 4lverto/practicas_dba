@@ -74,8 +74,7 @@ public class Agente extends Agent {
             this.mapaMemoria = new Mapa(100, 100); // Inicializamos la memoria
             // Configuramos el estado inicial llamando a 
             // actualizarPercepciones(posición actual)
-            this.sensores = 
-                    this.entorno.actualizarPercepciones(entorno.obtenerPosAgente());
+            this.sensores = this.entorno.actualizarPercepciones(entorno.obtenerPosAgente());
             
             // Inicializamos la traza de recorrido
             //trazaRecorrido = new ArrayList<>();
@@ -95,7 +94,11 @@ public class Agente extends Agent {
         addBehaviour(new SolicitarTraduccionElfo(this));
     }
     
-    // Nuevos métodos para la P3 (falta documentarlos):
+                                    // ////////////////// //
+                                    // NUEVOS MÉTODOS(P2) //
+                                    // ////////////////// //
+
+    
     public final int totalRenos() {
         return (this.TOTAL_RENOS);
     }
@@ -136,6 +139,9 @@ public class Agente extends Agent {
         return (this.mensajeRudolph);
     }
     
+                                        // ///////////////////// //
+                                        // MÉTODOS ANTIGUOS (P2) //
+                                        // ///////////////////// //
     
     /**
      * @brief Función que usaremos para tomar la decisión de qué movimiento realizar
