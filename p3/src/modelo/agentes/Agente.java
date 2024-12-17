@@ -156,6 +156,11 @@ public class Agente extends Agent {
         return (this.mensajeRudolph);
     }
     
+    @Override
+    protected void takeDown() {
+        System.out.println("Finalizado el agente " + this.getLocalName());
+    }
+    
                                         // ///////////////////// //
                                         // MÉTODOS ANTIGUOS (P2) //
                                         // ///////////////////// //

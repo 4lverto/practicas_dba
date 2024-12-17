@@ -38,10 +38,14 @@ public class EnviarEvaluacion extends OneShotBehaviour {
         ACLMessage respuesta;
         if (agente.obtenerAceptado()) {
                 respuesta = msg.createReply(ACLMessage.ACCEPT_PROPOSAL);
+                respuesta.setContent(contenido);
+                agente.send(respuesta);
             } else {
-                respuesta = msg.createReply(ACLMessage.REJECT_PROPOSAL);   
+                respuesta = msg.createReply(ACLMessage.REJECT_PROPOSAL);
+                respuesta.setContent(contenido);
+                agente.send(respuesta);
+                agente.doDelete();
             }
-            respuesta.setContent(contenido);
-            agente.send(respuesta);
+            
     }
 }

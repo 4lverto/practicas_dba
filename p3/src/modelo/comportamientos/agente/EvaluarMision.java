@@ -49,6 +49,7 @@ public class EvaluarMision extends OneShotBehaviour {
                     agente.establecerAceptado(true);
                 } else {
                     agente.establecerMensajeTraducido("Hyvaa joulua NO Nahdaan pian");
+                    agente.modificarMensajeAgente(msg);
                 }
             } else {
                 System.out.println(("\nSANTA -> Error, mensaje en formato incorrecto"));
