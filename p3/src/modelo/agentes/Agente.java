@@ -86,12 +86,12 @@ public class Agente extends Agent {
         
         // Añadir los comportamientos de los que dispone el agente para que los 
         // lleve a cabo:
-        addBehaviour(new ActualizarMemoria(this));        
-        addBehaviour(new DecidirMovimiento(this));
-        addBehaviour(new PasosTotales(this));
+        //addBehaviour(new ActualizarMemoria(this));        
+        //addBehaviour(new DecidirMovimiento(this));
+        //addBehaviour(new PasosTotales(this));
         
         // Iniciar el flujo de comunicación (por ahora lo he puesto aquí):
-        addBehaviour(new SolicitarTraduccionElfo(this));
+        addBehaviour(new SolicitarTraduccionElfo());
     }
     
                                     // ////////////////// //

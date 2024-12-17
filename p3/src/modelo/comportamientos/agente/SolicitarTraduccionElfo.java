@@ -4,7 +4,7 @@ package modelo.comportamientos.agente;
 import jade.core.AID;
 import jade.core.behaviours.*;
 import jade.lang.acl.ACLMessage;
-import modelo.agentes.Agente;
+import java.text.Normalizer;
 
 /**
  * @class SolicitarTraduccionElfo
@@ -15,18 +15,16 @@ import modelo.agentes.Agente;
  */
 public class SolicitarTraduccionElfo extends OneShotBehaviour {
     
-    /**
-     * @brief Instancia del agente.
+        /**
+     * @brief No se ni pa qué voy a usar esto pero bueno
+     * @param texto
+     * @return
      */
-    private Agente agente;
-
-    /**
-     * @brief Constructor por defecto para instanciar al agente.
-     * 
-     * @param agente Agente que se toma para la copia.
-     */
-    public SolicitarTraduccionElfo(Agente agente) {
-        this.agente = agente;
+    private String normalizarTexto(String texto) {
+        if (texto == null) {
+            return "";
+        }
+        return Normalizer.normalize(texto, Normalizer.Form.NFD).replaceAll("[\\p{InCombiningDiacriticalMarks}]", "").trim();
     }
 
     /**
@@ -34,20 +32,25 @@ public class SolicitarTraduccionElfo extends OneShotBehaviour {
      */
     @Override
     public void action() {
-        ACLMessage solicitud = new ACLMessage(ACLMessage.REQUEST);
-        solicitud.addReceiver(new AID("ET", AID.ISLOCALNAME));
-        
-        String contenido = "Bro Estoy dispuesto a ofrecerme voluntario para la mision En Plan";
-        solicitud.setContent(contenido);
-        
-        System.out.println("\n\t DEBUG -> Enviando mensaje al Elfo Traductor: " + contenido);
-        
-        solicitud.setConversationId("translation-request");
-        
-        this.agente.send(solicitud);
-        this.agente.addBehaviour(new EsperarTraduccionElfo(this.agente));
-        
-        System.out.println("\n AGENTE BUSCADOR -> Mensaje enviado al Elfo Traductor para traduccion" + contenido);
+
+        System.out.println("Se ha empezado la conexión");
+        ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
+        msg.addReceiver(new AID("Elfo", AID.ISLOCALNAME));
+        msg.setContent("Bro Estoy dispuesto a ofrecerme voluntario para la misión En Plan");
+        msg.setConversationId("Traduccion-Agente");
+        this.myAgent.send(msg);
+
+        msg = this.myAgent.blockingReceive();
+
+        if (msg.getConversationId().equals("Traduccion-Agente")
+                && msg.getPerformative() == ACLMessage.INFORM) {
+            String contenido = normalizarTexto(msg.getContent());
+            System.out.println("\n Traducción recibida: " + contenido);
+            System.out.println("\n Traducción esperada: Rakas Joulupukki Estoy dispuesto a ofrecerme voluntario para la mision Kiitos");
+        } else {
+            System.out.println("Error en el protocolo de conversacion - step" + 2);
+            myAgent.doDelete();
+        }
     }
     
 }
