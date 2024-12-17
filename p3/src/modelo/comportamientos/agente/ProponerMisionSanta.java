@@ -47,6 +47,7 @@ public class ProponerMisionSanta extends OneShotBehaviour {
         propuesta.setContent("{\"action\": \"proposal_to_do_mission\", "
                 + "\"message\": \"" + mensajeTraducido + "\"}");
         
+        propuesta.setConversationId("mission-proposal");
         this.agente.modificarMensajeSanta(propuesta);
         this.agente.send(propuesta);
         this.agente.addBehaviour(new EsperarRespuestaSanta(this.agente));

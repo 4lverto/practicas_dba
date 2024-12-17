@@ -48,6 +48,7 @@ public class RescatarRenos extends Behaviour {
 
     /**
      * @brief Método para decidir el momento de parada del comportamiento.
+     * @return True si ya hemos rescatado todos los renos, False en caso contrario
      */
     @Override
     public boolean done() {
