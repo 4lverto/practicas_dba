@@ -29,20 +29,20 @@ public class EnviarEvaluacion extends OneShotBehaviour {
     @Override
     public void action() {
         ACLMessage msg = agente.obtenerMensajeAgente();
-        String contenido = agente.obtenerMensajeTraducido();
+        String contenido = agente.obtenerMensaje();
 
         ACLMessage respuesta;
         if (agente.obtenerAceptado()) {
-                respuesta = msg.createReply(ACLMessage.ACCEPT_PROPOSAL);
-                respuesta.setContent(contenido);
-                System.out.println(respuesta);
-                agente.send(respuesta);
-            } else {
-                respuesta = msg.createReply(ACLMessage.REJECT_PROPOSAL);
-                respuesta.setContent(contenido);
-                agente.send(respuesta);
-                agente.doDelete();
-            }
-            
+            respuesta = msg.createReply(ACLMessage.ACCEPT_PROPOSAL);
+            respuesta.setContent(contenido);
+            agente.send(respuesta);
+        } else {
+            respuesta = msg.createReply(ACLMessage.REJECT_PROPOSAL);
+            respuesta.setContent(contenido);
+            agente.send(respuesta);
+            agente.doDelete();
+        }
+
+
     }
 }

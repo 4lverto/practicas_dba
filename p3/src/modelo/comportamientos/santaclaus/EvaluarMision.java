@@ -10,15 +10,15 @@ import modelo.agentes.SantaClaus;
  * @author Germán López
  */
 public class EvaluarMision extends OneShotBehaviour {
-    
+
     /**
      * @brief Instancia del agente.
      */
     private SantaClaus agente;
-    
+
     /**
      * @brief Constructor por defecto.
-     * 
+     *
      * @param agente Agente que se toma para la copia.
      */
     public EvaluarMision(SantaClaus agente) {
@@ -43,11 +43,11 @@ public class EvaluarMision extends OneShotBehaviour {
 
             if (contenido.substring(0, 17).equals("Rakas Joulupukki ") && contenido.substring(contenido.length() - 7, contenido.length()).equals(" Kiitos")) {
                 if (Math.floor(Math.random() * 10) <= 7) {
-                    agente.establecerMensajeTraducido("Hyvaa joulua hn9yar2x Nahdaan pian");
+                    agente.establecerMensaje("Hyvaa joulua hn9yar2x Nahdaan pian");
                     agente.modificarMensajeAgente(msg);
                     agente.establecerAceptado(true);
                 } else {
-                    agente.establecerMensajeTraducido("Hyvaa joulua NO Nahdaan pian");
+                    agente.establecerMensaje("Hyvaa joulua NO Nahdaan pian");
                     agente.modificarMensajeAgente(msg);
                 }
             } else {
@@ -58,9 +58,8 @@ public class EvaluarMision extends OneShotBehaviour {
             System.out.println(("\nSANTA -> Error de protocolo"));
             agente.doDelete();
         }
-        
+
         //Version que responde directemente (puede ser util para luego
-        
         //if (msg.getPerformative() == ACLMessage.REQUEST) {
         //
         //    String contenido = normalizarTexto(msg.getContent());

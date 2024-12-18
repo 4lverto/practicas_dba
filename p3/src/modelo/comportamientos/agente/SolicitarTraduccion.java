@@ -1,10 +1,10 @@
-package modelo.comportamientos.santaclaus;
+package modelo.comportamientos.agente;
 
 import jade.core.AID;
 import jade.core.behaviours.*;
 import jade.lang.acl.ACLMessage;
 import java.text.Normalizer;
-import modelo.agentes.SantaClaus;
+import modelo.agentes.Agente;
 
 /**
  * @class SolicitarTraduccionElfo
@@ -13,21 +13,22 @@ import modelo.agentes.SantaClaus;
  * comportamiento desencadena todo el flujo de la comunicación entre todos
  * nuestros agentes.
  */
-public class SantaSolicitarTraduccion extends OneShotBehaviour {
+public class SolicitarTraduccion extends OneShotBehaviour {
 
+    private final String mensaje;
     private final String id;
-    private final SantaClaus agente;
+    private final Agente agente;
 
     /**
      * @brief Constructor por defecto.
      *
      * @param id id de conversacion.
-     * @param mensaje mensaje a traducir
      * @param agente agente
      */
-    public SantaSolicitarTraduccion(String id, SantaClaus agente) {
+    public SolicitarTraduccion(String id, Agente agente) {
         this.id = id;
         this.agente = agente;
+        this.mensaje = agente.obtenerMensaje();
     }
 
     /**
@@ -49,7 +50,7 @@ public class SantaSolicitarTraduccion extends OneShotBehaviour {
     public void action() {
         ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
         msg.addReceiver(new AID("Elfo", AID.ISLOCALNAME));
-        msg.setContent(agente.obtenerMensajeTraducido());
+        msg.setContent(mensaje);
         msg.setConversationId(id);
         agente.send(msg);
 
@@ -59,7 +60,7 @@ public class SantaSolicitarTraduccion extends OneShotBehaviour {
                 && msg.getPerformative() == ACLMessage.INFORM) {
             String contenido = normalizarTexto(msg.getContent());
             System.out.println("\n Traducción recibida: " + contenido);
-            agente.establecerMensajeTraducido(contenido);
+            agente.establecerMensaje(contenido);
         } else {
             System.out.println("Error en el protocolo de conversacion");
             agente.doDelete();

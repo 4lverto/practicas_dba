@@ -4,6 +4,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import jade.core.behaviours.SequentialBehaviour;
 
+import jade.core.behaviours.FSMBehaviour;
+import jade.core.behaviours.OneShotBehaviour;
+
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import java.util.ArrayList;
@@ -11,12 +14,17 @@ import modelo.Entorno;
 import modelo.Posicion;
 import modelo.sensores.Sensor;
 import modelo.Mapa;
-import modelo.comportamientos.agente.AgenteSolicitarTraduccion;
+import modelo.comportamientos.agente.ActualizarMemoria;
+import modelo.comportamientos.agente.DecidirMovimiento;
+import modelo.comportamientos.agente.SolicitarTraduccion;
 import modelo.comportamientos.agente.ProponerMisionSanta;
 import modelo.comportamientos.agente.SolicitarPosicionSanta;
-
 import modelo.sensores.*;
+import modelo.comportamientos.agente.EstablecerCanalSeguroRudolph;
+import modelo.comportamientos.agente.PasosTotales;
+import modelo.comportamientos.agente.SolicitarReno;
 
+;
 
 /**
  * @brief Clase que representa al agente autónomo que se desplaza en el entorno.
@@ -46,9 +54,12 @@ public class Agente extends Agent {
     // Para la comunicación (falta documentar):
     private final int TOTAL_RENOS = 8;
     private String codigoSecreto = "";
-    private String mensajeTraducido = "";
+
+    private String mensaje = "Bro Estoy dispuesto a ofrecerme voluntario para la misión En Plan";
     private int renosRescatados = 0;
-    private Posicion currentPosObjetivo;
+    private Posicion posObjetivo;
+    private String mensajeTraducido;
+
     ACLMessage mensajeSanta;
     ACLMessage mensajeRudolph;
 
@@ -78,7 +89,7 @@ public class Agente extends Agent {
             // Configuramos el estado inicial llamando a 
             // actualizarPercepciones(posición actual)
             this.sensores = this.entorno.actualizarPercepciones(entorno.obtenerPosAgente());
-            this.currentPosObjetivo = new Posicion(-1,-1);
+
             // Inicializamos la traza de recorrido
             //trazaRecorrido = new ArrayList<>();
         } else {
@@ -92,16 +103,43 @@ public class Agente extends Agent {
         //addBehaviour(new ActualizarMemoria(this));        
         //addBehaviour(new DecidirMovimiento(this));
         //addBehaviour(new PasosTotales(this));
-        
+        // Iniciar el flujo de comunicación (por ahora lo he puesto aquí):
         SequentialBehaviour comportamientos = new SequentialBehaviour();
 
-
-        comportamientos.addSubBehaviour(new AgenteSolicitarTraduccion("Bro Estoy dispuesto a ofrecerme voluntario para la misión En Plan", "Traduccion inicial", this));
+        comportamientos.addSubBehaviour(new SolicitarTraduccion("Traduccion inicial", this));
         comportamientos.addSubBehaviour(new ProponerMisionSanta(this));
-        comportamientos.addSubBehaviour(new AgenteSolicitarTraduccion("Bro ¿Donde estas? En Plan", "Traduccion-solicitud-coordenadas", this));
-        comportamientos.addSubBehaviour(new SolicitarPosicionSanta(this));
+        comportamientos.addSubBehaviour(new EstablecerCanalSeguroRudolph(this));
 
-        // Iniciar el flujo de comunicación (por ahora lo he puesto aquí):
+        FSMBehaviour fsm = new FSMBehaviour(this);
+        fsm.registerFirstState(new SolicitarReno(this), "Solicitar");
+        fsm.registerState(new ActualizarMemoria(this), "Actualizar");
+        fsm.registerState(new DecidirMovimiento(this), "Mover");
+        fsm.registerLastState(new OneShotBehaviour(this) {
+            @Override
+            public void action() {
+                System.out.println("Todos los renos visitados");
+            }
+        }, "Fin");
+        fsm.registerDefaultTransition("Solicitar", "Actualizar");
+        fsm.registerDefaultTransition("Actualizar", "Mover");
+        fsm.registerDefaultTransition("Mover", "Actualizar");
+        fsm.registerTransition("Mover", "Solicitar", 1);
+        fsm.registerTransition("Solicitar", "Fin", 1);
+
+        comportamientos.addSubBehaviour(fsm);
+
+        //comportamientos.addSubBehaviour(traduce pregunta de coords a santa); (este se puede poner sustituyendo al LastState del FSM anterior si quereis)
+        comportamientos.addSubBehaviour(new SolicitarTraduccion("Traduccion-solicitud-coordenadas", this));
+        comportamientos.addSubBehaviour(new SolicitarPosicionSanta(this));
+        //comportamientos.addSubBehaviour(pregunta coords a santa); (consultarCoordsSanta podria servir como clase, ya uqe esa esta creada,
+        //                                                           aunque renombrar a solicitar no vendria mal por consistencia)
+        //comportamientos.addSubBehaviour(se mueve a coords);(se puede hacer con un FSM poniendo en el FirstState a ActualizarMemoria
+        //                                                   y uno normal a DecidirMovimiento, los default se mueven entre uno y el otro y con
+        //                                                   una transicion (el numero es el return en Behaviour.onEnd()) de DecidirMovimiento
+        //                                                   a un EntregarRenosSanta como nodo final, como idea a mi no me parece mal)
+        //Este es el ultimo, ya que EntregarRenosSanta recibiria el HoHoHo si seguimos con el mismo patron
+        comportamientos.addSubBehaviour(new PasosTotales(this));
+
         addBehaviour(comportamientos);
     }
 
@@ -136,6 +174,18 @@ public class Agente extends Agent {
         return (this.renosRescatados);
     }
 
+    public void establecerPosObjetivo(int x, int y) {
+        this.posObjetivo = new Posicion(x, y);
+    }
+
+    public Posicion obtenerPosObjetivo() {
+        return this.posObjetivo;
+    }
+
+    public Posicion obtenerPosAgente() {
+        return entorno.obtenerPosAgente();
+    }
+
     public void modificarMensajeSanta(ACLMessage mensajeSanta) {
         this.mensajeSanta = mensajeSanta;
     }
@@ -152,6 +202,14 @@ public class Agente extends Agent {
         return (this.mensajeRudolph);
     }
 
+    public String obtenerMensaje() {
+        return this.mensaje;
+    }
+    
+    public void establecerMensaje(String mensaje) {
+        this.mensaje = mensaje;
+    }
+
     public void modificarPosicionObjetivo(String mensajeCoordenadas) {
         Pattern pattern = Pattern.compile("\\((\\d+),(\\d+)\\)");
         Matcher matcher = pattern.matcher(mensajeCoordenadas);
@@ -160,7 +218,7 @@ public class Agente extends Agent {
             int x = Integer.parseInt(matcher.group(1));
             int y = Integer.parseInt(matcher.group(2));
 
-            currentPosObjetivo.actualizar(x, y);
+            //currentPosObjetivo.actualizar(x, y);
         } else {
             System.err.println("Formato de coordenadas inválido: " + mensajeCoordenadas);
         }
@@ -179,7 +237,8 @@ public class Agente extends Agent {
      * realizar
      */
     public void decidirMovimiento() {
-        ArrayList<Posicion> camino = Astar.busqueda(mapaMemoria, entorno.obtenerPosAgente(), entorno.obtenerPosObjetivo());
+
+        ArrayList<Posicion> camino = Astar.busqueda(mapaMemoria, entorno.obtenerPosAgente(), posObjetivo);
 
         if (camino != null && !camino.isEmpty()) {
             this.sensores = this.entorno.actualizarPercepciones(camino.get(camino.size() - 2));
@@ -272,7 +331,7 @@ public class Agente extends Agent {
      * y False en caso contrario
      */
     public boolean objetivoAlcanzado() {
-        return entorno.obtenerPosAgente().sonIguales(entorno.obtenerPosObjetivo());
+        return entorno.obtenerPosAgente().sonIguales(posObjetivo);
     }
 
     /**

@@ -72,7 +72,8 @@ public class Entorno {
     /**
      * @brief Posición de la casilla objetivo en el mapa.
      */
-    private Posicion posObjetivo;
+
+    //private Posicion posObjetivo;
 
     /**
      * @brief Constructor privado para evitar la creación de múltiples
@@ -104,11 +105,11 @@ public class Entorno {
         this.posReno6 = posReno6;
         this.posReno7 = posReno7;
         this.posReno8 = posReno8;
-   
+
+
         this.sensores = new ArrayList<>();
         this.vistas = new ArrayList<>();
-        
-        this.posObjetivo = posElfo;
+
     }
 
     /**
@@ -216,14 +217,6 @@ public class Entorno {
         return (this.posAgente);
     }
 
-    /**
-     * @brief Consultor para la posición de la casilla objetivo.
-     *
-     * @return Posición de la casilla objetivo.
-     */
-    public Posicion obtenerPosObjetivo() {
-        return (this.posObjetivo);
-    }
 
     public Posicion obtenerPosReno1() {
         return (this.posReno1);

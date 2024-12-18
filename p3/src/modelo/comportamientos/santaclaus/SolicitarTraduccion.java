@@ -1,10 +1,10 @@
-package modelo.comportamientos.agente;
+package modelo.comportamientos.santaclaus;
 
 import jade.core.AID;
 import jade.core.behaviours.*;
 import jade.lang.acl.ACLMessage;
 import java.text.Normalizer;
-import modelo.agentes.Agente;
+import modelo.agentes.SantaClaus;
 
 /**
  * @class SolicitarTraduccionElfo
@@ -13,11 +13,10 @@ import modelo.agentes.Agente;
  * comportamiento desencadena todo el flujo de la comunicación entre todos
  * nuestros agentes.
  */
-public class AgenteSolicitarTraduccion extends OneShotBehaviour {
+public class SolicitarTraduccion extends OneShotBehaviour {
 
-    private final String mensaje;
     private final String id;
-    private final Agente agente;
+    private final SantaClaus agente;
 
     /**
      * @brief Constructor por defecto.
@@ -26,9 +25,8 @@ public class AgenteSolicitarTraduccion extends OneShotBehaviour {
      * @param mensaje mensaje a traducir
      * @param agente agente
      */
-    public AgenteSolicitarTraduccion(String mensaje, String id, Agente agente) {
+    public SolicitarTraduccion(String id, SantaClaus agente) {
         this.id = id;
-        this.mensaje = mensaje;
         this.agente = agente;
     }
 
@@ -51,7 +49,7 @@ public class AgenteSolicitarTraduccion extends OneShotBehaviour {
     public void action() {
         ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
         msg.addReceiver(new AID("Elfo", AID.ISLOCALNAME));
-        msg.setContent(mensaje);
+        msg.setContent(agente.obtenerMensaje());
         msg.setConversationId(id);
         agente.send(msg);
 
@@ -61,7 +59,7 @@ public class AgenteSolicitarTraduccion extends OneShotBehaviour {
                 && msg.getPerformative() == ACLMessage.INFORM) {
             String contenido = normalizarTexto(msg.getContent());
             System.out.println("\n Traducción recibida: " + contenido);
-            agente.establecerMensajeTraducido(contenido);
+            agente.establecerMensaje(contenido);
         } else {
             System.out.println("Error en el protocolo de conversacion");
             agente.doDelete();
