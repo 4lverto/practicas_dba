@@ -79,6 +79,7 @@ public class SantaClaus extends Agent {
         comportamientos.addSubBehaviour(new EvaluarMision(this));
         comportamientos.addSubBehaviour(new SolicitarTraduccion("Traducion Santa", this));
         comportamientos.addSubBehaviour(new EnviarEvaluacion(this));
+        comportamientos.addSubBehaviour(new DesvelarPosicion(this));
 
         // Iniciar el flujo de comunicación (por ahora lo he puesto aquí):
         addBehaviour(comportamientos);

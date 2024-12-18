@@ -128,16 +128,19 @@ public class Agente extends Agent {
 
         comportamientos.addSubBehaviour(fsm);
 
-        //comportamientos.addSubBehaviour(traduce pregunta de coords a santa); (este se puede poner sustituyendo al LastState del FSM anterior si quereis)
+        this.establecerMensaje("Bro ¿Donde estas? En Plan");
         comportamientos.addSubBehaviour(new SolicitarTraduccion("Traduccion-solicitud-coordenadas", this));
         comportamientos.addSubBehaviour(new SolicitarPosicionSanta(this));
-        //comportamientos.addSubBehaviour(pregunta coords a santa); (consultarCoordsSanta podria servir como clase, ya uqe esa esta creada,
-        //                                                           aunque renombrar a solicitar no vendria mal por consistencia)
-        //comportamientos.addSubBehaviour(se mueve a coords);(se puede hacer con un FSM poniendo en el FirstState a ActualizarMemoria
-        //                                                   y uno normal a DecidirMovimiento, los default se mueven entre uno y el otro y con
-        //                                                   una transicion (el numero es el return en Behaviour.onEnd()) de DecidirMovimiento
-        //                                                   a un EntregarRenosSanta como nodo final, como idea a mi no me parece mal)
-        //Este es el ultimo, ya que EntregarRenosSanta recibiria el HoHoHo si seguimos con el mismo patron
+
+        FSMBehaviour fsmFinal = new FSMBehaviour(this);
+        fsmFinal.registerFirstState(new ActualizarMemoria(this), "Actualizar");
+        fsmFinal.registerState(new DecidirMovimiento(this), "Mover");
+
+        fsmFinal.registerDefaultTransition("Actualizar", "Mover");
+        fsmFinal.registerDefaultTransition("Mover", "Actualizar");
+                
+        comportamientos.addSubBehaviour(fsmFinal);
+
         comportamientos.addSubBehaviour(new PasosTotales(this));
 
         addBehaviour(comportamientos);
@@ -205,7 +208,7 @@ public class Agente extends Agent {
     public String obtenerMensaje() {
         return this.mensaje;
     }
-    
+
     public void establecerMensaje(String mensaje) {
         this.mensaje = mensaje;
     }
@@ -218,7 +221,7 @@ public class Agente extends Agent {
             int x = Integer.parseInt(matcher.group(1));
             int y = Integer.parseInt(matcher.group(2));
 
-            //currentPosObjetivo.actualizar(x, y);
+            this.establecerPosObjetivo(x, y);
         } else {
             System.err.println("Formato de coordenadas inválido: " + mensajeCoordenadas);
         }
