@@ -4,6 +4,7 @@ package modelo.comportamientos.agente;
 import jade.core.AID;
 import jade.core.behaviours.*;
 import jade.lang.acl.ACLMessage;
+import java.text.Normalizer;
 import modelo.agentes.Agente;
 
 /**
@@ -18,22 +19,26 @@ public class ProponerMisionSanta extends OneShotBehaviour {
      * @brief Instancia del agente.
      */
     private Agente agente;
-    
-    /**
-     * @brief Mensaje traducido por el Elfo Traductor para Santa Claus.
-     */
-    private final String mensajeTraducido;
 
     /**
      * @brief Constructor por defecto.
      * 
      * @param agente Agente que se toma para la copia.
-     * @param mensajeTraducido Mensaje traducido por el Elfo Traductor para 
-     * Santa Claus.
      */
-    public ProponerMisionSanta(Agente agente, String mensajeTraducido) {
-        this.agente           = agente;
-        this.mensajeTraducido = mensajeTraducido;
+    public ProponerMisionSanta(Agente agente) {
+        this.agente = agente;
+    }
+
+    /**
+     * @brief Funcion para normalizar el texto
+     * @param texto
+     * @return
+     */
+    private String normalizarTexto(String texto) {
+        if (texto == null) {
+            return "";
+        }
+        return Normalizer.normalize(texto, Normalizer.Form.NFD).replaceAll("[\\p{InCombiningDiacriticalMarks}]", "").trim();
     }
 
     /**
@@ -41,15 +46,26 @@ public class ProponerMisionSanta extends OneShotBehaviour {
      */
     @Override
     public void action() {
-        ACLMessage propuesta = new ACLMessage(ACLMessage.PROPOSE);
-        
-        propuesta.addReceiver(new AID("SC", AID.ISLOCALNAME));
-        propuesta.setContent("{\"action\": \"proposal_to_do_mission\", "
-                + "\"message\": \"" + mensajeTraducido + "\"}");
-        
-        propuesta.setConversationId("mission-proposal");
-        this.agente.modificarMensajeSanta(propuesta);
-        this.agente.send(propuesta);
-        this.agente.addBehaviour(new EsperarRespuestaSanta(this.agente));
+        ACLMessage msg = new ACLMessage(ACLMessage.PROPOSE);
+        msg.addReceiver(new AID("Santa", AID.ISLOCALNAME));
+        msg.setContent(agente.obtenerMensajeTraducido());
+        msg.setConversationId("Evaluacion");
+        agente.send(msg);
+
+        msg = this.myAgent.blockingReceive();
+
+        if (msg.getConversationId().equals("Evaluacion")
+                && msg.getPerformative() == ACLMessage.ACCEPT_PROPOSAL) {
+            String contenido = normalizarTexto(msg.getContent());
+            System.out.println("Respuesta recibida a peticion: " + contenido);
+            agente.establecerMensajeTraducido(contenido);
+            agente.modificarMensajeSanta(msg);
+        } else {
+            if (msg.getPerformative() == ACLMessage.REJECT_PROPOSAL)
+                System.out.println("Peticion denegada por santa");
+            else
+                System.out.println("Error en el protocolo de conversacion");
+            agente.doDelete();
+        }
     }
 }

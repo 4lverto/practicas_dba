@@ -49,6 +49,5 @@ public class ConsultarCoordenadasSanta extends OneShotBehaviour {
         
         this.agente.modificarMensajeSanta(consulta);
         this.agente.send(consulta);
-        this.agente.addBehaviour(new EsperarCoordenadasSanta(this.agente));
     }
 }
