@@ -33,8 +33,8 @@ public class ActualizarMemoria extends OneShotBehaviour {
      */
     @Override
     public void action() {
-        int x = agente.entorno.obtenerPosAgente().obtenerX();
-        int y = agente.entorno.obtenerPosAgente().obtenerY();
+        int x = agente.entorno.obtenerPosAgente().obtenerFil();
+        int y = agente.entorno.obtenerPosAgente().obtenerCol();
 
         Vision sensorVision = (Vision) agente.sensores.get(0);
 

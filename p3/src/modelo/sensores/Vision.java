@@ -57,8 +57,8 @@ public class Vision extends Sensor {
     @Override
     public void actualizar() {
         Posicion posAgente = entorno.obtenerPosAgente();
-        int x = posAgente.obtenerX();
-        int y = posAgente.obtenerY();
+        int x = posAgente.obtenerFil();
+        int y = posAgente.obtenerCol();
         Mapa mapa = entorno.obtenerMapa();
 
         // Actualizar la diagonal superior izquierda:

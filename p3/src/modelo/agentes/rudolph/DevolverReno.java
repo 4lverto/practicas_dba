@@ -19,19 +19,15 @@ public class DevolverReno extends CyclicBehaviour {
      */
     private final Rudolph agente;
     
-    /**
-     * @brief 
-     */
-    private final Posicion[] renos;
+    int best = -1;
 
     /**
      * @param renos
      * @brief Constructor por defecto.
      * @param agente Agente que se toma para la copia.
      */
-    public DevolverReno(Posicion[] renos, Rudolph agente) {
+    public DevolverReno(Rudolph agente) {
         this.agente = agente;
-        this.renos = renos;
     }
 
     private Posicion leerPosicion(String mensaje) {
@@ -40,7 +36,7 @@ public class DevolverReno extends CyclicBehaviour {
     }
 
     private static double distancia(Posicion origen, Posicion dest) {
-        return Math.sqrt(Math.pow((origen.obtenerX() - dest.obtenerX()), 2.0) + Math.pow((origen.obtenerY() - dest.obtenerY()), 2.0));
+        return Math.sqrt(Math.pow((origen.obtenerFil() - dest.obtenerFil()), 2.0) + Math.pow((origen.obtenerCol() - dest.obtenerCol()), 2.0));
     }
 
     @Override
@@ -54,11 +50,18 @@ public class DevolverReno extends CyclicBehaviour {
                 respuesta = msg.createReply(ACLMessage.INFORM);
 
                 Posicion buscador = leerPosicion(contenido);
-                int best = -1;
+                
+                
+                //Marcamos el ultimo reno para ignorar
+                if (best != -1) {
+                    agente.renos[best] = IGNORE;
+                }
+                
+                best = -1;
                 double best_score = 99999999;
-                for (int i = 0; i < renos.length; ++i) {
-                    if (!renos[i].sonIguales(IGNORE)) {
-                        double current_score = distancia(buscador, renos[i]);
+                for (int i = 0; i < agente.renos.length; ++i) {
+                    if (!agente.renos[i].sonIguales(IGNORE)) {
+                        double current_score = distancia(buscador, agente.renos[i]);
                         if (current_score < best_score) {
                             best = i;
                             best_score = current_score;
@@ -66,10 +69,9 @@ public class DevolverReno extends CyclicBehaviour {
                     }
                 }
                 if (best == -1) {
-                    respuesta.setContent(IGNORE.obtenerX() + "," + IGNORE.obtenerY());
+                    respuesta.setContent(IGNORE.obtenerFil() + "," + IGNORE.obtenerCol());
                 } else {
-                    respuesta.setContent(renos[best].obtenerX() + "," + renos[best].obtenerY());
-                    renos[best] = IGNORE;
+                    respuesta.setContent(agente.renos[best].obtenerFil() + "," + agente.renos[best].obtenerCol());
                 }
                 
                 try {

@@ -46,7 +46,7 @@ public class Posicion {
      *
      * @return Coordenada x de la posición.
      */
-    public int obtenerX() {
+    public int obtenerFil() {
         return x;
     }
 
@@ -55,7 +55,7 @@ public class Posicion {
      *
      * @return Coordenada y de la posición.
      */
-    public int obtenerY() {
+    public int obtenerCol() {
         return y;
     }
 
@@ -71,6 +71,6 @@ public class Posicion {
 
     @Override
     public String toString() {
-        return obtenerX() + "," + obtenerY();
+        return obtenerFil() + "," + obtenerCol();
     }
 }

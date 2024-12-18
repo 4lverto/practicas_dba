@@ -48,15 +48,9 @@ public class SolicitarPosicionSanta extends OneShotBehaviour {
         ACLMessage respuesta = agente.blockingReceive();
 
         if (msg.getPerformative() == ACLMessage.INFORM) {
-            String contenido = normalizarTexto(respuesta.getContent());
-            if (contenido.substring(0, 4).equals("Bro ") && contenido.substring(contenido.length() - 8, contenido.length()).equals(" En Plan")) {
-                agente.mensajeSanta = respuesta;
-                agente.posObjetivo = leerPosicion(respuesta.getContent());
-                System.out.println("\n\tPosicion santa recibida: " + agente.posObjetivo.toString());
-            } else {
-                System.out.println("\nAGENTE -> EL MENSAJE '" + msg.getContent() + "' NO ESTA EN EL 'LENGUAJE' CORRECTO");
-                agente.doDelete();
-            }
+            agente.mensajeSanta = respuesta;
+            agente.posObjetivo = leerPosicion(respuesta.getContent());
+            System.out.println("\n\tPosicion santa recibida: " + agente.posObjetivo.toString());
         }
     }
 }

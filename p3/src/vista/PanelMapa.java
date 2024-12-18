@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import modelo.Entorno;
+import modelo.Posicion;
 import modelo.Mapa;
 
 /**
@@ -21,6 +22,8 @@ public class PanelMapa extends JPanel {
      * @brief Factor a aplicar para el dimensionado del panel.
      */
     private static final int FACTOR = 20;
+    private static final Posicion IGNORE = new Posicion(-1, -1);
+
 
     /**
      * @brief Imágenes que representan los diferentes tipos de casillas del
@@ -82,7 +85,7 @@ public class PanelMapa extends JPanel {
         panelInformacion.setBorder(new EmptyBorder(10, 10, 10, 10));
 
         etiquetaPosicion = crearEtiquetaEstilizada("Posición actual: (0, 0)");
-        // etiquetaObjetivo = crearEtiquetaEstilizadaObjetivo("Posición del Objetivo: (" + entorno.obtenerPosObjetivo().obtenerX() + ", " + entorno.obtenerPosObjetivo().obtenerY() + ")");
+        // etiquetaObjetivo = crearEtiquetaEstilizadaObjetivo("Posición del Objetivo: (" + entorno.obtenerPosObjetivo().obtenerFil() + ", " + entorno.obtenerPosObjetivo().obtenerCol() + ")");
         etiquetaEnergiaGastada = crearEtiquetaEstilizada("Energía gastada: 0");
 
         JLabel tituloInformacion = crearEtiquetaEstilizada("Estado del Agente");
@@ -176,21 +179,22 @@ public class PanelMapa extends JPanel {
                 }
             }
         }
+        
+        Posicion[] renos = entorno.obtenerPosReno();
+        
+        for (Posicion reno :renos) {
+            if (!reno.equals(IGNORE)) {
+                g.drawImage(IMAGEN_RENO, reno.obtenerCol() * FACTOR, reno.obtenerFil() * FACTOR, FACTOR, FACTOR, this);
+            } else {
+                    g.drawImage(IMAGEN_VISITADA, reno.obtenerCol() * FACTOR, reno.obtenerFil() * FACTOR, FACTOR, FACTOR, this);
+            }
+        }
 
-        // g.drawImage(IMAGEN_OBJETIVO, entorno.obtenerPosObjetivo().obtenerY() * FACTOR, entorno.obtenerPosObjetivo().obtenerX() * FACTOR, FACTOR, FACTOR, this);
-        g.drawImage(IMAGEN_AGENTE, entorno.obtenerPosAgente().obtenerY() * FACTOR, entorno.obtenerPosAgente().obtenerX() * FACTOR, FACTOR, FACTOR, this);
-        g.drawImage(IMAGEN_SANTACLAUS, entorno.obtenerPosSantaClaus().obtenerY() * FACTOR, entorno.obtenerPosSantaClaus().obtenerX() * FACTOR, FACTOR, FACTOR, this);
-        g.drawImage(IMAGEN_ELFO, entorno.obtenerPosElfo().obtenerY() * FACTOR, entorno.obtenerPosElfo().obtenerX() * FACTOR, FACTOR, FACTOR, this);
-        g.drawImage(IMAGEN_RUDOLPH, entorno.obtenerPosRudolph().obtenerY() * FACTOR, entorno.obtenerPosRudolph().obtenerX() * FACTOR, FACTOR, FACTOR, this);
-
-        g.drawImage(IMAGEN_RENO, entorno.obtenerPosReno1().obtenerY() * FACTOR, entorno.obtenerPosReno1().obtenerX() * FACTOR, FACTOR, FACTOR, this);
-        g.drawImage(IMAGEN_RENO, entorno.obtenerPosReno2().obtenerY() * FACTOR, entorno.obtenerPosReno2().obtenerX() * FACTOR, FACTOR, FACTOR, this);
-        g.drawImage(IMAGEN_RENO, entorno.obtenerPosReno3().obtenerY() * FACTOR, entorno.obtenerPosReno3().obtenerX() * FACTOR, FACTOR, FACTOR, this);
-        g.drawImage(IMAGEN_RENO, entorno.obtenerPosReno4().obtenerY() * FACTOR, entorno.obtenerPosReno4().obtenerX() * FACTOR, FACTOR, FACTOR, this);
-        g.drawImage(IMAGEN_RENO, entorno.obtenerPosReno5().obtenerY() * FACTOR, entorno.obtenerPosReno5().obtenerX() * FACTOR, FACTOR, FACTOR, this);
-        g.drawImage(IMAGEN_RENO, entorno.obtenerPosReno6().obtenerY() * FACTOR, entorno.obtenerPosReno6().obtenerX() * FACTOR, FACTOR, FACTOR, this);
-        g.drawImage(IMAGEN_RENO, entorno.obtenerPosReno7().obtenerY() * FACTOR, entorno.obtenerPosReno7().obtenerX() * FACTOR, FACTOR, FACTOR, this);
-        g.drawImage(IMAGEN_RENO, entorno.obtenerPosReno8().obtenerY() * FACTOR, entorno.obtenerPosReno8().obtenerX() * FACTOR, FACTOR, FACTOR, this);
+        // g.drawImage(IMAGEN_OBJETIVO, entorno.obtenerPosObjetivo().obtenerCol() * FACTOR, entorno.obtenerPosObjetivo().obtenerFil() * FACTOR, FACTOR, FACTOR, this);
+        g.drawImage(IMAGEN_AGENTE, entorno.obtenerPosAgente().obtenerCol() * FACTOR, entorno.obtenerPosAgente().obtenerFil() * FACTOR, FACTOR, FACTOR, this);
+        g.drawImage(IMAGEN_SANTACLAUS, entorno.obtenerPosSantaClaus().obtenerCol() * FACTOR, entorno.obtenerPosSantaClaus().obtenerFil() * FACTOR, FACTOR, FACTOR, this);
+        g.drawImage(IMAGEN_ELFO, entorno.obtenerPosElfo().obtenerCol() * FACTOR, entorno.obtenerPosElfo().obtenerFil() * FACTOR, FACTOR, FACTOR, this);
+        g.drawImage(IMAGEN_RUDOLPH, entorno.obtenerPosRudolph().obtenerCol() * FACTOR, entorno.obtenerPosRudolph().obtenerFil() * FACTOR, FACTOR, FACTOR, this);
     }
 
     /**

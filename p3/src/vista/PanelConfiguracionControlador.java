@@ -20,8 +20,6 @@ import modelo.Entorno;
 import modelo.Posicion;
 import modelo.sensores.Energia;
 import modelo.sensores.Vision;
-import vista.VistaGrafica;
-import vista.VistaTexto;
 
 /**
  * @class PanelConfiguracionControlador
@@ -58,7 +56,7 @@ public class PanelConfiguracionControlador extends JFrame {
      * @brief Tope para la dimensión del mapa. Almacena el límite para poder
      * establecer la fila y columna de las posiciones.
      */
-    private int topeDimensionMapa;
+    private final int topeDimensionMapa;
 
     /**
      * @brief Constructor por parámetro.
@@ -92,7 +90,7 @@ public class PanelConfiguracionControlador extends JFrame {
 
         // Selector para los mapas:
         JLabel etiquetaElegirMapa = new JLabel("Elegir mapa: ");
-        JComboBox<String> opciones = new JComboBox<>(this.FICHEROS_MAPAS);
+        JComboBox<String> opciones = new JComboBox<>(PanelConfiguracionControlador.FICHEROS_MAPAS);
 
         // Campos para seleccionar las coordenadas de las posicones del agente
         // y de la casilla objetivo:
@@ -136,69 +134,77 @@ public class PanelConfiguracionControlador extends JFrame {
         JLabel etiquetaColumnaRudolph = new JLabel("Columna: ");
         JSpinner campoColumnaRudolph = new JSpinner(
                 new SpinnerNumberModel(7, 0, this.topeDimensionMapa, 1));
+        
+        
+        
+        JLabel[] etiquetaFilaReno = new JLabel[8];
+        JSpinner[] campoFilaReno = new JSpinner[8];
 
-        JLabel etiquetaFilaReno1 = new JLabel("Fila: ");
-        JSpinner campoFilaReno1 = new JSpinner(
+        JLabel[] etiquetaColumnaReno = new JLabel[8];
+        JSpinner[] campoColumnaReno = new JSpinner[8];
+        
+        etiquetaFilaReno[0] = new JLabel("Fila: ");
+        campoFilaReno[0] = new JSpinner(
                 new SpinnerNumberModel(5, 0, this.topeDimensionMapa, 1));
 
-        JLabel etiquetaColumnaReno1 = new JLabel("Columna: ");
-        JSpinner campoColumnaReno1 = new JSpinner(
+        etiquetaColumnaReno[0] = new JLabel("Columna: ");
+        campoColumnaReno[0] = new JSpinner(
                 new SpinnerNumberModel(3, 0, this.topeDimensionMapa, 1));
 
-        JLabel etiquetaFilaReno2 = new JLabel("Fila: ");
-        JSpinner campoFilaReno2 = new JSpinner(
+        etiquetaFilaReno[1] = new JLabel("Fila: ");
+        campoFilaReno[1] = new JSpinner(
                 new SpinnerNumberModel(5, 0, this.topeDimensionMapa, 1));
 
-        JLabel etiquetaColumnaReno2 = new JLabel("Columna: ");
-        JSpinner campoColumnaReno2 = new JSpinner(
+        etiquetaColumnaReno[1] = new JLabel("Columna: ");
+        campoColumnaReno[1] = new JSpinner(
                 new SpinnerNumberModel(5, 0, this.topeDimensionMapa, 1));
 
-        JLabel etiquetaFilaReno3 = new JLabel("Fila: ");
-        JSpinner campoFilaReno3 = new JSpinner(
+        etiquetaFilaReno[2] = new JLabel("Fila: ");
+        campoFilaReno[2] = new JSpinner(
                 new SpinnerNumberModel(8, 0, this.topeDimensionMapa, 1));
 
-        JLabel etiquetaColumnaReno3 = new JLabel("Columna: ");
-        JSpinner campoColumnaReno3 = new JSpinner(
+        etiquetaColumnaReno[2] = new JLabel("Columna: ");
+        campoColumnaReno[2] = new JSpinner(
                 new SpinnerNumberModel(2, 0, this.topeDimensionMapa, 1));
 
-        JLabel etiquetaFilaReno4 = new JLabel("Fila: ");
-        JSpinner campoFilaReno4 = new JSpinner(
+        etiquetaFilaReno[3] = new JLabel("Fila: ");
+        campoFilaReno[3] = new JSpinner(
                 new SpinnerNumberModel(6, 0, this.topeDimensionMapa, 1));
 
-        JLabel etiquetaColumnaReno4 = new JLabel("Columna: ");
-        JSpinner campoColumnaReno4 = new JSpinner(
+        etiquetaColumnaReno[3] = new JLabel("Columna: ");
+        campoColumnaReno[3] = new JSpinner(
                 new SpinnerNumberModel(6, 0, this.topeDimensionMapa, 1));
 
-        JLabel etiquetaFilaReno5 = new JLabel("Fila: ");
-        JSpinner campoFilaReno5 = new JSpinner(
+        etiquetaFilaReno[4] = new JLabel("Fila: ");
+        campoFilaReno[4] = new JSpinner(
                 new SpinnerNumberModel(6, 0, this.topeDimensionMapa, 1));
 
-        JLabel etiquetaColumnaReno5 = new JLabel("Columna: ");
-        JSpinner campoColumnaReno5 = new JSpinner(
+        etiquetaColumnaReno[4] = new JLabel("Columna: ");
+        campoColumnaReno[4] = new JSpinner(
                 new SpinnerNumberModel(7, 0, this.topeDimensionMapa, 1));
 
-        JLabel etiquetaFilaReno6 = new JLabel("Fila: ");
-        JSpinner campoFilaReno6 = new JSpinner(
+        etiquetaFilaReno[5] = new JLabel("Fila: ");
+        campoFilaReno[5] = new JSpinner(
                 new SpinnerNumberModel(7, 0, this.topeDimensionMapa, 1));
 
-        JLabel etiquetaColumnaReno6 = new JLabel("Columna: ");
-        JSpinner campoColumnaReno6 = new JSpinner(
+        etiquetaColumnaReno[5] = new JLabel("Columna: ");
+        campoColumnaReno[5] = new JSpinner(
                 new SpinnerNumberModel(9, 0, this.topeDimensionMapa, 1));
 
-        JLabel etiquetaFilaReno7 = new JLabel("Fila: ");
-        JSpinner campoFilaReno7 = new JSpinner(
+        etiquetaFilaReno[6] = new JLabel("Fila: ");
+        campoFilaReno[6] = new JSpinner(
                 new SpinnerNumberModel(13, 0, this.topeDimensionMapa, 1));
 
-        JLabel etiquetaColumnaReno7 = new JLabel("Columna: ");
-        JSpinner campoColumnaReno7 = new JSpinner(
+        etiquetaColumnaReno[6] = new JLabel("Columna: ");
+        campoColumnaReno[6] = new JSpinner(
                 new SpinnerNumberModel(5, 0, this.topeDimensionMapa, 1));
 
-        JLabel etiquetaFilaReno8 = new JLabel("Fila: ");
-        JSpinner campoFilaReno8 = new JSpinner(
+        etiquetaFilaReno[7] = new JLabel("Fila: ");
+        campoFilaReno[7] = new JSpinner(
                 new SpinnerNumberModel(11, 0, this.topeDimensionMapa, 1));
 
-        JLabel etiquetaColumnaReno8 = new JLabel("Columna: ");
-        JSpinner campoColumnaReno8 = new JSpinner(
+        etiquetaColumnaReno[7] = new JLabel("Columna: ");
+        campoColumnaReno[7] = new JSpinner(
                 new SpinnerNumberModel(5, 0, this.topeDimensionMapa, 1));
 
         // ////////////////////////////////////////// //
@@ -235,30 +241,33 @@ public class PanelConfiguracionControlador extends JFrame {
 
                 int filaSantaClaus = (Integer) campoFilaSantaClaus.getValue();
                 int columnaSantaClaus = (Integer) campoColumnaSantaClaus.getValue();
+                
+                int[] filaReno = new int[8];
+                int[] columnaReno = new int[8];
 
-                int filaReno1 = (Integer) campoFilaReno1.getValue();
-                int columnaReno1 = (Integer) campoColumnaReno1.getValue();
+                filaReno[0] = (Integer) campoFilaReno[0].getValue();
+                columnaReno[0] = (Integer) campoColumnaReno[0].getValue();
 
-                int filaReno2 = (Integer) campoFilaReno2.getValue();
-                int columnaReno2 = (Integer) campoColumnaReno2.getValue();
+                filaReno[1] = (Integer) campoFilaReno[1].getValue();
+                columnaReno[1] = (Integer) campoColumnaReno[1].getValue();
 
-                int filaReno3 = (Integer) campoFilaReno3.getValue();
-                int columnaReno3 = (Integer) campoColumnaReno3.getValue();
+                filaReno[2] = (Integer) campoFilaReno[2].getValue();
+                columnaReno[2] = (Integer) campoColumnaReno[2].getValue();
 
-                int filaReno4 = (Integer) campoFilaReno4.getValue();
-                int columnaReno4 = (Integer) campoColumnaReno4.getValue();
+                filaReno[3] = (Integer) campoFilaReno[3].getValue();
+                columnaReno[3] = (Integer) campoColumnaReno[3].getValue();
 
-                int filaReno5 = (Integer) campoFilaReno5.getValue();
-                int columnaReno5 = (Integer) campoColumnaReno5.getValue();
+                filaReno[4] = (Integer) campoFilaReno[4].getValue();
+                columnaReno[4] = (Integer) campoColumnaReno[4].getValue();
 
-                int filaReno6 = (Integer) campoFilaReno6.getValue();
-                int columnaReno6 = (Integer) campoColumnaReno6.getValue();
+                filaReno[5] = (Integer) campoFilaReno[5].getValue();
+                columnaReno[5] = (Integer) campoColumnaReno[5].getValue();
 
-                int filaReno7 = (Integer) campoFilaReno7.getValue();
-                int columnaReno7 = (Integer) campoColumnaReno7.getValue();
+                filaReno[6] = (Integer) campoFilaReno[6].getValue();
+                columnaReno[6] = (Integer) campoColumnaReno[6].getValue();
 
-                int filaReno8 = (Integer) campoFilaReno8.getValue();
-                int columnaReno8 = (Integer) campoColumnaReno8.getValue();
+                filaReno[7] = (Integer) campoFilaReno[7].getValue();
+                columnaReno[7] = (Integer) campoColumnaReno[7].getValue();
 
                 // Preparar lo necesario para iniciar la simulación mediante el
                 // controlador:
@@ -272,14 +281,16 @@ public class PanelConfiguracionControlador extends JFrame {
                 Posicion posElfo = new Posicion(filaElfo, columnaElfo);
                 Posicion posSantaClaus = new Posicion(filaSantaClaus, columnaSantaClaus);
 
-                Posicion posReno1 = new Posicion(filaReno1, columnaReno1);
-                Posicion posReno2 = new Posicion(filaReno2, columnaReno2);
-                Posicion posReno3 = new Posicion(filaReno3, columnaReno3);
-                Posicion posReno4 = new Posicion(filaReno4, columnaReno4);
-                Posicion posReno5 = new Posicion(filaReno5, columnaReno5);
-                Posicion posReno6 = new Posicion(filaReno6, columnaReno6);
-                Posicion posReno7 = new Posicion(filaReno7, columnaReno7);
-                Posicion posReno8 = new Posicion(filaReno8, columnaReno8);
+                Posicion[] posReno = new Posicion[8];
+                
+                posReno[0] = new Posicion(filaReno[0], columnaReno[0]);
+                posReno[1] = new Posicion(filaReno[1], columnaReno[1]);
+                posReno[2] = new Posicion(filaReno[2], columnaReno[2]);
+                posReno[3] = new Posicion(filaReno[3], columnaReno[3]);
+                posReno[4] = new Posicion(filaReno[4], columnaReno[4]);
+                posReno[5] = new Posicion(filaReno[5], columnaReno[5]);
+                posReno[6] = new Posicion(filaReno[6], columnaReno[6]);
+                posReno[7] = new Posicion(filaReno[7], columnaReno[7]);
 
                 
                 
@@ -288,12 +299,8 @@ public class PanelConfiguracionControlador extends JFrame {
                 try {
 
                     // Creamos y configuramos el entorno
-                    entorno = Entorno.obtenerInstancia(posAgente,
-                            /*posObjetivo,*/ posReno1, posReno2,
-                            posReno3, posReno4, posReno5,
-                            posReno6, posReno7, posReno8,
-                            posElfo, posRudolph,
-                            posSantaClaus);
+                    entorno = Entorno.obtenerInstancia(posAgente, posReno,
+                            posElfo, posRudolph, posSantaClaus);
 
                     // Establecer el mapa:
                     entorno.establecerMapa(mapaSeleccionado);
@@ -572,21 +579,21 @@ public class PanelConfiguracionControlador extends JFrame {
         gbc.gridx = 1;
         gbc.gridy = fila;
         gbc.anchor = GridBagConstraints.EAST;
-        panel.add(etiquetaFilaReno1, gbc);
+        panel.add(etiquetaFilaReno[0], gbc);
 
         gbc.gridx = 2;
         gbc.anchor = GridBagConstraints.WEST;
-        panel.add(campoFilaReno1, gbc);
+        panel.add(campoFilaReno[0], gbc);
 
         // Para la columna:
         gbc.gridx = 3;
         gbc.gridy = fila;
         gbc.anchor = GridBagConstraints.EAST;
-        panel.add(etiquetaColumnaReno1, gbc);
+        panel.add(etiquetaColumnaReno[0], gbc);
 
         gbc.gridx = 4;
         gbc.anchor = GridBagConstraints.WEST;
-        panel.add(campoColumnaReno1, gbc);
+        panel.add(campoColumnaReno[0], gbc);
         fila++;
 
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
@@ -610,21 +617,21 @@ public class PanelConfiguracionControlador extends JFrame {
         gbc.gridx = 1;
         gbc.gridy = fila;
         gbc.anchor = GridBagConstraints.EAST;
-        panel.add(etiquetaFilaReno2, gbc);
+        panel.add(etiquetaFilaReno[1], gbc);
 
         gbc.gridx = 2;
         gbc.anchor = GridBagConstraints.WEST;
-        panel.add(campoFilaReno2, gbc);
+        panel.add(campoFilaReno[1], gbc);
 
         // Para la columna:
         gbc.gridx = 3;
         gbc.gridy = fila;
         gbc.anchor = GridBagConstraints.EAST;
-        panel.add(etiquetaColumnaReno2, gbc);
+        panel.add(etiquetaColumnaReno[1], gbc);
 
         gbc.gridx = 4;
         gbc.anchor = GridBagConstraints.WEST;
-        panel.add(campoColumnaReno2, gbc);
+        panel.add(campoColumnaReno[1], gbc);
         fila++;
 
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
@@ -648,21 +655,21 @@ public class PanelConfiguracionControlador extends JFrame {
         gbc.gridx = 1;
         gbc.gridy = fila;
         gbc.anchor = GridBagConstraints.EAST;
-        panel.add(etiquetaFilaReno3, gbc);
+        panel.add(etiquetaFilaReno[2], gbc);
 
         gbc.gridx = 2;
         gbc.anchor = GridBagConstraints.WEST;
-        panel.add(campoFilaReno3, gbc);
+        panel.add(campoFilaReno[2], gbc);
 
         // Para la columna:
         gbc.gridx = 3;
         gbc.gridy = fila;
         gbc.anchor = GridBagConstraints.EAST;
-        panel.add(etiquetaColumnaReno3, gbc);
+        panel.add(etiquetaColumnaReno[2], gbc);
 
         gbc.gridx = 4;
         gbc.anchor = GridBagConstraints.WEST;
-        panel.add(campoColumnaReno3, gbc);
+        panel.add(campoColumnaReno[2], gbc);
         fila++;
 
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
@@ -686,21 +693,21 @@ public class PanelConfiguracionControlador extends JFrame {
         gbc.gridx = 1;
         gbc.gridy = fila;
         gbc.anchor = GridBagConstraints.EAST;
-        panel.add(etiquetaFilaReno4, gbc);
+        panel.add(etiquetaFilaReno[3], gbc);
 
         gbc.gridx = 2;
         gbc.anchor = GridBagConstraints.WEST;
-        panel.add(campoFilaReno4, gbc);
+        panel.add(campoFilaReno[3], gbc);
 
         // Para la columna:
         gbc.gridx = 3;
         gbc.gridy = fila;
         gbc.anchor = GridBagConstraints.EAST;
-        panel.add(etiquetaColumnaReno4, gbc);
+        panel.add(etiquetaColumnaReno[3], gbc);
 
         gbc.gridx = 4;
         gbc.anchor = GridBagConstraints.WEST;
-        panel.add(campoColumnaReno4, gbc);
+        panel.add(campoColumnaReno[3], gbc);
         fila++;
 
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
@@ -724,21 +731,21 @@ public class PanelConfiguracionControlador extends JFrame {
         gbc.gridx = 1;
         gbc.gridy = fila;
         gbc.anchor = GridBagConstraints.EAST;
-        panel.add(etiquetaFilaReno5, gbc);
+        panel.add(etiquetaFilaReno[4], gbc);
 
         gbc.gridx = 2;
         gbc.anchor = GridBagConstraints.WEST;
-        panel.add(campoFilaReno5, gbc);
+        panel.add(campoFilaReno[4], gbc);
 
         // Para la columna:
         gbc.gridx = 3;
         gbc.gridy = fila;
         gbc.anchor = GridBagConstraints.EAST;
-        panel.add(etiquetaColumnaReno5, gbc);
+        panel.add(etiquetaColumnaReno[4], gbc);
 
         gbc.gridx = 4;
         gbc.anchor = GridBagConstraints.WEST;
-        panel.add(campoColumnaReno5, gbc);
+        panel.add(campoColumnaReno[4], gbc);
         fila++;
 
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
@@ -762,21 +769,21 @@ public class PanelConfiguracionControlador extends JFrame {
         gbc.gridx = 1;
         gbc.gridy = fila;
         gbc.anchor = GridBagConstraints.EAST;
-        panel.add(etiquetaFilaReno6, gbc);
+        panel.add(etiquetaFilaReno[5], gbc);
 
         gbc.gridx = 2;
         gbc.anchor = GridBagConstraints.WEST;
-        panel.add(campoFilaReno6, gbc);
+        panel.add(campoFilaReno[5], gbc);
 
         // Para la columna:
         gbc.gridx = 3;
         gbc.gridy = fila;
         gbc.anchor = GridBagConstraints.EAST;
-        panel.add(etiquetaColumnaReno6, gbc);
+        panel.add(etiquetaColumnaReno[5], gbc);
 
         gbc.gridx = 4;
         gbc.anchor = GridBagConstraints.WEST;
-        panel.add(campoColumnaReno6, gbc);
+        panel.add(campoColumnaReno[5], gbc);
         fila++;
         
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
@@ -800,21 +807,21 @@ public class PanelConfiguracionControlador extends JFrame {
         gbc.gridx = 1;
         gbc.gridy = fila;
         gbc.anchor = GridBagConstraints.EAST;
-        panel.add(etiquetaFilaReno7, gbc);
+        panel.add(etiquetaFilaReno[6], gbc);
 
         gbc.gridx = 2;
         gbc.anchor = GridBagConstraints.WEST;
-        panel.add(campoFilaReno7, gbc);
+        panel.add(campoFilaReno[6], gbc);
 
         // Para la columna:
         gbc.gridx = 3;
         gbc.gridy = fila;
         gbc.anchor = GridBagConstraints.EAST;
-        panel.add(etiquetaColumnaReno7, gbc);
+        panel.add(etiquetaColumnaReno[6], gbc);
 
         gbc.gridx = 4;
         gbc.anchor = GridBagConstraints.WEST;
-        panel.add(campoColumnaReno7, gbc);
+        panel.add(campoColumnaReno[6], gbc);
         fila++;
 
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
@@ -838,21 +845,21 @@ public class PanelConfiguracionControlador extends JFrame {
         gbc.gridx = 1;
         gbc.gridy = fila;
         gbc.anchor = GridBagConstraints.EAST;
-        panel.add(etiquetaFilaReno8, gbc);
+        panel.add(etiquetaFilaReno[7], gbc);
 
         gbc.gridx = 2;
         gbc.anchor = GridBagConstraints.WEST;
-        panel.add(campoFilaReno8, gbc);
+        panel.add(campoFilaReno[7], gbc);
 
         // Para la columna:
         gbc.gridx = 3;
         gbc.gridy = fila;
         gbc.anchor = GridBagConstraints.EAST;
-        panel.add(etiquetaColumnaReno8, gbc);
+        panel.add(etiquetaColumnaReno[7], gbc);
 
         gbc.gridx = 4;
         gbc.anchor = GridBagConstraints.WEST;
-        panel.add(campoColumnaReno8, gbc);
+        panel.add(campoColumnaReno[7], gbc);
         fila++;
 
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //

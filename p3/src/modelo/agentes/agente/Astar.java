@@ -64,7 +64,7 @@ public class Astar {
      * Se llama solo desde el metodo busqueda
      */
     private static double heuristica(Posicion origen, Posicion dest) {
-        return Math.sqrt(Math.pow((origen.obtenerX() - dest.obtenerX()), 2.0) + Math.pow((origen.obtenerY() - dest.obtenerY()), 2.0));
+        return Math.sqrt(Math.pow((origen.obtenerFil() - dest.obtenerFil()), 2.0) + Math.pow((origen.obtenerCol() - dest.obtenerCol()), 2.0));
     }
 
     /**
@@ -78,20 +78,20 @@ public class Astar {
 
         ArrayList<Posicion> camino = new ArrayList<>();
 
-        int fila = dest.obtenerX();
-        int col = dest.obtenerY();
+        int fila = dest.obtenerFil();
+        int col = dest.obtenerCol();
 
         Posicion siguiente;
         do {
             camino.add(new Posicion(fila, col));
             siguiente = celdas[fila][col].padre;
-            fila = siguiente.obtenerX();
-            col = siguiente.obtenerY();
+            fila = siguiente.obtenerFil();
+            col = siguiente.obtenerCol();
         } while (celdas[fila][col].padre != siguiente);
 
         /*
         for (Posicion pos : camino) {
-            System.out.println("{"+pos.obtenerX()+","+pos.obtenerY()+"}\n");
+            System.out.println("{"+pos.obtenerFil()+","+pos.obtenerCol()+"}\n");
         }*/
         return camino;
     }
@@ -106,17 +106,17 @@ public class Astar {
     public static ArrayList<Posicion> busqueda(Mapa mapa, Posicion origen, Posicion dest) {
 
         //Comprobaciones iniciales
-        if (!mapa.casillaEsValida(origen.obtenerX(), origen.obtenerY())) {
+        if (!mapa.casillaEsValida(origen.obtenerFil(), origen.obtenerCol())) {
             System.out.println("\tOrigen invalido...");
             return new ArrayList();
         }
 
-        if (!mapa.casillaEsValida(dest.obtenerX(), origen.obtenerY())) {
+        if (!mapa.casillaEsValida(dest.obtenerFil(), origen.obtenerCol())) {
             System.out.println("\tDestino invalido...");
             return new ArrayList();
         }
 
-        if (mapa.obtenerCasilla(origen.obtenerX(), origen.obtenerY()) == -1) {
+        if (mapa.obtenerCasilla(origen.obtenerFil(), origen.obtenerCol()) == -1) {
             System.out.println("\tOrigen bloqueado...");
             return new ArrayList();
         }
@@ -132,8 +132,8 @@ public class Astar {
 
         int i, j;
 
-        i = origen.obtenerX();
-        j = origen.obtenerY();
+        i = origen.obtenerFil();
+        j = origen.obtenerCol();
         celdas[i][j] = new Celda();
         celdas[i][j].f = 0.0;
         celdas[i][j].g = 0.0;
@@ -159,26 +159,26 @@ public class Astar {
             for (int addX = -1; addX <= 1; addX++) {
                 for (int addY = -1; addY <= 1; addY++) {
                     Posicion adyacente = new Posicion(i + addX, j + addY);
-                    if (mapa.casillaEsValida(adyacente.obtenerX(), adyacente.obtenerY())) {
-                        if (celdas[adyacente.obtenerX()] == null) {
-                            celdas[adyacente.obtenerX()] = new Celda[mapa.obtenerNumColumnas()];
+                    if (mapa.casillaEsValida(adyacente.obtenerFil(), adyacente.obtenerCol())) {
+                        if (celdas[adyacente.obtenerFil()] == null) {
+                            celdas[adyacente.obtenerFil()] = new Celda[mapa.obtenerNumColumnas()];
                         }
-                        if (celdas[adyacente.obtenerX()][adyacente.obtenerY()] == null) {
-                            celdas[adyacente.obtenerX()][adyacente.obtenerY()] = new Celda();
+                        if (celdas[adyacente.obtenerFil()][adyacente.obtenerCol()] == null) {
+                            celdas[adyacente.obtenerFil()][adyacente.obtenerCol()] = new Celda();
                         }
 
                         if (adyacente.sonIguales(dest) //Si es el destino se devuelve el camino encontrado
                                 && (addX != addY || (mapa.obtenerCasilla(i + addX, j) != -1 || mapa.obtenerCasilla(i, j + addY) != -1))) {   //Comprobacion bloqueo diagonales
-                            celdas[adyacente.obtenerX()][adyacente.obtenerY()].padre = new Posicion(i, j);
+                            celdas[adyacente.obtenerFil()][adyacente.obtenerCol()].padre = new Posicion(i, j);
                             System.out.println("\tEl agente esta buscando su objetivo...");
-                            if (mapa.obtenerCasilla(dest.obtenerX(), dest.obtenerY()) == -1) {
+                            if (mapa.obtenerCasilla(dest.obtenerFil(), dest.obtenerCol()) == -1) {
                                 System.out.println("\tObjetivo inalcanzable -> Esta sobre un muro!!!...");
                                 return new ArrayList();
                             }
                             return obtenerCamino(celdas, dest);
 
-                        } else if (!cerrados[adyacente.obtenerX()][adyacente.obtenerY()] //Si no se ha explorado ya
-                                && mapa.obtenerCasilla(adyacente.obtenerX(), adyacente.obtenerY()) != -1 //y es transitable
+                        } else if (!cerrados[adyacente.obtenerFil()][adyacente.obtenerCol()] //Si no se ha explorado ya
+                                && mapa.obtenerCasilla(adyacente.obtenerFil(), adyacente.obtenerCol()) != -1 //y es transitable
                                 && (addX != addY || (mapa.obtenerCasilla(i + addX, j) != -1 || mapa.obtenerCasilla(i, j + addY) != -1))) {   //Comprobacion bloqueo diagonales
 
                             //Se calculay registra el valor de la celda                         
@@ -187,15 +187,15 @@ public class Astar {
                             hNew = heuristica(adyacente, dest);
                             fNew = gNew + hNew;
 
-                            if (celdas[adyacente.obtenerX()][adyacente.obtenerY()].f == -1
-                                    || celdas[adyacente.obtenerX()][adyacente.obtenerY()].f > fNew) {
+                            if (celdas[adyacente.obtenerFil()][adyacente.obtenerCol()].f == -1
+                                    || celdas[adyacente.obtenerFil()][adyacente.obtenerCol()].f > fNew) {
 
-                                abiertos.add(new Datos(fNew, adyacente.obtenerX(), adyacente.obtenerY()));
+                                abiertos.add(new Datos(fNew, adyacente.obtenerFil(), adyacente.obtenerCol()));
 
-                                celdas[adyacente.obtenerX()][adyacente.obtenerY()].g = gNew;
+                                celdas[adyacente.obtenerFil()][adyacente.obtenerCol()].g = gNew;
 
-                                celdas[adyacente.obtenerX()][adyacente.obtenerY()].f = fNew;
-                                celdas[adyacente.obtenerX()][adyacente.obtenerY()].padre = new Posicion(i, j);
+                                celdas[adyacente.obtenerFil()][adyacente.obtenerCol()].f = fNew;
+                                celdas[adyacente.obtenerFil()][adyacente.obtenerCol()].padre = new Posicion(i, j);
                             }
                         }
                     }
