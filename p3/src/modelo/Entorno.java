@@ -3,7 +3,6 @@ package modelo;
 import java.io.IOException;
 import java.util.ArrayList;
 import modelo.sensores.Sensor;
-import modelo.sensores.Vision;
 import vista.Vista;
 
 /**
@@ -60,21 +59,12 @@ public class Entorno {
     /**
      * @brief Posicion de cada reno
      */
-    private Posicion posReno1;
-    private Posicion posReno2;
-    private Posicion posReno3;
-    private Posicion posReno4;
-    private Posicion posReno5;
-    private Posicion posReno6;
-    private Posicion posReno7;
-    private Posicion posReno8;
+    private Posicion[] posReno;
 
     /**
      * @brief Posición de la casilla objetivo en el mapa.
      */
-
     //private Posicion posObjetivo;
-
     /**
      * @brief Constructor privado para evitar la creación de múltiples
      * instancias. Inicializa el mapa a partir del archivo de texto
@@ -87,9 +77,7 @@ public class Entorno {
      */
     private Entorno(
             Posicion posAgente,
-            Posicion posReno1, Posicion posReno2,
-            Posicion posReno3, Posicion posReno4, Posicion posReno5,
-            Posicion posReno6, Posicion posReno7, Posicion posReno8,
+            Posicion[] posReno,
             Posicion posElfo, Posicion posRudolph,
             Posicion posSantaClaus) throws IOException {
 
@@ -97,15 +85,7 @@ public class Entorno {
         this.posElfo = posElfo;
         this.posRudolph = posRudolph;
         this.posSantaClaus = posSantaClaus;
-        this.posReno1 = posReno1;
-        this.posReno2 = posReno2;
-        this.posReno3 = posReno3;
-        this.posReno4 = posReno4;
-        this.posReno5 = posReno5;
-        this.posReno6 = posReno6;
-        this.posReno7 = posReno7;
-        this.posReno8 = posReno8;
-
+        this.posReno = posReno;
 
         this.sensores = new ArrayList<>();
         this.vistas = new ArrayList<>();
@@ -122,23 +102,12 @@ public class Entorno {
      * @return La instancia única de Entorno.
      * @throws IOException Si ocurre un error al leer el archivo.
      */
-    public static Entorno obtenerInstancia(
-            Posicion posAgente,
-            Posicion posReno1, Posicion posReno2,
-            Posicion posReno3, Posicion posReno4, Posicion posReno5,
-            Posicion posReno6, Posicion posReno7, Posicion posReno8,
-            Posicion posElfo, Posicion posRudolph,
-            Posicion posSantaClaus) throws IOException {
+    public static Entorno obtenerInstancia(Posicion posAgente, Posicion[] posReno, Posicion posElfo, Posicion posRudolph, Posicion posSantaClaus) throws IOException {
 
         // De esta forma fomentamos el patrón Singleton, pues si ya existe
         // una instancia del Entorno no damos opción a crear otra.
         if (instancia == null) {
-            instancia = new Entorno(posAgente,
-                    posReno1, posReno2,
-                    posReno3, posReno4, posReno5,
-                    posReno6, posReno7, posReno8,
-                    posElfo, posRudolph,
-                    posSantaClaus);
+            instancia = new Entorno(posAgente, posReno, posElfo, posRudolph, posSantaClaus);
         }
 
         return (instancia);
@@ -157,16 +126,16 @@ public class Entorno {
 
         // Dejar libre la antigua casilla del agente:
         this.mapa.establecerCasilla(
-                this.posAgente.obtenerX(),
-                this.posAgente.obtenerY(),
+                this.posAgente.obtenerFil(),
+                this.posAgente.obtenerCol(),
                 Mapa.VISITADA);
 
         this.posAgente = nuevaPosAgente;
 
         // Actualizar la posición del agente en el mapa:
         this.mapa.establecerCasilla(
-                nuevaPosAgente.obtenerX(),
-                nuevaPosAgente.obtenerY(),
+                nuevaPosAgente.obtenerFil(),
+                nuevaPosAgente.obtenerCol(),
                 Mapa.AGENTE);
 
         // En este punto, se actualizan los observadores (sensores y vistas):
@@ -191,12 +160,12 @@ public class Entorno {
 
         // Colocar al agente y a la casilla objetivo en el mapa:
         //this.mapa.establecerCasilla(
-        //        this.posAgente.obtenerX(), 
-        //        this.posAgente.obtenerY(), 
+        //        this.posAgente.obtenerFil(), 
+        //        this.posAgente.obtenerCol(), 
         //        Mapa.AGENTE);
         //this.mapa.establecerCasilla(
-        //        this.posObjetivo.obtenerX(), 
-        //        this.posObjetivo.obtenerY(), 
+        //        this.posObjetivo.obtenerFil(), 
+        //        this.posObjetivo.obtenerCol(), 
         //        Mapa.OBJETIVO);
     }
 
@@ -217,37 +186,8 @@ public class Entorno {
         return (this.posAgente);
     }
 
-
-    public Posicion obtenerPosReno1() {
-        return (this.posReno1);
-    }
-
-    public Posicion obtenerPosReno2() {
-        return (this.posReno2);
-    }
-
-    public Posicion obtenerPosReno3() {
-        return (this.posReno3);
-    }
-
-    public Posicion obtenerPosReno4() {
-        return (this.posReno4);
-    }
-
-    public Posicion obtenerPosReno5() {
-        return (this.posReno5);
-    }
-
-    public Posicion obtenerPosReno6() {
-        return (this.posReno6);
-    }
-
-    public Posicion obtenerPosReno7() {
-        return (this.posReno7);
-    }
-
-    public Posicion obtenerPosReno8() {
-        return (this.posReno8);
+    public Posicion[] obtenerPosReno() {
+        return (this.posReno);
     }
 
     public Posicion obtenerPosElfo() {
@@ -271,8 +211,8 @@ public class Entorno {
      * 'false' en caso contrario.
      */
     public boolean posEsValida(Posicion pos) {
-        return (mapa.casillaEsValida(pos.obtenerX(), pos.obtenerY()) && (mapa.obtenerCasilla(pos.obtenerX(), pos.obtenerY()) == Mapa.LIBRE
-                || mapa.obtenerCasilla(pos.obtenerX(), pos.obtenerY()) == Mapa.OBJETIVO));
+        return (mapa.casillaEsValida(pos.obtenerFil(), pos.obtenerCol()) && (mapa.obtenerCasilla(pos.obtenerFil(), pos.obtenerCol()) == Mapa.LIBRE
+                || mapa.obtenerCasilla(pos.obtenerFil(), pos.obtenerCol()) == Mapa.OBJETIVO));
     }
 
     /**

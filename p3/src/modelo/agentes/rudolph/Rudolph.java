@@ -11,7 +11,7 @@ import modelo.Posicion;
  */
 public class Rudolph extends Agent {
 
-    private Posicion[] renos;
+    protected Posicion[] renos;
 
     @Override
     protected void setup() {
@@ -22,20 +22,13 @@ public class Rudolph extends Agent {
 
             renos = new Posicion[8];
 
-            renos[0] = entorno.obtenerPosReno1();
-            renos[1] = entorno.obtenerPosReno2();
-            renos[2] = entorno.obtenerPosReno3();
-            renos[3] = entorno.obtenerPosReno4();
-            renos[4] = entorno.obtenerPosReno5();
-            renos[5] = entorno.obtenerPosReno6();
-            renos[6] = entorno.obtenerPosReno7();
-            renos[7] = entorno.obtenerPosReno8();
+            renos = entorno.obtenerPosReno();
         }
         
         SequentialBehaviour comportamientos = new SequentialBehaviour();
 
         comportamientos.addSubBehaviour(new EvaluarClave(this));
-        comportamientos.addSubBehaviour(new DevolverReno(renos, this));
+        comportamientos.addSubBehaviour(new DevolverReno(this));
 
         // Iniciar el flujo de comunicación (por ahora lo he puesto aquí):
         addBehaviour(comportamientos);

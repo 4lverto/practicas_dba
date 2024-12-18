@@ -66,7 +66,7 @@ public class VistaGrafica extends Vista {
     public void actualizar() {
         Energia sensorEnergia = (Energia) entorno.obtenerSensores().get(1);
         this.panelMapa.establecerMapa(this.entorno.obtenerMapa());
-        this.panelMapa.actualizarInformacion(this.entorno.obtenerPosAgente().obtenerX(), this.entorno.obtenerPosAgente().obtenerY(), sensorEnergia.obtenerEnergia() - 1);
+        this.panelMapa.actualizarInformacion(this.entorno.obtenerPosAgente().obtenerFil(), this.entorno.obtenerPosAgente().obtenerCol(), sensorEnergia.obtenerEnergia() - 1);
         this.panelMapa.repaint(); // Para repintar la pantalla.
     }
 

@@ -8,11 +8,11 @@ import java.text.Normalizer;
  *
  * @author rafalpv
  */
-public class MensajeDespedidaASanta extends OneShotBehaviour {
+public class DespedidaSanta extends OneShotBehaviour {
 
     private final Agente agente;
 
-    public MensajeDespedidaASanta(Agente agente) {
+    public DespedidaSanta(Agente agente) {
         this.agente = agente;
     }
 

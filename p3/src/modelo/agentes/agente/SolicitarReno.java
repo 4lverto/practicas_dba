@@ -44,7 +44,7 @@ public class SolicitarReno extends OneShotBehaviour {
         ACLMessage msg = agente.mensajeRudolph;
 
         ACLMessage respuesta = msg.createReply(ACLMessage.QUERY_REF);
-        respuesta.setContent(agente.entorno.obtenerPosAgente().obtenerX() + "," + agente.entorno.obtenerPosAgente().obtenerY());
+        respuesta.setContent(agente.entorno.obtenerPosAgente().obtenerFil() + "," + agente.entorno.obtenerPosAgente().obtenerCol());
         
         try {
             Thread.sleep(100);
