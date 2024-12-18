@@ -41,7 +41,6 @@ public class EvaluarMision extends OneShotBehaviour {
             String contenido = normalizarTexto(msg.getContent());
             System.out.println("SANTA -> HE RECIBIDO:" + contenido);
 
-            ACLMessage respuesta;
             if (contenido.substring(0, 17).equals("Rakas Joulupukki ") && contenido.substring(contenido.length() - 7, contenido.length()).equals(" Kiitos")) {
                 if (Math.floor(Math.random() * 10) <= 7) {
                     agente.establecerMensajeTraducido("Hyvaa joulua hn9yar2x Nahdaan pian");

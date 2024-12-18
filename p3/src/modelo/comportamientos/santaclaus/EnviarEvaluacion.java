@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package modelo.comportamientos.santaclaus;
 
 import jade.core.AID;
@@ -39,6 +35,7 @@ public class EnviarEvaluacion extends OneShotBehaviour {
         if (agente.obtenerAceptado()) {
                 respuesta = msg.createReply(ACLMessage.ACCEPT_PROPOSAL);
                 respuesta.setContent(contenido);
+                System.out.println(respuesta);
                 agente.send(respuesta);
             } else {
                 respuesta = msg.createReply(ACLMessage.REJECT_PROPOSAL);

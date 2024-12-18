@@ -30,7 +30,7 @@ public class ProponerMisionSanta extends OneShotBehaviour {
     }
 
     /**
-     * @brief No se ni pa qué voy a usar esto pero bueno
+     * @brief Funcion para normalizar el texto
      * @param texto
      * @return
      */
@@ -59,6 +59,7 @@ public class ProponerMisionSanta extends OneShotBehaviour {
             String contenido = normalizarTexto(msg.getContent());
             System.out.println("Respuesta recibida a peticion: " + contenido);
             agente.establecerMensajeTraducido(contenido);
+            agente.modificarMensajeSanta(msg);
         } else {
             if (msg.getPerformative() == ACLMessage.REJECT_PROPOSAL)
                 System.out.println("Peticion denegada por santa");

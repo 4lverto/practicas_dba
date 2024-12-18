@@ -20,14 +20,14 @@ public class PanelMapa extends JPanel {
     /**
      * @brief Factor a aplicar para el dimensionado del panel.
      */
-    private static final int FACTOR = 50;
+    private static final int FACTOR = 20;
     
     /**
      * @brief Imágenes que representan los diferentes tipos de casillas del mapa.
      */
     private static Image IMAGEN_LIBRE;
     private static Image IMAGEN_OBSTACULO;
-    private static Image IMAGEN_OBJETIVO;
+    // private static Image IMAGEN_OBJETIVO;
     private static Image IMAGEN_VISITADA;
     private static Image IMAGEN_AGENTE;
     private static Image IMAGEN_SANTACLAUS;
@@ -81,7 +81,7 @@ public class PanelMapa extends JPanel {
         panelInformacion.setBorder(new EmptyBorder(10, 10, 10, 10));
 
         etiquetaPosicion = crearEtiquetaEstilizada("Posición actual: (0, 0)");
-        etiquetaObjetivo = crearEtiquetaEstilizadaObjetivo("Posición del Objetivo: (" + entorno.obtenerPosObjetivo().obtenerX() + ", " + entorno.obtenerPosObjetivo().obtenerY() + ")");
+        // etiquetaObjetivo = crearEtiquetaEstilizadaObjetivo("Posición del Objetivo: (" + entorno.obtenerPosObjetivo().obtenerX() + ", " + entorno.obtenerPosObjetivo().obtenerY() + ")");
         etiquetaEnergiaGastada = crearEtiquetaEstilizada("Energía gastada: 0");
 
         JLabel tituloInformacion = crearEtiquetaEstilizada("Estado del Agente");
@@ -108,8 +108,8 @@ public class PanelMapa extends JPanel {
         panelInformacion.add(tituloInformacion);
         panelInformacion.add(Box.createRigidArea(new Dimension(0, 15)));
         panelInformacion.add(etiquetaPosicion);
-        panelInformacion.add(Box.createRigidArea(new Dimension(0, 10)));
-        panelInformacion.add(etiquetaObjetivo);
+        //panelInformacion.add(Box.createRigidArea(new Dimension(0, 10)));
+        //panelInformacion.add(etiquetaObjetivo);
         panelInformacion.add(Box.createRigidArea(new Dimension(0, 10)));
         panelInformacion.add(etiquetaEnergiaGastada);
         panelInformacion.add(Box.createRigidArea(new Dimension(0, 15)));
@@ -121,15 +121,13 @@ public class PanelMapa extends JPanel {
         try {
             IMAGEN_LIBRE = ImageIO.read(new File("resources/LIBRE.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
             IMAGEN_AGENTE = ImageIO.read(new File("resources/AGENTE2.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
-            IMAGEN_OBJETIVO = ImageIO.read(new File("resources/SANTA.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
+            // IMAGEN_OBJETIVO = ImageIO.read(new File("resources/SANTA.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
             IMAGEN_OBSTACULO = ImageIO.read(new File("resources/OBSTACULO.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
             IMAGEN_VISITADA = ImageIO.read(new File("resources/VISITADO.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
             IMAGEN_SANTACLAUS = ImageIO.read(new File("resources/VISITADO.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
             IMAGEN_ELFO = ImageIO.read(new File("resources/ELFO.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
             IMAGEN_RUDOLPH = ImageIO.read(new File("resources/RUDOLPH.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
             IMAGEN_RENO = ImageIO.read(new File("resources/RENO.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
-            
-        
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -177,7 +175,8 @@ public class PanelMapa extends JPanel {
                 }
             }
         }
-        g.drawImage(IMAGEN_OBJETIVO, entorno.obtenerPosObjetivo().obtenerY() * FACTOR, entorno.obtenerPosObjetivo().obtenerX() * FACTOR, FACTOR, FACTOR, this);
+        
+        // g.drawImage(IMAGEN_OBJETIVO, entorno.obtenerPosObjetivo().obtenerY() * FACTOR, entorno.obtenerPosObjetivo().obtenerX() * FACTOR, FACTOR, FACTOR, this);
         g.drawImage(IMAGEN_AGENTE, entorno.obtenerPosAgente().obtenerY() * FACTOR, entorno.obtenerPosAgente().obtenerX() * FACTOR, FACTOR, FACTOR, this);
         g.drawImage(IMAGEN_SANTACLAUS, entorno.obtenerPosSantaClaus().obtenerY() * FACTOR, entorno.obtenerPosSantaClaus().obtenerX() * FACTOR, FACTOR, FACTOR, this);
         g.drawImage(IMAGEN_ELFO, entorno.obtenerPosElfo().obtenerY() * FACTOR, entorno.obtenerPosElfo().obtenerX() * FACTOR, FACTOR, FACTOR, this);
@@ -191,9 +190,6 @@ public class PanelMapa extends JPanel {
         g.drawImage(IMAGEN_RENO, entorno.obtenerPosReno6().obtenerY() * FACTOR, entorno.obtenerPosReno6().obtenerX() * FACTOR, FACTOR, FACTOR, this);
         g.drawImage(IMAGEN_RENO, entorno.obtenerPosReno7().obtenerY() * FACTOR, entorno.obtenerPosReno7().obtenerX() * FACTOR, FACTOR, FACTOR, this);
         g.drawImage(IMAGEN_RENO, entorno.obtenerPosReno8().obtenerY() * FACTOR, entorno.obtenerPosReno8().obtenerX() * FACTOR, FACTOR, FACTOR, this);
-        
-    
-    
     }
 
     /**
