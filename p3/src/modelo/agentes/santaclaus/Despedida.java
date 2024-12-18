@@ -25,12 +25,11 @@ public class Despedida extends OneShotBehaviour {
             respuesta.setContent("!HoHoHo!");
             System.out.println("\n\tSanta ha recibido la despedida\n");
             agente.send(respuesta);
-
         } else {
             System.out.println("SANTA -> Error de Protocolo");
         }
+        
         this.agente.doDelete();
-
     }
 
 }

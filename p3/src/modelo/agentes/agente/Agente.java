@@ -133,7 +133,7 @@ public class Agente extends Agent {
         comportamientos.addSubBehaviour(fsmSanta);
 
         comportamientos.addSubBehaviour(new SolicitarTraduccion("Traduccion-confirmacion-llegada", this));
-        comportamientos.addSubBehaviour(new MensajeDespedidaASanta(this));
+        comportamientos.addSubBehaviour(new DespedidaSanta(this));
 
         comportamientos.addSubBehaviour(new PasosTotales(this));
 

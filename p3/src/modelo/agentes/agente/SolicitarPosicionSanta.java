@@ -1,6 +1,5 @@
 package modelo.agentes.agente;
 
-
 import modelo.Posicion;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
@@ -9,12 +8,12 @@ import java.text.Normalizer;
 public class SolicitarPosicionSanta extends OneShotBehaviour {
 
     private final Agente agente;
-    
+
     private Posicion leerPosicion(String mensaje) {
         String[] valores = mensaje.split(",");
         return new Posicion(Integer.parseInt(valores[0]), Integer.parseInt(valores[1]));
     }
-    
+
     /**
      * @brief Constructor por defecto.
      *
@@ -41,17 +40,23 @@ public class SolicitarPosicionSanta extends OneShotBehaviour {
      */
     @Override
     public void action() {
-        ACLMessage respuesta = agente.mensajeSanta.createReply(ACLMessage.INFORM);
-        respuesta.setContent(normalizarTexto(agente.mensaje));
-        agente.send(respuesta);
-        
-        // Espera a que Santa le responda con las coordenadas
-        ACLMessage mensajeCoordenadas = agente.blockingReceive();
+        ACLMessage msg = agente.mensajeSanta.createReply(ACLMessage.INFORM);
+        msg.setContent(normalizarTexto(agente.mensaje));
+        agente.send(msg);
 
-        if (respuesta.getPerformative() == ACLMessage.INFORM) {
-            agente.mensajeSanta = mensajeCoordenadas;
-            agente.posObjetivo = leerPosicion(mensajeCoordenadas.getContent());
-            System.out.println("\n\tPosicion santa recibida: " + agente.posObjetivo.toString());
+        // Espera a que Santa le responda con las coordenadas
+        ACLMessage respuesta = agente.blockingReceive();
+
+        if (msg.getPerformative() == ACLMessage.INFORM) {
+            String contenido = normalizarTexto(respuesta.getContent());
+            if (contenido.substring(0, 4).equals("Bro ") && contenido.substring(contenido.length() - 8, contenido.length()).equals(" En Plan")) {
+                agente.mensajeSanta = respuesta;
+                agente.posObjetivo = leerPosicion(respuesta.getContent());
+                System.out.println("\n\tPosicion santa recibida: " + agente.posObjetivo.toString());
+            } else {
+                System.out.println("\nAGENTE -> EL MENSAJE '" + msg.getContent() + "' NO ESTA EN EL 'LENGUAJE' CORRECTO");
+                agente.doDelete();
+            }
         }
     }
 }

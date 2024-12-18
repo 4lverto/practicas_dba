@@ -49,28 +49,33 @@ public class ProponerMisionSanta extends OneShotBehaviour {
         ACLMessage msg = new ACLMessage(ACLMessage.PROPOSE);
         msg.addReceiver(new AID("Santa", AID.ISLOCALNAME));
         msg.setContent(agente.mensaje);
-        msg.setConversationId("Evaluacion");
-        
+        msg.setConversationId("Agente-Santa");
+
         try {
             Thread.sleep(100);
         } catch (InterruptedException ex) {
             Logger.getLogger(ProponerMisionSanta.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println("\nAGENTE -> '" + msg.getContent() + "'");      
+        System.out.println("\nAGENTE -> '" + msg.getContent() + "'");
         agente.send(msg);
 
         msg = this.myAgent.blockingReceive();
 
-        if (msg.getConversationId().equals("Evaluacion")
+        if (msg.getConversationId().equals("Agente-Santa")
                 && msg.getPerformative() == ACLMessage.ACCEPT_PROPOSAL) {
             String contenido = normalizarTexto(msg.getContent());
 
-            agente.mensaje = contenido;
-            agente.mensajeSanta = msg;
+            if (contenido.substring(0, 4).equals("Bro ") && contenido.substring(contenido.length() - 8, contenido.length()).equals(" En Plan")) {
+                agente.mensaje = contenido;
+                agente.mensajeSanta = msg;
 
-            System.out.println("\n\tLa propuesta del agente ha sido aceptada por Santa Claus: " + contenido);
+                System.out.println("\n\tLa propuesta del agente ha sido aceptada por Santa Claus: " + contenido);
 
-            agente.codigoSecreto = contenido.substring(4, contenido.length() - 8);
+                agente.codigoSecreto = contenido.substring(4, contenido.length() - 8);
+            } else {
+                System.out.println("\nAGENTE -> EL MENSAJE '" + msg.getContent() + "' NO ESTA EN EL 'LENGUAJE' CORRECTO");
+                agente.doDelete();
+            }
 
         } else {
             if (msg.getPerformative() == ACLMessage.REJECT_PROPOSAL) {

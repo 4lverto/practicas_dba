@@ -14,16 +14,12 @@ public class DesvelarPosicion extends OneShotBehaviour {
     @Override
     public void action() {
 
-        ACLMessage mensajeSolicitudCoordenadas = santaClaus.blockingReceive();
-        
+        ACLMessage msg = santaClaus.blockingReceive();
 
-        if (mensajeSolicitudCoordenadas.getPerformative() == ACLMessage.INFORM) {
-            santaClaus.mensajeAgente = mensajeSolicitudCoordenadas;
-            
+        if (msg.getPerformative() == ACLMessage.INFORM) {
             ACLMessage mensajeConCoordenadas = santaClaus.mensajeAgente.createReply(ACLMessage.INFORM);
             mensajeConCoordenadas.setContent(santaClaus.posSantaClaus.toString());
             santaClaus.send(mensajeConCoordenadas);
         }
-
     }
 }
