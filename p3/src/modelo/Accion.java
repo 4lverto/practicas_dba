@@ -24,7 +24,7 @@ public enum Accion {
 
     /**
      * @brief Devuelve el delta de movimiento asociado a la acción.
-     * 
+     *
      * @return Una posición que representa el cambio en las coordenadas (X, Y).
      */
     public Posicion obtenerDelta() {
