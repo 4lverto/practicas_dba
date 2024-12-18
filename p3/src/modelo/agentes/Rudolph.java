@@ -15,6 +15,15 @@ import modelo.comportamientos.rudolph.DevolverReno;
 public class Rudolph extends Agent {
 
     private Posicion[] renos;
+    public int renosEncontrados=1;
+    
+    public int getRenosEncontrados(){
+        return renosEncontrados;
+    }
+    
+    public void siguienteReno(){
+        renosEncontrados++;
+    }
 
     @Override
     protected void setup() {
@@ -34,7 +43,7 @@ public class Rudolph extends Agent {
             renos[6] = entorno.obtenerPosReno7();
             renos[7] = entorno.obtenerPosReno8();
         }
-
+        
         SequentialBehaviour comportamientos = new SequentialBehaviour();
 
         comportamientos.addSubBehaviour(new EvaluarClave(this));
@@ -46,7 +55,6 @@ public class Rudolph extends Agent {
 
     @Override
     protected void takeDown() {
-        System.out.println("Finalizado el agente " + this.getLocalName());
+        System.out.println("\n\tFinalizado el agente " + this.getLocalName());
     }
-
 }

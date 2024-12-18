@@ -4,6 +4,8 @@ import jade.core.AID;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import java.text.Normalizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import modelo.agentes.SantaClaus;
 
 /**
@@ -35,10 +37,25 @@ public class EnviarEvaluacion extends OneShotBehaviour {
         if (agente.obtenerAceptado()) {
             respuesta = msg.createReply(ACLMessage.ACCEPT_PROPOSAL);
             respuesta.setContent(contenido);
+            
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(EnviarEvaluacion.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            System.out.println("\nSANTA -> '" + respuesta.getContent() +  "'");
             agente.send(respuesta);
+            
         } else {
             respuesta = msg.createReply(ACLMessage.REJECT_PROPOSAL);
             respuesta.setContent(contenido);
+            
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(EnviarEvaluacion.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            System.out.println("\nSANTA -> '" + respuesta.getContent() +  "'");
             agente.send(respuesta);
             agente.doDelete();
         }

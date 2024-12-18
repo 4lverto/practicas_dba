@@ -21,6 +21,7 @@ public class ElfoTraductor extends Agent {
 
     @Override
     protected void takeDown() {
-        
+        System.out.println("\ntFinalizado el agente " + this.getLocalName());
+
     }
 }

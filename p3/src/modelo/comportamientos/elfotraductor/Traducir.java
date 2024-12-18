@@ -7,6 +7,8 @@ package modelo.comportamientos.elfotraductor;
 import jade.core.behaviours.*;
 import jade.lang.acl.ACLMessage;
 import java.text.Normalizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -28,7 +30,7 @@ public class Traducir extends CyclicBehaviour {
         if (msg.getPerformative() == ACLMessage.REQUEST) {
 
             String contenido = normalizarTexto(msg.getContent());
-            System.out.println("ELFO TRADUCTOR -> HE RECIBIDO:" + contenido);
+            System.out.println("\n\tEl elfo traductor recibe:'" + contenido + "'");
 
             ACLMessage respuesta = msg.createReply(ACLMessage.INFORM);
 
@@ -39,13 +41,21 @@ public class Traducir extends CyclicBehaviour {
             } else if (contenido.substring(0, 13).equals("Hyvaa joulua ") && contenido.substring(contenido.length() - 13, contenido.length()).equals(" Nahdaan pian")) {
                 respuesta.setContent("Bro " + contenido.substring(13, contenido.length() - 13) + " En Plan");
             } else {
-                System.out.println(("\nELFO TRADUCTOR -> Error, mensaje en ningun formato conocido"));
+                System.out.println(("\n\tError en Elfo Traductor -> Error, mensaje en ningun formato conocido"));
                 this.myAgent.doDelete();
             }
-
+            
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Traducir.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            System.out.println("\nELFO TRADUCTOR -> TOMA EL MENSAJE TRADUCIDO: '"+respuesta.getContent()+"'");
             this.myAgent.send(respuesta);
+    
         } else {
-            System.out.println(("\nELFO TRADUCTOR -> Error de protocolo"));
+            System.out.println(("\n\tError en Elfo Traductor -> Error de protocolo"));
             this.myAgent.doDelete();
         }
     }

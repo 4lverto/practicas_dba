@@ -33,9 +33,9 @@ public class PasosTotales extends OneShotBehaviour {
      */
     @Override
     public void action() {
-        System.out.println("Objetivo Alcanzado, se han necesitado un total de "
-                + (agente.obtenerPasosTotales()) + " pasos.");
+        System.out.println("\nOBJETIVO ALCANZADO");/* -> se han necesitado un total de "
+                + (agente.obtenerPasosTotales()) + " pasos.");*/
 
-        System.out.println("Revisa la traza seguida en la interfaz grafica");
+        System.out.println("Revisa la traza seguida y pasos gastados en la interfaz grafica");
     }
 }

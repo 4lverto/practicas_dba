@@ -3,11 +3,9 @@ package modelo.agentes;
 import jade.core.Agent;
 import jade.core.behaviours.SequentialBehaviour;
 import jade.lang.acl.ACLMessage;
+
 import modelo.Entorno;
-
 import modelo.Posicion;
-import modelo.comportamientos.santaclaus.SolicitarTraduccion;
-
 import modelo.comportamientos.santaclaus.SolicitarTraduccion;
 import modelo.comportamientos.santaclaus.EvaluarMision;
 import modelo.comportamientos.santaclaus.EnviarEvaluacion;
@@ -28,6 +26,7 @@ public class SantaClaus extends Agent {
     private Entorno entorno;
     
     Posicion posSantaClaus;     
+
 
 
     public void establecerMensaje(String mensaje) {
@@ -54,7 +53,7 @@ public class SantaClaus extends Agent {
     public ACLMessage obtenerMensajeAgente() {
         return (this.mensajeAgente);
     }
-
+    
     public Posicion obtenerPosicionSantaClaus(){
         return this.posSantaClaus;
     }
@@ -87,7 +86,7 @@ public class SantaClaus extends Agent {
 
     @Override
     protected void takeDown() {
-        System.out.println("Finalizado el agente " + this.getLocalName());
+        System.out.println("\n\tFinalizado el agente " + this.getLocalName());
     }
 
 }

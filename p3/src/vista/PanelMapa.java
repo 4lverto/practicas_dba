@@ -34,7 +34,7 @@ public class PanelMapa extends JPanel {
     private static Image IMAGEN_SANTACLAUS;
     private static Image IMAGEN_ELFO;
     private static Image IMAGEN_RUDOLPH;
-    private static Image IMAGEN_RENO; // ¿1 mismo reno u 8 distintos?
+    private static Image IMAGEN_RENO;
 
     /**
      * @brief Mapa a representar.
@@ -125,7 +125,7 @@ public class PanelMapa extends JPanel {
             // IMAGEN_OBJETIVO = ImageIO.read(new File("resources/SANTA.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
             IMAGEN_OBSTACULO = ImageIO.read(new File("resources/OBSTACULO.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
             IMAGEN_VISITADA = ImageIO.read(new File("resources/VISITADO.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
-            IMAGEN_SANTACLAUS = ImageIO.read(new File("resources/VISITADO.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
+            IMAGEN_SANTACLAUS = ImageIO.read(new File("resources/SANTA.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
             IMAGEN_ELFO = ImageIO.read(new File("resources/ELFO.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
             IMAGEN_RUDOLPH = ImageIO.read(new File("resources/RUDOLPH.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
             IMAGEN_RENO = ImageIO.read(new File("resources/RENO.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);

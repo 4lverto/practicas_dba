@@ -107,22 +107,22 @@ public class Astar {
 
         //Comprobaciones iniciales
         if (!mapa.casillaEsValida(origen.obtenerX(), origen.obtenerY())) {
-            System.out.println("Origen invalido...");
+            System.out.println("\tOrigen invalido...");
             return new ArrayList();
         }
 
         if (!mapa.casillaEsValida(dest.obtenerX(), origen.obtenerY())) {
-            System.out.println("Destino invalido...");
+            System.out.println("\tDestino invalido...");
             return new ArrayList();
         }
 
         if (mapa.obtenerCasilla(origen.obtenerX(), origen.obtenerY()) == -1) {
-            System.out.println("Origen bloqueado...");
+            System.out.println("\tOrigen bloqueado...");
             return new ArrayList();
         }
 
         if (origen.sonIguales(dest)) {
-            System.out.println("Ya estamos en el destino");
+            System.out.println("\tYa estamos en el destino");
             return new ArrayList();
         }
 
@@ -171,9 +171,9 @@ public class Astar {
                         if (adyacente.sonIguales(dest) //Si es el destino se devuelve el camino encontrado
                                 && (addX != addY || (mapa.obtenerCasilla(i + addX, j) != -1 || mapa.obtenerCasilla(i, j + addY) != -1))) {   //Comprobacion bloqueo diagonales
                             celdas[adyacente.obtenerX()][adyacente.obtenerY()].padre = new Posicion(i, j);
-                            System.out.println("Seguimos buscando el objetivo...");
+                            System.out.println("\tEl agente esta buscando su objetivo...");
                             if (mapa.obtenerCasilla(dest.obtenerX(), dest.obtenerY()) == -1) {
-                                System.out.println("Destino bloqueado -> Esta sobre un muro!!!...");
+                                System.out.println("\tObjetivo inalcanzable -> Esta sobre un muro!!!...");
                                 return new ArrayList();
                             }
                             return obtenerCamino(celdas, dest);
