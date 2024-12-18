@@ -151,7 +151,7 @@ public class Agente extends Agent {
         
         if (camino != null && !camino.isEmpty()) {
             this.sensores = this.entorno.actualizarPercepciones(camino.get(camino.size()-2));
-        }
+        }y
     }
     
     /**

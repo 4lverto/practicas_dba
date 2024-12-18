@@ -93,14 +93,14 @@ public class Entorno {
      */
     private Entorno(
             Posicion posAgente,
-            Posicion posObjetivo,Posicion posReno1, Posicion posReno2,
+            /*Posicion posObjetivo,*/Posicion posReno1, Posicion posReno2,
             Posicion posReno3, Posicion posReno4, Posicion posReno5,
             Posicion posReno6, Posicion posReno7, Posicion posReno8,
             Posicion posElfo, Posicion posRudolph,
             Posicion posSantaClaus) throws IOException {
         
         this.posAgente   = posAgente;
-        this.posObjetivo = posObjetivo;
+        /*this.posObjetivo = posObjetivo;*/
         this.posElfo=posElfo;
         this.posRudolph=posRudolph;
         this.posSantaClaus=posSantaClaus;
@@ -129,7 +129,7 @@ public class Entorno {
      */
     public static Entorno obtenerInstancia(
             Posicion posAgente,
-            Posicion posObjetivo,Posicion posReno1, Posicion posReno2,
+            /*Posicion posObjetivo,*/Posicion posReno1, Posicion posReno2,
             Posicion posReno3, Posicion posReno4, Posicion posReno5,
             Posicion posReno6, Posicion posReno7, Posicion posReno8,
             Posicion posElfo, Posicion posRudolph,
@@ -139,7 +139,7 @@ public class Entorno {
         // una instancia del Entorno no damos opción a crear otra.
         if (instancia == null) {
             instancia = new Entorno(posAgente,
-            posObjetivo, posReno1,  posReno2,
+            /*posObjetivo,*/ posReno1,  posReno2,
             posReno3,  posReno4,  posReno5,
             posReno6,  posReno7,  posReno8,
             posElfo,  posRudolph,
@@ -228,6 +228,7 @@ public class Entorno {
      * 
      * @return Posición de la casilla objetivo.
      */
+    
     public Posicion obtenerPosObjetivo() {
         return (this.posObjetivo);
     }

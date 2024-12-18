@@ -42,7 +42,6 @@ public class RescatarRenos extends Behaviour {
             
             this.agente.modificarMensajeRudolph(consulta);
             this.agente.send(consulta);
-            this.agente.addBehaviour(new EsperarCoordenadasReno(this.agente));
         }
     }
 
