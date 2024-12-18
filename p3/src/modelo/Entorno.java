@@ -29,12 +29,12 @@ public class Entorno {
     /**
      * @brief Conjunto de sensores que podrá consultar el agente.
      */
-    private ArrayList<Sensor> sensores;
+    private final ArrayList<Sensor> sensores;
 
     /**
      * @brief Conjunto de vistas del simulador.
      */
-    private ArrayList<Vista> vistas;
+    private final ArrayList<Vista> vistas;
 
     /**
      * @brief Posición del agente en el mapa.
@@ -44,22 +44,12 @@ public class Entorno {
     /**
      * @brief Posición de Santa Claus en el mapa
      */
-    private Posicion posSantaClaus;
-
-    /**
-     * @brief Posición de Rudolph
-     */
-    private Posicion posRudolph;
-
-    /**
-     * @brief Posición del Elfo Traductor
-     */
-    private Posicion posElfo;
+    private final Posicion posSantaClaus;
 
     /**
      * @brief Posicion de cada reno
      */
-    private Posicion[] posReno;
+    private final Posicion[] posReno;
 
     /**
      * @brief Posición de la casilla objetivo en el mapa.
@@ -75,15 +65,9 @@ public class Entorno {
      *
      * @throws IOException Si ocurre un error al leer el archivo.
      */
-    private Entorno(
-            Posicion posAgente,
-            Posicion[] posReno,
-            Posicion posElfo, Posicion posRudolph,
-            Posicion posSantaClaus) throws IOException {
+    private Entorno(Posicion posAgente, Posicion[] posReno, Posicion posSantaClaus) throws IOException {
 
         this.posAgente = posAgente;
-        this.posElfo = posElfo;
-        this.posRudolph = posRudolph;
         this.posSantaClaus = posSantaClaus;
         this.posReno = posReno;
 
@@ -97,17 +81,18 @@ public class Entorno {
      * crea utilizando el archivo de mapa proporcionado.
      *
      * @param posAgente Posición inicial del agente en el mapa.
-     * @param posObjetivo Posición inicial de la casilla objetivo en el mapa.
+     * @param posReno posiciones renos
+     * @param posSantaClaus posicion santa
      *
      * @return La instancia única de Entorno.
      * @throws IOException Si ocurre un error al leer el archivo.
      */
-    public static Entorno obtenerInstancia(Posicion posAgente, Posicion[] posReno, Posicion posElfo, Posicion posRudolph, Posicion posSantaClaus) throws IOException {
+    public static Entorno obtenerInstancia(Posicion posAgente, Posicion[] posReno, Posicion posSantaClaus) throws IOException {
 
         // De esta forma fomentamos el patrón Singleton, pues si ya existe
         // una instancia del Entorno no damos opción a crear otra.
         if (instancia == null) {
-            instancia = new Entorno(posAgente, posReno, posElfo, posRudolph, posSantaClaus);
+            instancia = new Entorno(posAgente, posReno, posSantaClaus);
         }
 
         return (instancia);
@@ -188,14 +173,6 @@ public class Entorno {
 
     public Posicion[] obtenerPosReno() {
         return (this.posReno);
-    }
-
-    public Posicion obtenerPosElfo() {
-        return (this.posElfo);
-    }
-
-    public Posicion obtenerPosRudolph() {
-        return (this.posRudolph);
     }
 
     public Posicion obtenerPosSantaClaus() {

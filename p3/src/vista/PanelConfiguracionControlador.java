@@ -99,12 +99,12 @@ public class PanelConfiguracionControlador extends JFrame {
         // Etiqueta y campo para la fila del agente:
         JLabel etiquetaFilaAgente = new JLabel("Fila: ");
         JSpinner campoFilaAgente = new JSpinner(
-                new SpinnerNumberModel(0, 0, this.topeDimensionMapa, 1));
+                new SpinnerNumberModel(99, 0, this.topeDimensionMapa, 1));
 
         // Etiqueta y campo para la columna del agente:
         JLabel etiquetaColumnaAgente = new JLabel("Columna: ");
         JSpinner campoColumnaAgente = new JSpinner(
-                new SpinnerNumberModel(0, 0, this.topeDimensionMapa, 1));
+                new SpinnerNumberModel(99, 0, this.topeDimensionMapa, 1));
 
         
         // //////////////// //
@@ -113,28 +113,11 @@ public class PanelConfiguracionControlador extends JFrame {
         
         JLabel etiquetaFilaSantaClaus = new JLabel("Fila: ");
         JSpinner campoFilaSantaClaus = new JSpinner(
-                new SpinnerNumberModel(8, 0, this.topeDimensionMapa, 1));
+                new SpinnerNumberModel(0, 0, this.topeDimensionMapa, 1));
 
         JLabel etiquetaColumnaSantaClaus = new JLabel("Columna: ");
         JSpinner campoColumnaSantaClaus = new JSpinner(
-                new SpinnerNumberModel(5, 0, this.topeDimensionMapa, 1));
-
-        JLabel etiquetaFilaElfo = new JLabel("Fila: ");
-        JSpinner campoFilaElfo = new JSpinner(
-                new SpinnerNumberModel(3, 0, this.topeDimensionMapa, 1));
-
-        JLabel etiquetaColumnaElfo = new JLabel("Columna: ");
-        JSpinner campoColumnaElfo = new JSpinner(
-                new SpinnerNumberModel(9, 0, this.topeDimensionMapa, 1));
-
-        JLabel etiquetaFilaRudolph = new JLabel("Fila: ");
-        JSpinner campoFilaRudolph = new JSpinner(
-                new SpinnerNumberModel(1, 0, this.topeDimensionMapa, 1));
-
-        JLabel etiquetaColumnaRudolph = new JLabel("Columna: ");
-        JSpinner campoColumnaRudolph = new JSpinner(
-                new SpinnerNumberModel(7, 0, this.topeDimensionMapa, 1));
-        
+                new SpinnerNumberModel(0, 0, this.topeDimensionMapa, 1));        
         
         
         JLabel[] etiquetaFilaReno = new JLabel[8];
@@ -149,63 +132,63 @@ public class PanelConfiguracionControlador extends JFrame {
 
         etiquetaColumnaReno[0] = new JLabel("Columna: ");
         campoColumnaReno[0] = new JSpinner(
-                new SpinnerNumberModel(3, 0, this.topeDimensionMapa, 1));
+                new SpinnerNumberModel(7, 0, this.topeDimensionMapa, 1));
 
         etiquetaFilaReno[1] = new JLabel("Fila: ");
         campoFilaReno[1] = new JSpinner(
-                new SpinnerNumberModel(5, 0, this.topeDimensionMapa, 1));
+                new SpinnerNumberModel(11, 0, this.topeDimensionMapa, 1));
 
         etiquetaColumnaReno[1] = new JLabel("Columna: ");
         campoColumnaReno[1] = new JSpinner(
-                new SpinnerNumberModel(5, 0, this.topeDimensionMapa, 1));
+                new SpinnerNumberModel(71, 0, this.topeDimensionMapa, 1));
 
         etiquetaFilaReno[2] = new JLabel("Fila: ");
         campoFilaReno[2] = new JSpinner(
-                new SpinnerNumberModel(8, 0, this.topeDimensionMapa, 1));
+                new SpinnerNumberModel(23, 0, this.topeDimensionMapa, 1));
 
         etiquetaColumnaReno[2] = new JLabel("Columna: ");
         campoColumnaReno[2] = new JSpinner(
-                new SpinnerNumberModel(2, 0, this.topeDimensionMapa, 1));
+                new SpinnerNumberModel(39, 0, this.topeDimensionMapa, 1));
 
         etiquetaFilaReno[3] = new JLabel("Fila: ");
         campoFilaReno[3] = new JSpinner(
-                new SpinnerNumberModel(6, 0, this.topeDimensionMapa, 1));
+                new SpinnerNumberModel(42, 0, this.topeDimensionMapa, 1));
 
         etiquetaColumnaReno[3] = new JLabel("Columna: ");
         campoColumnaReno[3] = new JSpinner(
-                new SpinnerNumberModel(6, 0, this.topeDimensionMapa, 1));
+                new SpinnerNumberModel(61, 0, this.topeDimensionMapa, 1));
 
         etiquetaFilaReno[4] = new JLabel("Fila: ");
         campoFilaReno[4] = new JSpinner(
-                new SpinnerNumberModel(6, 0, this.topeDimensionMapa, 1));
+                new SpinnerNumberModel(46, 0, this.topeDimensionMapa, 1));
 
         etiquetaColumnaReno[4] = new JLabel("Columna: ");
         campoColumnaReno[4] = new JSpinner(
-                new SpinnerNumberModel(7, 0, this.topeDimensionMapa, 1));
+                new SpinnerNumberModel(17, 0, this.topeDimensionMapa, 1));
 
         etiquetaFilaReno[5] = new JLabel("Fila: ");
         campoFilaReno[5] = new JSpinner(
-                new SpinnerNumberModel(7, 0, this.topeDimensionMapa, 1));
+                new SpinnerNumberModel(59, 0, this.topeDimensionMapa, 1));
 
         etiquetaColumnaReno[5] = new JLabel("Columna: ");
         campoColumnaReno[5] = new JSpinner(
-                new SpinnerNumberModel(9, 0, this.topeDimensionMapa, 1));
+                new SpinnerNumberModel(39, 0, this.topeDimensionMapa, 1));
 
         etiquetaFilaReno[6] = new JLabel("Fila: ");
         campoFilaReno[6] = new JSpinner(
-                new SpinnerNumberModel(13, 0, this.topeDimensionMapa, 1));
+                new SpinnerNumberModel(86, 0, this.topeDimensionMapa, 1));
 
         etiquetaColumnaReno[6] = new JLabel("Columna: ");
         campoColumnaReno[6] = new JSpinner(
-                new SpinnerNumberModel(5, 0, this.topeDimensionMapa, 1));
+                new SpinnerNumberModel(84, 0, this.topeDimensionMapa, 1));
 
         etiquetaFilaReno[7] = new JLabel("Fila: ");
         campoFilaReno[7] = new JSpinner(
-                new SpinnerNumberModel(11, 0, this.topeDimensionMapa, 1));
+                new SpinnerNumberModel(90, 0, this.topeDimensionMapa, 1));
 
         etiquetaColumnaReno[7] = new JLabel("Columna: ");
         campoColumnaReno[7] = new JSpinner(
-                new SpinnerNumberModel(5, 0, this.topeDimensionMapa, 1));
+                new SpinnerNumberModel(4, 0, this.topeDimensionMapa, 1));
 
         // ////////////////////////////////////////// //
         // LÓGICA DE EJECUCIÓN AL PRESIONAR EL BOTÓN: //
@@ -232,12 +215,6 @@ public class PanelConfiguracionControlador extends JFrame {
                 // NUEVO P3 //
                 // //////// //
                 
-
-                int filaRudolph = (Integer) campoFilaRudolph.getValue();
-                int columnaRudolph = (Integer) campoColumnaRudolph.getValue();
-
-                int filaElfo = (Integer) campoFilaElfo.getValue();
-                int columnaElfo = (Integer) campoColumnaElfo.getValue();
 
                 int filaSantaClaus = (Integer) campoFilaSantaClaus.getValue();
                 int columnaSantaClaus = (Integer) campoColumnaSantaClaus.getValue();
@@ -276,9 +253,6 @@ public class PanelConfiguracionControlador extends JFrame {
                 Posicion posAgente = new Posicion(filaAgente, columnaAgente);
 
 
-                // Posicion posObjetivo = new Posicion(filaObjetivo, columnaObjetivo);
-                Posicion posRudolph = new Posicion(filaRudolph, columnaRudolph);
-                Posicion posElfo = new Posicion(filaElfo, columnaElfo);
                 Posicion posSantaClaus = new Posicion(filaSantaClaus, columnaSantaClaus);
 
                 Posicion[] posReno = new Posicion[8];
@@ -299,8 +273,7 @@ public class PanelConfiguracionControlador extends JFrame {
                 try {
 
                     // Creamos y configuramos el entorno
-                    entorno = Entorno.obtenerInstancia(posAgente, posReno,
-                            posElfo, posRudolph, posSantaClaus);
+                    entorno = Entorno.obtenerInstancia(posAgente, posReno, posSantaClaus);
 
                     // Establecer el mapa:
                     entorno.establecerMapa(mapaSeleccionado);
@@ -396,40 +369,6 @@ public class PanelConfiguracionControlador extends JFrame {
         panel.add(campoColumnaAgente, gbc);
         fila++;
 
-        /*
-        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
-        // Fila 3: Título de la selección de la posición de la casilla        //
-        // objetivo                                                           //
-        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
-        gbc.gridx = 0;
-        gbc.gridy = fila;
-        panel.add(new JLabel("Posición casilla objetivo: "), gbc);
-
-        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
-        // Fila 4: Selector de la posición de la casilla objetivo             //
-        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
-        // Para la fila:
-        /*
-        gbc.gridx = 0;
-        gbc.gridy = fila;
-        gbc.anchor = GridBagConstraints.EAST;
-        panel.add(etiquetaFilaObjetivo, gbc);
-
-        gbc.gridx = 1;
-        gbc.anchor = GridBagConstraints.WEST;
-        panel.add(campoFilaObjetivo, gbc);
-        
-        // Para la columna:
-        gbc.gridx = 2;
-        gbc.gridy = fila;
-        gbc.anchor = GridBagConstraints.EAST;
-        panel.add(etiquetaColumnaObjetivo, gbc);
-
-        gbc.gridx = 3;
-        gbc.anchor = GridBagConstraints.WEST;
-        panel.add(campoColumnaObjetivo, gbc);
-        fila++;
-        */
         
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
         // Fila 5: Título de la selección de la posición de la casilla        //
@@ -480,82 +419,6 @@ public class PanelConfiguracionControlador extends JFrame {
         gbc.gridx = 4;
         gbc.anchor = GridBagConstraints.WEST;
         panel.add(campoColumnaSantaClaus, gbc);
-        fila++;
-
-        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
-        // Fila 7: Título de la selección de la posición de la casilla        //
-        // de Rudolph                                                           //
-        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
-        gbc.gridx = 0;
-        gbc.gridy = fila;
-        panel.add(new JLabel("Posición casilla Rudolph: "), gbc);
-
-        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
-        // Fila 8: Selector de la posición de la casilla SantaClaus             //
-        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
-        // Para la fila:
-
-        // Dejar una columna vacía
-        gbc.gridx = 0; // Columna vacía para el espacio
-        gbc.gridy = fila;
-        panel.add(new JLabel(""), gbc);
-
-        gbc.gridx = 1;
-        gbc.gridy = fila;
-        gbc.anchor = GridBagConstraints.EAST;
-        panel.add(etiquetaFilaRudolph, gbc);
-
-        gbc.gridx = 2;
-        gbc.anchor = GridBagConstraints.WEST;
-        panel.add(campoFilaRudolph, gbc);
-
-        // Para la columna:
-        gbc.gridx = 3;
-        gbc.gridy = fila;
-        gbc.anchor = GridBagConstraints.EAST;
-        panel.add(etiquetaColumnaRudolph, gbc);
-
-        gbc.gridx = 4;
-        gbc.anchor = GridBagConstraints.WEST;
-        panel.add(campoColumnaRudolph, gbc);
-        fila++;
-
-        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
-        // Fila 9: Título de la selección de la posición de la casilla        //
-        // del Elfo                                                           //
-        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
-        gbc.gridx = 0;
-        gbc.gridy = fila;
-        panel.add(new JLabel("Posición casilla Elfo: "), gbc);
-
-        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
-        // Fila 10: Selector de la posición de la casilla Elfo             //
-        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
-
-        // Dejar una columna vacía
-        gbc.gridx = 0; // Columna vacía para el espacio
-        gbc.gridy = fila;
-        panel.add(new JLabel(""), gbc);
-
-        // Para la fila:
-        gbc.gridx = 1;
-        gbc.gridy = fila;
-        gbc.anchor = GridBagConstraints.EAST;
-        panel.add(etiquetaFilaElfo, gbc);
-
-        gbc.gridx = 2;
-        gbc.anchor = GridBagConstraints.WEST;
-        panel.add(campoFilaElfo, gbc);
-
-        // Para la columna:
-        gbc.gridx = 3;
-        gbc.gridy = fila;
-        gbc.anchor = GridBagConstraints.EAST;
-        panel.add(etiquetaColumnaElfo, gbc);
-
-        gbc.gridx = 4;
-        gbc.anchor = GridBagConstraints.WEST;
-        panel.add(campoColumnaElfo, gbc);
         fila++;
 
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //

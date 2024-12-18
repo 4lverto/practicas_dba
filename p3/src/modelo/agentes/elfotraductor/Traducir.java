@@ -32,8 +32,6 @@ public class Traducir extends CyclicBehaviour {
 
             if (contenido.substring(0, 4).equals("Bro ") && contenido.substring(contenido.length() - 8, contenido.length()).equals(" En Plan")) {
                 respuesta.setContent("Rakas Joulupukki " + contenido.substring(4, contenido.length() - 8) + " Kiitos");
-            } else if (contenido.substring(0, 17).equals("Rakas Joulupukki ") && contenido.substring(contenido.length() - 7, contenido.length()).equals(" Kiitos")) {
-                respuesta.setContent("Bro " + contenido.substring(17, contenido.length() - 7) + " En Plan");
             } else if (contenido.substring(0, 13).equals("Hyvaa joulua ") && contenido.substring(contenido.length() - 13, contenido.length()).equals(" Nahdaan pian")) {
                 respuesta.setContent("Bro " + contenido.substring(13, contenido.length() - 13) + " En Plan");
             } else {

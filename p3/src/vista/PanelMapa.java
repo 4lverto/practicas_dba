@@ -21,7 +21,7 @@ public class PanelMapa extends JPanel {
     /**
      * @brief Factor a aplicar para el dimensionado del panel.
      */
-    private static final int FACTOR = 20;
+    private static final int FACTOR = 12;
     private static final Posicion IGNORE = new Posicion(-1, -1);
 
 
@@ -31,12 +31,9 @@ public class PanelMapa extends JPanel {
      */
     private static Image IMAGEN_LIBRE;
     private static Image IMAGEN_OBSTACULO;
-    // private static Image IMAGEN_OBJETIVO;
     private static Image IMAGEN_VISITADA;
     private static Image IMAGEN_AGENTE;
     private static Image IMAGEN_SANTACLAUS;
-    private static Image IMAGEN_ELFO;
-    private static Image IMAGEN_RUDOLPH;
     private static Image IMAGEN_RENO;
 
     /**
@@ -48,14 +45,13 @@ public class PanelMapa extends JPanel {
      * @brief Componentes para la información adicional.
      */
     private JLabel etiquetaPosicion;
-    private JLabel etiquetaObjetivo;
     private JLabel etiquetaEnergiaGastada;
     private JTextArea areaHistorico;
 
     /**
      * @brief Constructor por parámetro. Establece las dimensiones del panel.
      *
-     * @param mapa Mapa a representar.
+     * @param entorno entorno
      */
     public PanelMapa(Entorno entorno) {
         this.mapa = entorno.obtenerMapa();
@@ -129,8 +125,6 @@ public class PanelMapa extends JPanel {
             IMAGEN_OBSTACULO = ImageIO.read(new File("resources/OBSTACULO.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
             IMAGEN_VISITADA = ImageIO.read(new File("resources/VISITADO.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
             IMAGEN_SANTACLAUS = ImageIO.read(new File("resources/SANTA.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
-            IMAGEN_ELFO = ImageIO.read(new File("resources/ELFO.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
-            IMAGEN_RUDOLPH = ImageIO.read(new File("resources/RUDOLPH.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
             IMAGEN_RENO = ImageIO.read(new File("resources/RENO.jpg")).getScaledInstance(FACTOR, FACTOR, Image.SCALE_SMOOTH);
         } catch (IOException e) {
             e.printStackTrace();
@@ -160,14 +154,8 @@ public class PanelMapa extends JPanel {
                     case Mapa.RENO:
                         imagen = IMAGEN_RENO;
                         break;
-                    case Mapa.ELFO:
-                        imagen = IMAGEN_ELFO;
-                        break;
                     case Mapa.SANTACLAUS:
                         imagen = IMAGEN_SANTACLAUS;
-                        break;
-                    case Mapa.RUDOLPH:
-                        imagen = IMAGEN_RUDOLPH;
                         break;
                     default:
                         imagen = IMAGEN_LIBRE;
@@ -193,8 +181,6 @@ public class PanelMapa extends JPanel {
         // g.drawImage(IMAGEN_OBJETIVO, entorno.obtenerPosObjetivo().obtenerCol() * FACTOR, entorno.obtenerPosObjetivo().obtenerFil() * FACTOR, FACTOR, FACTOR, this);
         g.drawImage(IMAGEN_AGENTE, entorno.obtenerPosAgente().obtenerCol() * FACTOR, entorno.obtenerPosAgente().obtenerFil() * FACTOR, FACTOR, FACTOR, this);
         g.drawImage(IMAGEN_SANTACLAUS, entorno.obtenerPosSantaClaus().obtenerCol() * FACTOR, entorno.obtenerPosSantaClaus().obtenerFil() * FACTOR, FACTOR, FACTOR, this);
-        g.drawImage(IMAGEN_ELFO, entorno.obtenerPosElfo().obtenerCol() * FACTOR, entorno.obtenerPosElfo().obtenerFil() * FACTOR, FACTOR, FACTOR, this);
-        g.drawImage(IMAGEN_RUDOLPH, entorno.obtenerPosRudolph().obtenerCol() * FACTOR, entorno.obtenerPosRudolph().obtenerFil() * FACTOR, FACTOR, FACTOR, this);
     }
 
     /**

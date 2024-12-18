@@ -37,7 +37,7 @@ public class DecidirMovimiento extends OneShotBehaviour {
     @Override
     public void action() {
         try {
-            Thread.sleep(300);
+            Thread.sleep(50);
         } catch (InterruptedException ex) {
             Logger.getLogger(DecidirMovimiento.class.getName()).log(Level.SEVERE, null, ex);
         }
