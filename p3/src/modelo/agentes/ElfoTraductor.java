@@ -1,11 +1,10 @@
 package modelo.agentes;
 
 import jade.core.Agent;
-import modelo.comunicacion.ComunicacionElfoTraductor;
 
 
 import modelo.comportamientos.elfotraductor.Traducir;
-import java.text.Normalizer;
+
 
 
 /**
