@@ -9,6 +9,8 @@ import jade.core.behaviours.OneShotBehaviour;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import modelo.Entorno;
 import modelo.Posicion;
 import modelo.sensores.Sensor;
@@ -16,6 +18,7 @@ import modelo.Mapa;
 import modelo.comportamientos.agente.SolicitarTraduccion;
 import modelo.comportamientos.agente.ProponerMisionSanta;
 import modelo.comportamientos.agente.EstablecerCanalSeguroRudolph;
+import modelo.comportamientos.agente.SolicitarPosicionSanta;
 import modelo.comportamientos.agente.SolicitarReno;
 import modelo.sensores.Vision;
 import modelo.sensores.Energia;
@@ -48,9 +51,12 @@ public class Agente extends Agent {
     // Para la comunicación (falta documentar):
     private final int TOTAL_RENOS = 8;
     private String codigoSecreto = "";
+    
     private String mensaje = "Bro Estoy dispuesto a ofrecerme voluntario para la misión En Plan";
     private int renosRescatados = 0;
     private Posicion posObjetivo;
+    private String mensajeTraducido;
+    
     ACLMessage mensajeSanta;
     ACLMessage mensajeRudolph;
 
@@ -101,7 +107,7 @@ public class Agente extends Agent {
         fsm.registerLastState(new OneShotBehaviour(this) {
             @Override
             public void action() {
-                System.out.println("Todos los renos visitados");
+                System.out.println("\n\tTodos los renos han sido rescatados");
             }
         }, "Fin");
         fsm.registerDefaultTransition("Solicitar", "Actualizar");
@@ -111,6 +117,19 @@ public class Agente extends Agent {
         fsm.registerTransition("Solicitar", "Fin", 1);
 
         comportamientos.addSubBehaviour(fsm);
+        
+        this.establecerMensaje("Bro ¿Donde estas? En Plan");
+        comportamientos.addSubBehaviour(new SolicitarTraduccion("Traduccion-solicitud-coordenadas", this));
+        comportamientos.addSubBehaviour(new SolicitarPosicionSanta(this));
+
+        FSMBehaviour fsmFinal = new FSMBehaviour(this);
+        fsmFinal.registerFirstState(new ActualizarMemoria(this), "Actualizar");
+        fsmFinal.registerState(new DecidirMovimiento(this), "Mover");
+
+        fsmFinal.registerDefaultTransition("Actualizar", "Mover");
+        fsmFinal.registerDefaultTransition("Mover", "Actualizar");
+                
+        comportamientos.addSubBehaviour(fsmFinal);
 
         //comportamientos.addSubBehaviour(traduce pregunta de coords a santa); (este se puede poner sustituyendo al LastState del FSM anterior si quereis)
         //comportamientos.addSubBehaviour(pregunta coords a santa); (consultarCoordsSanta podria servir como clase, ya uqe esa esta creada,
@@ -138,13 +157,26 @@ public class Agente extends Agent {
     public String obtenerCodigoSecreto() {
         return (this.codigoSecreto);
     }
-
+    
+    // GERMAN
     public void establecerMensaje(String mensaje) {
         this.mensaje = mensaje;
     }
-
+    
+    // RAFA
+    public void establecerMensajeTraducido(String mensaje){
+        this.mensajeTraducido=mensaje;
+    }
+    
+    // GERMAN
     public String obtenerMensaje() {
         return (this.mensaje);
+    }
+    
+    // RAFA
+    
+    public String obtenerMensajeTraducido(){
+        return this.mensajeTraducido;
     }
 
     public void rescatarReno() {
@@ -182,10 +214,25 @@ public class Agente extends Agent {
     public ACLMessage obtenerMensajeRudolph() {
         return (this.mensajeRudolph);
     }
+    
+    // RAFA
+    public void modificarPosicionObjetivo(String mensajeCoordenadas){
+        Pattern pattern = Pattern.compile("\\((\\d+),(\\d+)\\)");
+        Matcher matcher = pattern.matcher(mensajeCoordenadas);
+        
+        if(matcher.find()){
+            int x = Integer.parseInt(matcher.group(1));
+            int y = Integer.parseInt(matcher.group(2));
+            
+            this.establecerPosObjetivo(x, y);
+        }else{
+            System.err.println("\n\tFormato de coordenadas invalido: " + mensajeCoordenadas);
+        }
+    }
 
     @Override
     protected void takeDown() {
-        System.out.println("Finalizado el agente " + this.getLocalName());
+        System.out.println("\n\tFinalizado el agente " + this.getLocalName());
     }
 
     // ///////////////////// //

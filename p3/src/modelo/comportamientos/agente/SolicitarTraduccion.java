@@ -4,6 +4,8 @@ import jade.core.AID;
 import jade.core.behaviours.*;
 import jade.lang.acl.ACLMessage;
 import java.text.Normalizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import modelo.agentes.Agente;
 
 /**
@@ -53,16 +55,22 @@ public class SolicitarTraduccion extends OneShotBehaviour {
         msg.setContent(mensaje);
         msg.setConversationId(id);
         agente.send(msg);
-
+        
+        System.out.println("AGENTE -> TRADUCEME ESTE MENSAJE: '" + msg.getContent() + "'");
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(SolicitarTraduccion.class.getName()).log(Level.SEVERE, null, ex);
+        }
         msg = this.myAgent.blockingReceive();
 
         if (msg.getConversationId().equals(id)
                 && msg.getPerformative() == ACLMessage.INFORM) {
             String contenido = normalizarTexto(msg.getContent());
-            System.out.println("\n Traducción recibida: " + contenido);
+            System.out.println("\n\tTraduccion recibida: " + contenido);
             agente.establecerMensaje(contenido);
         } else {
-            System.out.println("Error en el protocolo de conversacion");
+            System.out.println("\n\tError en el protocolo de conversacion");
             agente.doDelete();
         }
     }

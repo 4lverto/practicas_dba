@@ -39,12 +39,12 @@ public class EvaluarMision extends OneShotBehaviour {
         if (msg.getPerformative() == ACLMessage.PROPOSE) {
 
             String contenido = normalizarTexto(msg.getContent());
-            System.out.println("SANTA -> HE RECIBIDO:" + contenido);
+            System.out.println("\n\tSanta Claus ha recibido-> '" + contenido + "'");
 
             ACLMessage respuesta;
             if (contenido.substring(0, 17).equals("Rakas Joulupukki ") && contenido.substring(contenido.length() - 7, contenido.length()).equals(" Kiitos")) {
                 if (Math.floor(Math.random() * 10) <= 7) {
-                    agente.establecerMensaje("Hyvaa joulua hn9yar2x Nahdaan pian");
+                    agente.establecerMensaje("Hyvaa joulua ManoloElMejor Nahdaan pian");
                     agente.modificarMensajeAgente(msg);
                     agente.establecerAceptado(true);
                 } else {
@@ -70,7 +70,7 @@ public class EvaluarMision extends OneShotBehaviour {
         //    if (contenido.substring(0, 17).equals("Rakas Joulupukki ") && contenido.substring(contenido.length() - 7, contenido.length()).equals(" Kiitos")) {
         //        if (Math.floor(Math.random() * 10) <= 7) {
         //            respuesta = msg.createReply(ACLMessage.ACCEPT_PROPOSAL);
-        //            respuesta.setContent("Hyvaa joulua hn9yar2x Nahdaan pian");
+        //            respuesta.setContent("Hyvaa joulua ManoloElMejor Nahdaan pian");
         //        } else {
         //            respuesta = msg.createReply(ACLMessage.REJECT_PROPOSAL);
         //            respuesta.setContent("\"Hyvaa joulua NO Nahdaan pian");

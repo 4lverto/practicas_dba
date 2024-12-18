@@ -1,9 +1,13 @@
 package modelo.comportamientos.rudolph;
 
+import modelo.agentes.Rudolph;
 import modelo.Posicion;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import modelo.agentes.Rudolph;
+import modelo.comportamientos.santaclaus.EnviarEvaluacion;
 
 /**
  *
@@ -17,11 +21,15 @@ public class DevolverReno extends CyclicBehaviour {
      * @brief Instancia del agente.
      */
     private Rudolph agente;
+    
+    /**
+     * @brief 
+     */
     private Posicion[] renos;
 
     /**
+     * @param renos
      * @brief Constructor por defecto.
-     *
      * @param agente Agente que se toma para la copia.
      */
     public DevolverReno(Posicion[] renos, Rudolph agente) {
@@ -44,7 +52,7 @@ public class DevolverReno extends CyclicBehaviour {
 
         if (msg.getPerformative() == ACLMessage.QUERY_REF) {
             ACLMessage respuesta;
-            if (msg.getConversationId().equals("hn9yar2x")) {
+            if (msg.getConversationId().equals("ManoloElMejor")) {
                 String contenido = msg.getContent();
                 respuesta = msg.createReply(ACLMessage.INFORM);
 
@@ -66,13 +74,21 @@ public class DevolverReno extends CyclicBehaviour {
                     respuesta.setContent(renos[best].obtenerX() + "," + renos[best].obtenerY());
                     renos[best] = IGNORE;
                 }
+                
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(DevolverReno.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                System.out.println("\nRUDOLPH-> EL RENO NUMERO " + agente.getRenosEncontrados() + " ESTA AQUI: '" + respuesta.getContent() +  "'");
                 agente.send(respuesta);
+                agente.siguienteReno();
             } else {
-                System.out.println(("RUDOLPH -> Error, codigo incorrecto"));
+                System.out.println(("\nRUDOLPH -> EL CODIGO ES INCORRECTO"));
                 agente.doDelete();
             }
         } else {
-            System.out.println(("RUDOLPH -> Error de protocolo"));
+            System.out.println(("\n\tRUDOLPH -> Error de protocolo"));
             agente.doDelete();
         }
     }

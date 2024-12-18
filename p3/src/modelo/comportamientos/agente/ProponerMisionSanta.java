@@ -4,6 +4,8 @@ import jade.core.AID;
 import jade.core.behaviours.*;
 import jade.lang.acl.ACLMessage;
 import java.text.Normalizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import modelo.agentes.Agente;
 
 /**
@@ -49,6 +51,13 @@ public class ProponerMisionSanta extends OneShotBehaviour {
         msg.addReceiver(new AID("Santa", AID.ISLOCALNAME));
         msg.setContent(agente.obtenerMensaje());
         msg.setConversationId("Evaluacion");
+        
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(ProponerMisionSanta.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        System.out.println("\nAGENTE -> '" + msg.getContent() + "'");      
         agente.send(msg);
 
         msg = this.myAgent.blockingReceive();
@@ -56,13 +65,13 @@ public class ProponerMisionSanta extends OneShotBehaviour {
         if (msg.getConversationId().equals("Evaluacion")
                 && msg.getPerformative() == ACLMessage.ACCEPT_PROPOSAL) {
             String contenido = normalizarTexto(msg.getContent());
-            System.out.println("Respuesta recibida a peticion: " + contenido);
+            System.out.println("\n\tLa propuesta del agente ha sido aceptada por Santa Claus: " + contenido);
             agente.establecerCodigoSecreto(contenido.substring(4, contenido.length() - 8));
         } else {
             if (msg.getPerformative() == ACLMessage.REJECT_PROPOSAL) {
-                System.out.println("Peticion denegada por santa");
+                System.out.println("\n\tLa propuesta del agente ha sido denegada por Santa Claus");
             } else {
-                System.out.println("Error en el protocolo de conversacion");
+                System.out.println("\n\tError en el protocolo de conversacion");
             }
             agente.doDelete();
         }

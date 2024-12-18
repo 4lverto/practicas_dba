@@ -4,7 +4,10 @@ import jade.core.AID;
 import jade.core.behaviours.*;
 import jade.lang.acl.ACLMessage;
 import java.text.Normalizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import modelo.agentes.Agente;
+import modelo.comportamientos.santaclaus.EnviarEvaluacion;
 
 /**
  * @class EstablecerCanalSeguroRudolph
@@ -37,19 +40,26 @@ public class EstablecerCanalSeguroRudolph extends OneShotBehaviour {
         msg.addReceiver(new AID("Rudolph", AID.ISLOCALNAME));
         msg.setContent(agente.obtenerCodigoSecreto());
         msg.setConversationId(agente.obtenerCodigoSecreto());
+        
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(EstablecerCanalSeguroRudolph.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        System.out.println("\nAGENTE-> ESTE ES MI CÓDIGO SECRETO: '" + msg.getContent() +  "'");
         agente.send(msg);
 
         msg = this.myAgent.blockingReceive();
 
         if (msg.getConversationId().equals(agente.obtenerCodigoSecreto())
                 && msg.getPerformative() == ACLMessage.AGREE) {
-            System.out.println("Rudolph ha aceptado el codigo");
+            System.out.println("\n\tRudolph ha aceptado el codigo");
             agente.modificarMensajeRudolph(msg);
         } else {
             if (msg.getPerformative() == ACLMessage.REFUSE) {
-                System.out.println("Rudolf ha rechazado el codigo");
+                System.out.println("\n\tRudolf ha rechazado el codigo");
             } else {
-                System.out.println("Error en el protocolo de conversacion");
+                System.out.println("\n\tError en el protocolo de conversacion");
             }
             agente.doDelete();
         }

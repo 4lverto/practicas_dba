@@ -40,6 +40,6 @@ public class EntregarRenosSanta extends OneShotBehaviour {
 
         this.agente.modificarMensajeSanta(mensaje);
         this.agente.send(mensaje);
-        System.out.println("Renos entregados a Santa Claus.");
+        System.out.println("\nRenos entregados a Santa Claus.");
     }
 }

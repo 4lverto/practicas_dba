@@ -16,7 +16,6 @@ public class EvaluarClave extends OneShotBehaviour {
 
     /**
      * @brief Constructor por defecto.
-     *
      * @param agente Agente que se toma para la copia.
      */
     public EvaluarClave(Rudolph agente) {
@@ -32,18 +31,18 @@ public class EvaluarClave extends OneShotBehaviour {
             String contenido = msg.getContent();
 
             ACLMessage respuesta = msg.createReply();
-            if (contenido.equals("hn9yar2x")) {
+            if (contenido.equals("ManoloElMejor")) {
                 respuesta.setPerformative(ACLMessage.AGREE);
                 respuesta.setContent("OK");
-                System.out.println("RUDOLPH -> Clave verificada.");
+                System.out.println("\nRUDOLPH -> PERFECTO, CLAVE VERIFICADA");
             } else {
                 respuesta.setPerformative(ACLMessage.REFUSE);
                 respuesta.setContent("Incorrecto");
-                System.out.println("RUDOLPH -> Clave |" + contenido + "| incorrecta, deberia ser: |hn9yar2x|");
+                System.out.println("\nRUDOLPH -> LA CLAVE |" + contenido + "| ES INCORRECTA, DEBERIA SER: |ManoloElMejor|");
             }
             agente.send(respuesta);
         } else {
-            System.out.println("RUDOLPH -> Error de protocolo, tipo de mensaje inesperado.");
+            System.out.println("\n\tRUDOLPH -> Error de protocolo, tipo de mensaje inesperado.");
             agente.doDelete();
         }
     }

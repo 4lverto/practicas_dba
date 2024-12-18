@@ -6,6 +6,8 @@ package modelo.comportamientos.agente;
 
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import modelo.Posicion;
 import modelo.agentes.Agente;
 
@@ -44,6 +46,13 @@ public class SolicitarReno extends OneShotBehaviour {
 
         ACLMessage respuesta = msg.createReply(ACLMessage.QUERY_REF);
         respuesta.setContent(agente.obtenerPosAgente().obtenerX() + "," + agente.obtenerPosAgente().obtenerY());
+        
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(SolicitarReno.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        System.out.println("\nAGENTE -> ESTOY AQUI: " + respuesta.getContent() + ". DONDE DEBO IR ??" );
         agente.send(respuesta);
 
         msg = this.myAgent.blockingReceive();
@@ -51,11 +60,11 @@ public class SolicitarReno extends OneShotBehaviour {
         if (msg.getConversationId().equals(agente.obtenerCodigoSecreto())
                 && msg.getPerformative() == ACLMessage.INFORM) {
             posicion_reno = leerPosicion(msg.getContent());
-            System.out.println("\n Posicion reno recibida: " + posicion_reno.obtenerX() + " " + posicion_reno.obtenerY());
+            System.out.println("\n\tPosicion reno recibida: " + posicion_reno.obtenerX() + " " + posicion_reno.obtenerY());
             agente.modificarMensajeRudolph(msg);
             agente.establecerPosObjetivo(posicion_reno.obtenerX(), posicion_reno.obtenerY());
         } else {
-            System.out.println("Error en el protocolo de conversacion");
+            System.out.println("\n\tError en el protocolo de conversacion");
             agente.doDelete();
         }
     }
