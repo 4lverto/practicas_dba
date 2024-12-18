@@ -39,7 +39,7 @@ public class EnviarEvaluacion extends OneShotBehaviour {
             respuesta.setContent(contenido);
             
             try {
-                Thread.sleep(5000);
+                Thread.sleep(100);
             } catch (InterruptedException ex) {
                 Logger.getLogger(EnviarEvaluacion.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -51,7 +51,7 @@ public class EnviarEvaluacion extends OneShotBehaviour {
             respuesta.setContent(contenido);
             
             try {
-                Thread.sleep(5000);
+                Thread.sleep(100);
             } catch (InterruptedException ex) {
                 Logger.getLogger(EnviarEvaluacion.class.getName()).log(Level.SEVERE, null, ex);
             }

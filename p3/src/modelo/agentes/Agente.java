@@ -23,6 +23,7 @@ import modelo.comportamientos.agente.ProponerMisionSanta;
 import modelo.comportamientos.agente.SolicitarPosicionSanta;
 import modelo.sensores.*;
 import modelo.comportamientos.agente.EstablecerCanalSeguroRudolph;
+import modelo.comportamientos.agente.MensajeDespedidaASanta;
 import modelo.comportamientos.agente.PasosTotales;
 import modelo.comportamientos.agente.SolicitarReno;
 
@@ -60,7 +61,6 @@ public class Agente extends Agent {
     private String mensaje = "Bro Estoy dispuesto a ofrecerme voluntario para la misión En Plan";
     private int renosRescatados = 0;
     private Posicion posObjetivo;
-    private String mensajeTraducido;
 
     ACLMessage mensajeSanta;
     ACLMessage mensajeRudolph;
@@ -129,19 +129,30 @@ public class Agente extends Agent {
         fsm.registerTransition("Solicitar", "Fin", 1);
 
         comportamientos.addSubBehaviour(fsm);
-        
+
         this.establecerMensaje("Bro ¿Donde estas? En Plan");
         comportamientos.addSubBehaviour(new SolicitarTraduccion("Traduccion-solicitud-coordenadas", this));
         comportamientos.addSubBehaviour(new SolicitarPosicionSanta(this));
 
-        FSMBehaviour fsmFinal = new FSMBehaviour(this);
-        fsmFinal.registerFirstState(new ActualizarMemoria(this), "Actualizar");
-        fsmFinal.registerState(new DecidirMovimiento(this), "Mover");
+        FSMBehaviour fsmSanta = new FSMBehaviour(this);
+        fsmSanta.registerFirstState(new ActualizarMemoria(this), "Actualizar");
+        fsmSanta.registerState(new DecidirMovimiento(this), "Mover");
+        fsmSanta.registerLastState(new OneShotBehaviour(this) {
+            @Override
+            public void action() {
+                System.out.println("\n\tHe llegado a Santa Claus");
+            }
+        }, "Fin");
 
-        fsmFinal.registerDefaultTransition("Actualizar", "Mover");
-        fsmFinal.registerDefaultTransition("Mover", "Actualizar");
-                
-        comportamientos.addSubBehaviour(fsmFinal);
+        fsmSanta.registerDefaultTransition("Actualizar", "Mover");
+        fsmSanta.registerDefaultTransition("Mover", "Actualizar");
+        fsmSanta.registerTransition("Mover", "Fin", 1);
+
+        comportamientos.addSubBehaviour(fsmSanta);
+
+        this.establecerMensaje("Bro Ya llegue En Plan");
+        comportamientos.addSubBehaviour(new SolicitarTraduccion("Traduccion-confirmacion-llegada", this));
+        comportamientos.addSubBehaviour(new MensajeDespedidaASanta(this));
 
         comportamientos.addSubBehaviour(new PasosTotales(this));
 
@@ -163,23 +174,14 @@ public class Agente extends Agent {
         return (this.codigoSecreto);
     }
 
-    public void establecerMensajeTraducido(String mensaje) {
-        this.mensajeTraducido = mensaje;
-    }
-
-    public String obtenerMensajeTraducido() {
-        return (this.mensajeTraducido);
-    }
-    
     public void establecerMensaje(String mensaje) {
         this.mensaje = mensaje;
     }
-      
-    // GERMAN
+
     public String obtenerMensaje() {
         return (this.mensaje);
     }
-    
+
     public void rescatarReno() {
         this.renosRescatados++;
     }
@@ -215,23 +217,9 @@ public class Agente extends Agent {
     public ACLMessage obtenerMensajeRudolph() {
         return (this.mensajeRudolph);
     }
-    
-    // RAFA
-    public void modificarPosicionSantaClaus(String mensajeCoordenadas){
-        Pattern pattern = Pattern.compile("\\((\\d+),(\\d+)\\)");
-        Matcher matcher = pattern.matcher(mensajeCoordenadas);
-        
-        if(matcher.find()){
-            int x = Integer.parseInt(matcher.group(1));
-            int y = Integer.parseInt(matcher.group(2));
-            
-            this.establecerPosObjetivo(x, y);
-        }else{
-            System.err.println("\n\tFormato de coordenadas invalido: " + mensajeCoordenadas);
-        }
-    }
 
-    public void modificarPosicionObjetivo(String mensajeCoordenadas) {
+    // RAFA
+    public void modificarPosicionSantaClaus(String mensajeCoordenadas) {
         Pattern pattern = Pattern.compile("\\((\\d+),(\\d+)\\)");
         Matcher matcher = pattern.matcher(mensajeCoordenadas);
 
@@ -241,7 +229,7 @@ public class Agente extends Agent {
 
             this.establecerPosObjetivo(x, y);
         } else {
-            System.err.println("Formato de coordenadas inválido: " + mensajeCoordenadas);
+            System.err.println("\n\tFormato de coordenadas invalido: " + mensajeCoordenadas);
         }
     }
 

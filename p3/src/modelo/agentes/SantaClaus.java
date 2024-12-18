@@ -6,6 +6,7 @@ import jade.lang.acl.ACLMessage;
 
 import modelo.Entorno;
 import modelo.Posicion;
+import modelo.comportamientos.santaclaus.Despedida;
 import modelo.comportamientos.santaclaus.SolicitarTraduccion;
 import modelo.comportamientos.santaclaus.EvaluarMision;
 import modelo.comportamientos.santaclaus.EnviarEvaluacion;
@@ -79,6 +80,7 @@ public class SantaClaus extends Agent {
         comportamientos.addSubBehaviour(new SolicitarTraduccion("Traducion Santa", this));
         comportamientos.addSubBehaviour(new EnviarEvaluacion(this));
         comportamientos.addSubBehaviour(new DesvelarPosicion(this));
+        comportamientos.addSubBehaviour(new Despedida(this));
 
         // Iniciar el flujo de comunicación (por ahora lo he puesto aquí):
         addBehaviour(comportamientos);

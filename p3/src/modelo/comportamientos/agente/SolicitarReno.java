@@ -48,7 +48,7 @@ public class SolicitarReno extends OneShotBehaviour {
         respuesta.setContent(agente.obtenerPosAgente().obtenerX() + "," + agente.obtenerPosAgente().obtenerY());
         
         try {
-            Thread.sleep(3000);
+            Thread.sleep(100);
         } catch (InterruptedException ex) {
             Logger.getLogger(SolicitarReno.class.getName()).log(Level.SEVERE, null, ex);
         }

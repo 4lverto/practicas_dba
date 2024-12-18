@@ -15,14 +15,15 @@ public class DesvelarPosicion extends OneShotBehaviour {
     @Override
     public void action() {
 
-        ACLMessage msg = santaClaus.blockingReceive();
+        ACLMessage mensajeSolicitudCoordenadas = santaClaus.blockingReceive();
+        
 
-        if (msg.getPerformative() == ACLMessage.INFORM) {
-            santaClaus.modificarMensajeAgente(msg);
+        if (mensajeSolicitudCoordenadas.getPerformative() == ACLMessage.INFORM) {
+            santaClaus.modificarMensajeAgente(mensajeSolicitudCoordenadas);
             
-            ACLMessage respuesta = santaClaus.obtenerMensajeAgente().createReply(ACLMessage.INFORM);
-            respuesta.setContent(santaClaus.obtenerPosicionSantaClaus().toString());
-            santaClaus.send(respuesta);
+            ACLMessage mensajeConCoordenadas = santaClaus.obtenerMensajeAgente().createReply(ACLMessage.INFORM);
+            mensajeConCoordenadas.setContent(santaClaus.obtenerPosicionSantaClaus().toString());
+            santaClaus.send(mensajeConCoordenadas);
         }
 
     }

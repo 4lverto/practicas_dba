@@ -76,7 +76,7 @@ public class DevolverReno extends CyclicBehaviour {
                 }
                 
                 try {
-                    Thread.sleep(5000);
+                    Thread.sleep(100);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(DevolverReno.class.getName()).log(Level.SEVERE, null, ex);
                 }

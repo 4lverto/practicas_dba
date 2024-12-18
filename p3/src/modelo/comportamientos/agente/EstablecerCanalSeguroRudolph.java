@@ -55,6 +55,7 @@ public class EstablecerCanalSeguroRudolph extends OneShotBehaviour {
                 && msg.getPerformative() == ACLMessage.AGREE) {
             System.out.println("\n\tRudolph ha aceptado el codigo");
             agente.modificarMensajeRudolph(msg);
+            agente.establecerMensaje("Bro ¿Donde estas? En Plan");
         } else {
             if (msg.getPerformative() == ACLMessage.REFUSE) {
                 System.out.println("\n\tRudolf ha rechazado el codigo");

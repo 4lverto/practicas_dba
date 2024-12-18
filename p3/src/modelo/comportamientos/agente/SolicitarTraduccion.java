@@ -55,10 +55,10 @@ public class SolicitarTraduccion extends OneShotBehaviour {
         msg.setContent(mensaje);
         msg.setConversationId(id);
         agente.send(msg);
-        
+
         System.out.println("AGENTE -> TRADUCEME ESTE MENSAJE: '" + msg.getContent() + "'");
         try {
-            Thread.sleep(5000);
+            Thread.sleep(100);
         } catch (InterruptedException ex) {
             Logger.getLogger(SolicitarTraduccion.class.getName()).log(Level.SEVERE, null, ex);
         }

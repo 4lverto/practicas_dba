@@ -56,7 +56,7 @@ public class SolicitarTraduccion extends OneShotBehaviour {
         msg.setConversationId(id);
 
         try {
-            Thread.sleep(5000);
+            Thread.sleep(100);
         } catch (InterruptedException ex) {
             Logger.getLogger(SolicitarTraduccion.class.getName()).log(Level.SEVERE, null, ex);
         }

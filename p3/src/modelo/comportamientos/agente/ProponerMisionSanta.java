@@ -53,7 +53,7 @@ public class ProponerMisionSanta extends OneShotBehaviour {
         msg.setConversationId("Evaluacion");
         
         try {
-            Thread.sleep(5000);
+            Thread.sleep(100);
         } catch (InterruptedException ex) {
             Logger.getLogger(ProponerMisionSanta.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -68,9 +68,8 @@ public class ProponerMisionSanta extends OneShotBehaviour {
 
             System.out.println("Respuesta recibida a peticion: " + contenido);
 
-            agente.establecerMensajeTraducido(contenido);
+            agente.establecerMensaje(contenido);
             agente.modificarMensajeSanta(msg);
-
 
             System.out.println("\n\tLa propuesta del agente ha sido aceptada por Santa Claus: " + contenido);
 

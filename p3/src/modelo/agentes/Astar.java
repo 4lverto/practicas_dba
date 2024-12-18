@@ -122,7 +122,6 @@ public class Astar {
         }
 
         if (origen.sonIguales(dest)) {
-            System.out.println("\tYa estamos en el destino");
             return new ArrayList();
         }
 

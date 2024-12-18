@@ -11,7 +11,7 @@ public class SolicitarPosicionSanta extends OneShotBehaviour {
 
     private Agente agente;
    
-    private static final Posicion IGNORE = new Posicion(-1, -1);
+    private static final Posicion posicionSanta = new Posicion(-1, -1);
 
     /**
      * @brief Constructor por defecto.
@@ -40,26 +40,15 @@ public class SolicitarPosicionSanta extends OneShotBehaviour {
     @Override
     public void action() {
         ACLMessage respuesta = agente.obtenerMensajeSanta().createReply(ACLMessage.INFORM);
-        respuesta.setContent(normalizarTexto(agente.obtenerMensajeTraducido()));
+        respuesta.setContent(normalizarTexto(agente.obtenerMensaje()));
         agente.send(respuesta);
-
-        // Recibimos el mensaje cifrado con las coordenadas
+        
+        // Espera a que Santa le responda con las coordenadas
         ACLMessage mensajeCoordenadas = agente.blockingReceive();
 
-        if (mensajeCoordenadas.getPerformative() == ACLMessage.INFORM) {
-            agente.modificarMensajeSanta(mensajeCoordenadas);
-            agente.modificarPosicionObjetivo(mensajeCoordenadas.getContent());
-        }
-    
-        // respuesta.setContent(normalizarTexto(agente.obtenerMensaje()));
-        respuesta.setContent(IGNORE.obtenerX() + "," + IGNORE.obtenerY());
-        // Recibimos el mensaje cifrado con las coordenadas
-        // ACLMessage mensajeCoordenadas = agente.blockingReceive();
-        
         if (respuesta.getPerformative() == ACLMessage.INFORM) {
-            agente.modificarMensajeSanta(respuesta);
-            agente.modificarPosicionObjetivo(respuesta.getContent());
-            agente.send(respuesta);
+            agente.modificarMensajeSanta(mensajeCoordenadas);
+            agente.modificarPosicionSantaClaus(mensajeCoordenadas.getContent());
         }
     }
 }
