@@ -4,6 +4,8 @@ import modelo.comportamientos.agente.DecidirMovimiento;
 import modelo.comportamientos.agente.ActualizarMemoria;
 import modelo.comportamientos.agente.PasosTotales;
 import jade.core.behaviours.SequentialBehaviour;
+import jade.core.behaviours.FSMBehaviour;
+import jade.core.behaviours.OneShotBehaviour;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import java.util.ArrayList;
@@ -11,14 +13,16 @@ import modelo.Entorno;
 import modelo.Posicion;
 import modelo.sensores.Sensor;
 import modelo.Mapa;
-import modelo.comportamientos.agente.AgenteSolicitarTraduccion;
+import modelo.comportamientos.agente.SolicitarTraduccion;
 import modelo.comportamientos.agente.ProponerMisionSanta;
+import modelo.comportamientos.agente.EstablecerCanalSeguroRudolph;
+import modelo.comportamientos.agente.SolicitarReno;
 import modelo.sensores.Vision;
 import modelo.sensores.Energia;
 
 /**
  * @brief Clase que representa al agente autónomo que se desplaza en el entorno.
- * 
+ *
  * La clase Agente extiende la clase Agent de JADE y gestiona el ciclo de vida
  * del agente, incluyendo la configuración inicial, la toma de decisiones y el
  * seguimiento de su entorno. Emplea un comportamiento periódico para evaluar
@@ -30,12 +34,12 @@ public class Agente extends Agent {
      * @brief Entorno en el que se mueve el agente
      */
     private Entorno entorno;
-    
+
     /**
      * @brief Lista de sensores asociados al agente
      */
     private ArrayList<Sensor> sensores;
-    
+
     /**
      * @brief Mapa que almacena la memoria del agente sobre el entorno
      */
@@ -43,34 +47,31 @@ public class Agente extends Agent {
 
     // Para la comunicación (falta documentar):
     private final int TOTAL_RENOS = 8;
-    private String codigoSecreto  = "";
-    private String mensajeTraducido = "";
-    private int renosRescatados   = 0;
-    private Posicion posSanta;
+    private String codigoSecreto = "";
+    private String mensaje = "Bro Estoy dispuesto a ofrecerme voluntario para la misión En Plan";
+    private int renosRescatados = 0;
+    private Posicion posObjetivo;
     ACLMessage mensajeSanta;
     ACLMessage mensajeRudolph;
-    
+
     /**
      * @brief Lista de posiciones por las que ha pasado el agente
      */
     // private ArrayList<Posicion> trazaRecorrido;
-    
-    
     /**
      * @brief Métood de configuración incial del agente, llamado al inicio.
-     * 
+     *
      * Este método recibe el entorno como argumento, inicializa el mapa de
-     * memoria y los sensores. Además, configura un comportamiento periódico
-     * que permite al agente evaluar su situación y decidir el próximo
-     * movimiento.
+     * memoria y los sensores. Además, configura un comportamiento periódico que
+     * permite al agente evaluar su situación y decidir el próximo movimiento.
      */
     @Override
     protected void setup() {
         System.out.println("Iniciando AgenteBuscador...");
-        
+
         // Inicializar el entorno:
         Object[] args = getArguments();
-        
+
         // El único argumento que se espera recibir es la instancia de Entorno:
         if (args != null && args.length == 1 && args[0] instanceof Entorno) {
             entorno = (Entorno) args[0]; // Asigamos a entorno
@@ -78,7 +79,7 @@ public class Agente extends Agent {
             // Configuramos el estado inicial llamando a 
             // actualizarPercepciones(posición actual)
             this.sensores = this.entorno.actualizarPercepciones(entorno.obtenerPosAgente());
-            
+
             // Inicializamos la traza de recorrido
             //trazaRecorrido = new ArrayList<>();
         } else {
@@ -86,114 +87,138 @@ public class Agente extends Agent {
             doDelete();
             return;
         }
-        
-        // Añadir los comportamientos de los que dispone el agente para que los 
-        // lleve a cabo:
-        //addBehaviour(new ActualizarMemoria(this));        
-        //addBehaviour(new DecidirMovimiento(this));
-        //addBehaviour(new PasosTotales(this));
-        
+
         SequentialBehaviour comportamientos = new SequentialBehaviour();
-        
-        comportamientos.addSubBehaviour(new AgenteSolicitarTraduccion("Bro Estoy dispuesto a ofrecerme voluntario para la misión En Plan", "Traduccion inicial", this));
+
+        comportamientos.addSubBehaviour(new SolicitarTraduccion("Traduccion inicial", this));
         comportamientos.addSubBehaviour(new ProponerMisionSanta(this));
-        
-        
-        // Iniciar el flujo de comunicación (por ahora lo he puesto aquí):
+        comportamientos.addSubBehaviour(new EstablecerCanalSeguroRudolph(this));
+
+        FSMBehaviour fsm = new FSMBehaviour(this);
+        fsm.registerFirstState(new SolicitarReno(this), "Solicitar");
+        fsm.registerState(new ActualizarMemoria(this), "Actualizar");
+        fsm.registerState(new DecidirMovimiento(this), "Mover");
+        fsm.registerLastState(new OneShotBehaviour(this) {
+            @Override
+            public void action() {
+                System.out.println("Todos los renos visitados");
+            }
+        }, "Fin");
+        fsm.registerDefaultTransition("Solicitar", "Actualizar");
+        fsm.registerDefaultTransition("Actualizar", "Mover");
+        fsm.registerDefaultTransition("Mover", "Actualizar");
+        fsm.registerTransition("Mover", "Solicitar", 1);
+        fsm.registerTransition("Solicitar", "Fin", 1);
+
+        comportamientos.addSubBehaviour(fsm);
+
+        //comportamientos.addSubBehaviour(traduce pregunta de coords a santa); (este se puede poner sustituyendo al LastState del FSM anterior si quereis)
+        //comportamientos.addSubBehaviour(pregunta coords a santa);
+        //comportamientos.addSubBehaviour(se mueve a coords);(se puede hacer con un FSM poniendo en el FirstState a actualizar
+        //                                                   y uno normal a mover, los default se mueven del uno al otro y con
+        //                                                   una transicion (el numero es return en Behaviour.onEnd()) de Mover
+        //                                                   a un EntregarRenosSanta como nodo final, como idea a mi no me parece mal)
+        //Este es el ultimo, ya que EntregarRenosSanta recibiria el HoHoHo si seguimos con el mismo patron
+        comportamientos.addSubBehaviour(new PasosTotales(this));
         addBehaviour(comportamientos);
     }
-    
-                                    // ////////////////// //
-                                    // NUEVOS MÉTODOS(P3) //
-                                    // ////////////////// //
 
-    
+    // ////////////////// //
+    // NUEVOS MÉTODOS(P3) //
+    // ////////////////// //
     public final int totalRenos() {
         return (this.TOTAL_RENOS);
     }
-    
+
     public void establecerCodigoSecreto(String codigoSecreto) {
         this.codigoSecreto = codigoSecreto;
     }
-    
+
     public String obtenerCodigoSecreto() {
         return (this.codigoSecreto);
     }
-    
-    public void establecerMensajeTraducido(String mensaje) {
-        this.mensajeTraducido = mensaje;
+
+    public void establecerMensaje(String mensaje) {
+        this.mensaje = mensaje;
     }
-    
-    public String obtenerMensajeTraducido() {
-        return (this.mensajeTraducido);
+
+    public String obtenerMensaje() {
+        return (this.mensaje);
     }
-    
+
     public void rescatarReno() {
-        this.renosRescatados ++;
+        this.renosRescatados++;
     }
-    
+
     public int numRenosRescatados() {
         return (this.renosRescatados);
     }
-    
-    public void establecerPosSanta(int x, int y) {
-        this.posSanta = new Posicion(x, y);
+
+    public void establecerPosObjetivo(int x, int y) {
+        this.posObjetivo = new Posicion(x, y);
     }
-    
+
+    public Posicion obtenerPosObjetivo() {
+        return this.posObjetivo;
+    }
+
+    public Posicion obtenerPosAgente() {
+        return entorno.obtenerPosAgente();
+    }
+
     public void modificarMensajeSanta(ACLMessage mensajeSanta) {
         this.mensajeSanta = mensajeSanta;
     }
-    
+
     public ACLMessage obtenerMensajeSanta() {
         return (this.mensajeSanta);
     }
-    
+
     public void modificarMensajeRudolph(ACLMessage mensajeRudolph) {
         this.mensajeRudolph = mensajeRudolph;
     }
-    
+
     public ACLMessage obtenerMensajeRudolph() {
         return (this.mensajeRudolph);
     }
-    
+
     @Override
     protected void takeDown() {
         System.out.println("Finalizado el agente " + this.getLocalName());
     }
-    
-                                        // ///////////////////// //
-                                        // MÉTODOS ANTIGUOS (P2) //
-                                        // ///////////////////// //
-    
+
+    // ///////////////////// //
+    // MÉTODOS ANTIGUOS (P2) //
+    // ///////////////////// //
     /**
-     * @brief Función que usaremos para tomar la decisión de qué movimiento realizar
+     * @brief Función que usaremos para tomar la decisión de qué movimiento
+     * realizar
      */
     public void decidirMovimiento() {
-        ArrayList<Posicion> camino = Astar.busqueda(mapaMemoria, entorno.obtenerPosAgente(), entorno.obtenerPosObjetivo());
-        
+        ArrayList<Posicion> camino = Astar.busqueda(mapaMemoria, entorno.obtenerPosAgente(), posObjetivo);
+
         if (camino != null && !camino.isEmpty()) {
-            this.sensores = this.entorno.actualizarPercepciones(camino.get(camino.size()-2));
+            this.sensores = this.entorno.actualizarPercepciones(camino.get(camino.size() - 2));
         }
     }
-    
+
     /**
      * @brief Actualiza la memoria del agente con la infromación de sus sensores
-     * 
+     *
      * La memoria del agente se actualiza con los datos obtenidos de su sensor
-     * de visión, que detecta el entorno inmediato. Los valores de cada celda
-     * se integran en el mapa de memoria para mejorar las decisiones de 
-     * movimiento.
+     * de visión, que detecta el entorno inmediato. Los valores de cada celda se
+     * integran en el mapa de memoria para mejorar las decisiones de movimiento.
      */
     public void actualizarMemoria() {
         int x = this.entorno.obtenerPosAgente().obtenerX();
         int y = this.entorno.obtenerPosAgente().obtenerY();
 
         Vision sensorVision = (Vision) this.sensores.get(0);
-        
+
         // Metemos en celdasContiguas la matriz de visión que devuelve
         // el sensor (las 8 posiciones de alrededor)
         int[][] celdasContiguas = sensorVision.obtenerVision();
-        
+
         // Añadimos a la memoria del agente estas celdasContiguas teniendo
         // en cuenta la posición desde donde las vemos.
         actualizarMapaConVision(x, y, celdasContiguas);
@@ -203,31 +228,31 @@ public class Agente extends Agent {
     /**
      * @brief Actualiza el mapa de memoria del agente con la información del
      * sensor de visión.
-     * @param x Coordenada X de la posición del agente desde donde se obtuvo
-     * la información del sensor de visión.
-     * @param y Coordenada Y de la posición del agente desde donde se obtuvo
-     * la información del sensor de visión.
+     * @param x Coordenada X de la posición del agente desde donde se obtuvo la
+     * información del sensor de visión.
+     * @param y Coordenada Y de la posición del agente desde donde se obtuvo la
+     * información del sensor de visión.
      * @param celdasContiguas Datos proporcionados por el sensor de visión con
      * la información inmediata alrededor del agente. Por lógica, será una
      * matriz 3x3.
      */
     private void actualizarMapaConVision(int x, int y, int[][] celdasContiguas) {
-        
+
         // Recorremos las celdas contiguas
         for (int i = 0; i < celdasContiguas.length; i++) {
             for (int j = 0; j < celdasContiguas[i].length; j++) {
-                
+
                 // Para cada casilla le definimos su "valor" aplicando un 
                 // desplazamiento en las coordenads (x,y) del agente.
                 int nuevaX = x + (i - 1);
                 int nuevaY = y + (j - 1);
-                
+
                 // Para cada celda contigua verificaremos si la posición es 
                 // válida, en cuyo caso convertiremos el valor del sensor
                 // a un valor adecuado (LIBRE u OBSTACULO)
                 if (mapaMemoria.casillaEsValida(nuevaX, nuevaY)) {
                     int valorCasilla = obtenerValorParaCasilla(celdasContiguas[i][j]);
-                    
+
                     // Cada celda será actualizada en la memoria del agente, 
                     // para reflejar su estado real en función de la inmediata
                     // visión del agente
@@ -236,57 +261,59 @@ public class Agente extends Agent {
             }
         }
     }
-    
+
     /**
-     * @brief Convierte el valor del sensor de visión en un valor adecuado para 
+     * @brief Convierte el valor del sensor de visión en un valor adecuado para
      * el mapa.
      * @param valorSensor Valor leído por el sensor
      * @return Valor adecuado para almacenar la casilla en la memoria del agente
      */
     private int obtenerValorParaCasilla(int valorSensor) {
-        
+
         int valorCasilla;
-        
-        if(valorSensor==0){
-            valorCasilla=1;
-        }else{
-            valorCasilla=valorSensor;
+
+        if (valorSensor == 0) {
+            valorCasilla = 1;
+        } else {
+            valorCasilla = valorSensor;
         }
-        
+
         return valorCasilla;
     }
-    
-     /**
-     * @brief Función que se utilizará para comprobar si hemos alcanzado el objetivo
-     * @return True si la posición actual del agente es igual a la del objetivo y False en caso contrario
+
+    /**
+     * @brief Función que se utilizará para comprobar si hemos alcanzado el
+     * objetivo
+     * @return True si la posición actual del agente es igual a la del objetivo
+     * y False en caso contrario
      */
     public boolean objetivoAlcanzado() {
-        return entorno.obtenerPosAgente().sonIguales(entorno.obtenerPosObjetivo());
+        return entorno.obtenerPosAgente().sonIguales(posObjetivo);
     }
-    
+
     /**
      * @brief Devuelve el numero de pasos gastado por el agente
      * @return Número de pasos necesitados para alcanzar (o no) el obejtivo
      */
-    public int obtenerPasosTotales(){
-        if(this.objetivoAlcanzado()){
-            Energia energia =  (Energia) this.sensores.get(1);
-            
-            return energia.obtenerEnergia()-1;
+    public int obtenerPasosTotales() {
+        if (this.objetivoAlcanzado()) {
+            Energia energia = (Energia) this.sensores.get(1);
+
+            return energia.obtenerEnergia() - 1;
         }
         return -1;
     }
-    
+
     /**
      * @brief Mostrará la traza de pasos seguida
-     
-    public void mostrarTraza(){
-        System.out.println("Recorrido seguido por el agente:");
-        
-        for(int i=0;i<trazaRecorrido.size()-1;i++){
-            System.out.print(trazaRecorrido.get(i) + " -> ");
-        }
-        
-        System.out.println("y finalmente... " + trazaRecorrido.get(trazaRecorrido.size()-1));
-    }*/
+     *
+     * public void mostrarTraza(){ System.out.println("Recorrido seguido por el
+     * agente:");
+     *
+     * for(int i=0;i<trazaRecorrido.size()-1;i++){
+     * System.out.print(trazaRecorrido.get(i) + " -> "); }
+     *
+     * System.out.println("y finalmente... " +
+     * trazaRecorrido.get(trazaRecorrido.size()-1)); }
+     */
 }

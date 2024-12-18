@@ -7,16 +7,18 @@ import java.util.ArrayList;
 
 /**
  * @class Astar
- * 
- * @brief Clase que contiene el codigo para realizar una bisqueda con algoritmo A*.
+ *
+ * @brief Clase que contiene el codigo para realizar una bisqueda con algoritmo
+ * A*.
  */
 public class Astar {
 
     /**
-    * @class Datos
-    * 
-    * @brief Clase que se usa en la priority queue para evaluar un nodo abierto frente a otro
-    */
+     * @class Datos
+     *
+     * @brief Clase que se usa en la priority queue para evaluar un nodo abierto
+     * frente a otro
+     */
     private static class Datos {
 
         double valor;
@@ -31,10 +33,10 @@ public class Astar {
     }
 
     /**
-    * @class Datos
-    * 
-    * @brief Clase que alamacena los datos de una celda
-    */
+     * @class Datos
+     *
+     * @brief Clase que alamacena los datos de una celda
+     */
     private static class Celda {
 
         public Posicion padre;
@@ -58,7 +60,7 @@ public class Astar {
 
     /**
      * @brief Función que estima la distancia del origen al destino
-     * 
+     *
      * Se llama solo desde el metodo busqueda
      */
     private static double heuristica(Posicion origen, Posicion dest) {
@@ -67,8 +69,9 @@ public class Astar {
 
     /**
      * @brief Función que obtiene la lista de celdas del camino encontrado
-     * 
-     * Este metodo se llama solo desde el metodo busqueda una vez se ha llegado a la salida
+     *
+     * Este metodo se llama solo desde el metodo busqueda una vez se ha llegado
+     * a la salida
      */
     private static ArrayList<Posicion> obtenerCamino(Celda[][] celdas, Posicion dest) {
         // System.out.println("Camino:  ");
@@ -90,14 +93,15 @@ public class Astar {
         for (Posicion pos : camino) {
             System.out.println("{"+pos.obtenerX()+","+pos.obtenerY()+"}\n");
         }*/
-
         return camino;
     }
-    
+
     /**
-     * @brief Función nos da un camino en un mapa dado desde una posicion destino a una origen con el metodo A*
-     * 
-     * @return ArrayList de de celdas que forman el camino desde el destino al origen
+     * @brief Función nos da un camino en un mapa dado desde una posicion
+     * destino a una origen con el metodo A*
+     *
+     * @return ArrayList de de celdas que forman el camino desde el destino al
+     * origen
      */
     public static ArrayList<Posicion> busqueda(Mapa mapa, Posicion origen, Posicion dest) {
 
@@ -122,7 +126,6 @@ public class Astar {
             return new ArrayList();
         }
 
-        
         //Creamos una matriz donde guardamos los daots de las casollas y lista de nodos cerrados
         boolean[][] cerrados = new boolean[mapa.obtenerNumFilas()][mapa.obtenerNumColumnas()];
 
@@ -164,10 +167,9 @@ public class Astar {
                         if (celdas[adyacente.obtenerX()][adyacente.obtenerY()] == null) {
                             celdas[adyacente.obtenerX()][adyacente.obtenerY()] = new Celda();
                         }
-                        
-                        
+
                         if (adyacente.sonIguales(dest) //Si es el destino se devuelve el camino encontrado
-                                && (addX != addY || (mapa.obtenerCasilla(i+addX,j) != -1 || mapa.obtenerCasilla(i,j+addY) != -1))) {   //Comprobacion bloqueo diagonales
+                                && (addX != addY || (mapa.obtenerCasilla(i + addX, j) != -1 || mapa.obtenerCasilla(i, j + addY) != -1))) {   //Comprobacion bloqueo diagonales
                             celdas[adyacente.obtenerX()][adyacente.obtenerY()].padre = new Posicion(i, j);
                             System.out.println("Seguimos buscando el objetivo...");
                             if (mapa.obtenerCasilla(dest.obtenerX(), dest.obtenerY()) == -1) {
@@ -175,22 +177,22 @@ public class Astar {
                                 return new ArrayList();
                             }
                             return obtenerCamino(celdas, dest);
-                                
-                        } else if (!cerrados[adyacente.obtenerX()][adyacente.obtenerY()]                //Si no se ha explorado ya
-                               && mapa.obtenerCasilla(adyacente.obtenerX(), adyacente.obtenerY()) != -1 //y es transitable
-                               && (addX != addY || (mapa.obtenerCasilla(i+addX,j) != -1 || mapa.obtenerCasilla(i,j+addY) != -1))) {   //Comprobacion bloqueo diagonales
-                            
+
+                        } else if (!cerrados[adyacente.obtenerX()][adyacente.obtenerY()] //Si no se ha explorado ya
+                                && mapa.obtenerCasilla(adyacente.obtenerX(), adyacente.obtenerY()) != -1 //y es transitable
+                                && (addX != addY || (mapa.obtenerCasilla(i + addX, j) != -1 || mapa.obtenerCasilla(i, j + addY) != -1))) {   //Comprobacion bloqueo diagonales
+
                             //Se calculay registra el valor de la celda                         
                             double gNew, hNew, fNew;
                             gNew = celdas[i][j].g + 1.0;
                             hNew = heuristica(adyacente, dest);
                             fNew = gNew + hNew;
-                            
+
                             if (celdas[adyacente.obtenerX()][adyacente.obtenerY()].f == -1
                                     || celdas[adyacente.obtenerX()][adyacente.obtenerY()].f > fNew) {
-                                    
+
                                 abiertos.add(new Datos(fNew, adyacente.obtenerX(), adyacente.obtenerY()));
-                                
+
                                 celdas[adyacente.obtenerX()][adyacente.obtenerY()].g = gNew;
 
                                 celdas[adyacente.obtenerX()][adyacente.obtenerY()].f = fNew;

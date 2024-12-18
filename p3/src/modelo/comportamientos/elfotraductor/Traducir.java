@@ -20,7 +20,7 @@ public class Traducir extends CyclicBehaviour {
         }
         return Normalizer.normalize(texto, Normalizer.Form.NFD).replaceAll("[\\p{InCombiningDiacriticalMarks}]", "").trim();
     }
-    
+
     @Override
     public void action() {
         ACLMessage msg = this.myAgent.blockingReceive();
@@ -29,8 +29,6 @@ public class Traducir extends CyclicBehaviour {
 
             String contenido = normalizarTexto(msg.getContent());
             System.out.println("ELFO TRADUCTOR -> HE RECIBIDO:" + contenido);
-            
-            
 
             ACLMessage respuesta = msg.createReply(ACLMessage.INFORM);
 

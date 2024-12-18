@@ -10,18 +10,18 @@ import javax.sound.sampled.*;
 
 /**
  * @class VistaGrafica
- * 
+ *
  * @brief Clase que representa la vista gráfica del simulador. Esta utiliza la
- * biblioteca Swing para representar el entorno (mapa, agente y casilla 
+ * biblioteca Swing para representar el entorno (mapa, agente y casilla
  * objetivo).
  */
 public class VistaGrafica extends Vista {
-    
+
     /**
      * @brief Ventana gráfica principal para el simulador.
      */
     private JFrame ventana;
-    
+
     /**
      * @brief Panel para el mapa a visualizar.
      */
@@ -30,26 +30,25 @@ public class VistaGrafica extends Vista {
     /**
      * @brief Constructor por parámetro. Inicializa la vista y crea la ventana
      * principal con una configuración por defecto.
-     * 
+     *
      * @param entorno Instancia del entorno.
      */
     public VistaGrafica(Entorno entorno) throws IOException {
         this.entorno = entorno;
         // Añadirse al entorno (observado) como observador:
         this.entorno.registrarVista(this);
-        
+
         // Reproducir la música de fondo al iniciar
         // reproducirMusica("resources/fondo.wav"); // Ruta relativa
-
-        this.ventana   = new JFrame("Prática 3 de DBA");
+        this.ventana = new JFrame("Prática 3 de DBA");
         this.panelMapa = new PanelMapa(entorno);
-        
+
         // Configuración de la ventana principal:
-        int anchoVentana = 
-                entorno.obtenerMapa().obtenerNumColumnas() * PanelMapa.obtenerFactor();
-        int altoVentana  = 
-                entorno.obtenerMapa().obtenerNumFilas() * PanelMapa.obtenerFactor();
-        
+        int anchoVentana
+                = entorno.obtenerMapa().obtenerNumColumnas() * PanelMapa.obtenerFactor();
+        int altoVentana
+                = entorno.obtenerMapa().obtenerNumFilas() * PanelMapa.obtenerFactor();
+
         this.ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.ventana.setLayout(new BorderLayout());
         this.ventana.add(this.panelMapa, BorderLayout.CENTER);
@@ -65,15 +64,15 @@ public class VistaGrafica extends Vista {
      */
     @Override
     public void actualizar() {
-        Energia sensorEnergia = (Energia)entorno.obtenerSensores().get(1);
+        Energia sensorEnergia = (Energia) entorno.obtenerSensores().get(1);
         this.panelMapa.establecerMapa(this.entorno.obtenerMapa());
-        this.panelMapa.actualizarInformacion(this.entorno.obtenerPosAgente().obtenerX(), this.entorno.obtenerPosAgente().obtenerY(), sensorEnergia.obtenerEnergia()-1);
+        this.panelMapa.actualizarInformacion(this.entorno.obtenerPosAgente().obtenerX(), this.entorno.obtenerPosAgente().obtenerY(), sensorEnergia.obtenerEnergia() - 1);
         this.panelMapa.repaint(); // Para repintar la pantalla.
     }
 
     /**
      * @brief Reproduce la música de fondo en un bucle.
-     * 
+     *
      * @param archivoAudio Ruta al archivo de audio que se quiere reproducir.
      */
     private void reproducirMusica(String archivoAudio) {

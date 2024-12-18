@@ -43,15 +43,15 @@ public class PanelConfiguracionControlador extends JFrame {
     private static final String[] Nombres_Agentes = {
         "Agente",
         "Elfo",
-        "Santa"
-        //"Rudolph"
+        "Santa",
+        "Rudolph"
     };
-    
+
     private static final String[] Clases_Agentes = {
         "modelo.agentes.Agente",
         "modelo.agentes.ElfoTraductor",
-        "modelo.agentes.SantaClaus"
-        //"modelo.agentes.Rudolph"
+        "modelo.agentes.SantaClaus",
+        "modelo.agentes.Rudolph"
     };
 
     /**
@@ -108,6 +108,7 @@ public class PanelConfiguracionControlador extends JFrame {
         JSpinner campoColumnaAgente = new JSpinner(
                 new SpinnerNumberModel(0, 0, this.topeDimensionMapa, 1));
 
+        /*
         // Etiqueta y campo para la fila de la casilla objetivo:
         JLabel etiquetaFilaObjetivo = new JLabel("Fila: ");
         JSpinner campoFilaObjetivo = new JSpinner(
@@ -117,8 +118,10 @@ public class PanelConfiguracionControlador extends JFrame {
         JLabel etiquetaColumnaObjetivo = new JLabel("Columna: ");
         JSpinner campoColumnaObjetivo = new JSpinner(
                 new SpinnerNumberModel(14, 0, this.topeDimensionMapa, 1));
-
-        // SANTA CLAUS, RUDOLPH...
+         */
+        // //////////////// //
+        // NUEVO PRÁCTICA 3 //
+        // //////////////// //
         JLabel etiquetaFilaSantaClaus = new JLabel("Fila: ");
         JSpinner campoFilaSantaClaus = new JSpinner(
                 new SpinnerNumberModel(8, 0, this.topeDimensionMapa, 1));
@@ -222,9 +225,14 @@ public class PanelConfiguracionControlador extends JFrame {
                 String mapaSeleccionado = (String) opciones.getSelectedItem();
                 int filaAgente = (Integer) campoFilaAgente.getValue();
                 int columnaAgente = (Integer) campoColumnaAgente.getValue();
+
+                /*
                 int filaObjetivo = (Integer) campoFilaObjetivo.getValue();
                 int columnaObjetivo = (Integer) campoColumnaObjetivo.getValue();
-
+                 */
+                // //////// //
+                // NUEVO P3 //
+                // //////// //
                 int filaRudolph = (Integer) campoFilaRudolph.getValue();
                 int columnaRudolph = (Integer) campoColumnaRudolph.getValue();
 
@@ -262,8 +270,8 @@ public class PanelConfiguracionControlador extends JFrame {
                 // controlador:
                 // Crear instancias de Posicion para el agente y el objetivo
                 Posicion posAgente = new Posicion(filaAgente, columnaAgente);
-                Posicion posObjetivo = new Posicion(filaObjetivo, columnaObjetivo);
 
+                // Posicion posObjetivo = new Posicion(filaObjetivo, columnaObjetivo);
                 Posicion posRudolph = new Posicion(filaRudolph, columnaRudolph);
                 Posicion posElfo = new Posicion(filaElfo, columnaElfo);
                 Posicion posSantaClaus = new Posicion(filaSantaClaus, columnaSantaClaus);
@@ -283,7 +291,7 @@ public class PanelConfiguracionControlador extends JFrame {
 
                     // Creamos y configuramos el entorno
                     entorno = Entorno.obtenerInstancia(posAgente,
-                            posObjetivo, posReno1, posReno2,
+                            /*posObjetivo,*/ posReno1, posReno2,
                             posReno3, posReno4, posReno5,
                             posReno6, posReno7, posReno8,
                             posElfo, posRudolph,
@@ -328,7 +336,7 @@ public class PanelConfiguracionControlador extends JFrame {
         // Distribución de los componentes del panel                          //
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
-        gbc.insets = new Insets(8, 8, 8, 8);
+        gbc.insets = new Insets(8, 8, 8, 40);
 
         int fila = 1;
 
@@ -355,27 +363,33 @@ public class PanelConfiguracionControlador extends JFrame {
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
         // Fila 2: Selector de la posición inicial del agente                 //
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
+        // Dejar una columna vacía
+        gbc.gridx = 0; // Columna vacía para el espacio
+        gbc.gridy = fila;
+        panel.add(new JLabel(""), gbc);
+
         // Para la fila:
-        gbc.gridx = 0;
+        gbc.gridx = 1;
         gbc.gridy = fila;
         gbc.anchor = GridBagConstraints.EAST;
         panel.add(etiquetaFilaAgente, gbc);
 
-        gbc.gridx = 1;
+        gbc.gridx = 2;
         gbc.anchor = GridBagConstraints.WEST;
         panel.add(campoFilaAgente, gbc);
 
         // Para la columna:
-        gbc.gridx = 2;
+        gbc.gridx = 3;
         gbc.gridy = fila;
         gbc.anchor = GridBagConstraints.EAST;
         panel.add(etiquetaColumnaAgente, gbc);
 
-        gbc.gridx = 3;
+        gbc.gridx = 4;
         gbc.anchor = GridBagConstraints.WEST;
         panel.add(campoColumnaAgente, gbc);
         fila++;
 
+        /*
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
         // Fila 3: Título de la selección de la posición de la casilla        //
         // objetivo                                                           //
@@ -388,6 +402,7 @@ public class PanelConfiguracionControlador extends JFrame {
         // Fila 4: Selector de la posición de la casilla objetivo             //
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
         // Para la fila:
+        /*
         gbc.gridx = 0;
         gbc.gridy = fila;
         gbc.anchor = GridBagConstraints.EAST;
@@ -396,7 +411,7 @@ public class PanelConfiguracionControlador extends JFrame {
         gbc.gridx = 1;
         gbc.anchor = GridBagConstraints.WEST;
         panel.add(campoFilaObjetivo, gbc);
-
+        
         // Para la columna:
         gbc.gridx = 2;
         gbc.gridy = fila;
@@ -407,35 +422,46 @@ public class PanelConfiguracionControlador extends JFrame {
         gbc.anchor = GridBagConstraints.WEST;
         panel.add(campoColumnaObjetivo, gbc);
         fila++;
-
+         */
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
         // Fila 5: Título de la selección de la posición de la casilla        //
-        // de SantaClaus                                                           //
+        // de SantaClaus                                                      //
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
         gbc.gridx = 0;
         gbc.gridy = fila;
+
         panel.add(new JLabel("Posición casilla SantaClaus: "), gbc);
 
+        // Dejar una columna vacía
+        gbc.gridx = 1; // Columna vacía para el espacio
+        gbc.gridy = fila;
+        panel.add(new JLabel(" "), gbc);
+
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
-        // Fila 6: Selector de la posición de la casilla SantaClaus             //
+        // Fila 6: Selector de la posición de la casilla SantaClaus           //
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
         // Para la fila:
-        gbc.gridx = 0;
+        // Dejar una columna vacía
+        gbc.gridx = 0; // Columna vacía para el espacio
+        gbc.gridy = fila;
+        panel.add(new JLabel(""), gbc);
+
+        gbc.gridx = 1;
         gbc.gridy = fila;
         gbc.anchor = GridBagConstraints.EAST;
         panel.add(etiquetaFilaSantaClaus, gbc);
 
-        gbc.gridx = 1;
+        gbc.gridx = 2;
         gbc.anchor = GridBagConstraints.WEST;
         panel.add(campoFilaSantaClaus, gbc);
 
         // Para la columna:
-        gbc.gridx = 2;
+        gbc.gridx = 3;
         gbc.gridy = fila;
         gbc.anchor = GridBagConstraints.EAST;
         panel.add(etiquetaColumnaSantaClaus, gbc);
 
-        gbc.gridx = 3;
+        gbc.gridx = 4;
         gbc.anchor = GridBagConstraints.WEST;
         panel.add(campoColumnaSantaClaus, gbc);
         fila++;
@@ -452,22 +478,27 @@ public class PanelConfiguracionControlador extends JFrame {
         // Fila 8: Selector de la posición de la casilla SantaClaus             //
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
         // Para la fila:
-        gbc.gridx = 0;
+        // Dejar una columna vacía
+        gbc.gridx = 0; // Columna vacía para el espacio
+        gbc.gridy = fila;
+        panel.add(new JLabel(""), gbc);
+
+        gbc.gridx = 1;
         gbc.gridy = fila;
         gbc.anchor = GridBagConstraints.EAST;
         panel.add(etiquetaFilaRudolph, gbc);
 
-        gbc.gridx = 1;
+        gbc.gridx = 2;
         gbc.anchor = GridBagConstraints.WEST;
         panel.add(campoFilaRudolph, gbc);
 
         // Para la columna:
-        gbc.gridx = 2;
+        gbc.gridx = 3;
         gbc.gridy = fila;
         gbc.anchor = GridBagConstraints.EAST;
         panel.add(etiquetaColumnaRudolph, gbc);
 
-        gbc.gridx = 3;
+        gbc.gridx = 4;
         gbc.anchor = GridBagConstraints.WEST;
         panel.add(campoColumnaRudolph, gbc);
         fila++;
@@ -483,23 +514,28 @@ public class PanelConfiguracionControlador extends JFrame {
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
         // Fila 10: Selector de la posición de la casilla Elfo             //
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
+        // Dejar una columna vacía
+        gbc.gridx = 0; // Columna vacía para el espacio
+        gbc.gridy = fila;
+        panel.add(new JLabel(""), gbc);
+
         // Para la fila:
-        gbc.gridx = 0;
+        gbc.gridx = 1;
         gbc.gridy = fila;
         gbc.anchor = GridBagConstraints.EAST;
         panel.add(etiquetaFilaElfo, gbc);
 
-        gbc.gridx = 1;
+        gbc.gridx = 2;
         gbc.anchor = GridBagConstraints.WEST;
         panel.add(campoFilaElfo, gbc);
 
         // Para la columna:
-        gbc.gridx = 2;
+        gbc.gridx = 3;
         gbc.gridy = fila;
         gbc.anchor = GridBagConstraints.EAST;
         panel.add(etiquetaColumnaElfo, gbc);
 
-        gbc.gridx = 3;
+        gbc.gridx = 4;
         gbc.anchor = GridBagConstraints.WEST;
         panel.add(campoColumnaElfo, gbc);
         fila++;
@@ -515,23 +551,28 @@ public class PanelConfiguracionControlador extends JFrame {
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
         // Fila 12: Selector de la posición de la casilla Reno 1             //
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
+        // Dejar una columna vacía
+        gbc.gridx = 0; // Columna vacía para el espacio
+        gbc.gridy = fila;
+        panel.add(new JLabel(""), gbc);
+
         // Para la fila:
-        gbc.gridx = 0;
+        gbc.gridx = 1;
         gbc.gridy = fila;
         gbc.anchor = GridBagConstraints.EAST;
         panel.add(etiquetaFilaReno1, gbc);
 
-        gbc.gridx = 1;
+        gbc.gridx = 2;
         gbc.anchor = GridBagConstraints.WEST;
         panel.add(campoFilaReno1, gbc);
 
         // Para la columna:
-        gbc.gridx = 2;
+        gbc.gridx = 3;
         gbc.gridy = fila;
         gbc.anchor = GridBagConstraints.EAST;
         panel.add(etiquetaColumnaReno1, gbc);
 
-        gbc.gridx = 3;
+        gbc.gridx = 4;
         gbc.anchor = GridBagConstraints.WEST;
         panel.add(campoColumnaReno1, gbc);
         fila++;
@@ -547,23 +588,28 @@ public class PanelConfiguracionControlador extends JFrame {
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
         // Fila 14: Selector de la posición de la casilla Reno 2             //
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
+        // Dejar una columna vacía
+        gbc.gridx = 0; // Columna vacía para el espacio
+        gbc.gridy = fila;
+        panel.add(new JLabel(""), gbc);
+
         // Para la fila:
-        gbc.gridx = 0;
+        gbc.gridx = 1;
         gbc.gridy = fila;
         gbc.anchor = GridBagConstraints.EAST;
         panel.add(etiquetaFilaReno2, gbc);
 
-        gbc.gridx = 1;
+        gbc.gridx = 2;
         gbc.anchor = GridBagConstraints.WEST;
         panel.add(campoFilaReno2, gbc);
 
         // Para la columna:
-        gbc.gridx = 2;
+        gbc.gridx = 3;
         gbc.gridy = fila;
         gbc.anchor = GridBagConstraints.EAST;
         panel.add(etiquetaColumnaReno2, gbc);
 
-        gbc.gridx = 3;
+        gbc.gridx = 4;
         gbc.anchor = GridBagConstraints.WEST;
         panel.add(campoColumnaReno2, gbc);
         fila++;
@@ -579,23 +625,28 @@ public class PanelConfiguracionControlador extends JFrame {
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
         // Fila 16: Selector de la posición de la casilla Reno 3             //
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
+        // Dejar una columna vacía
+        gbc.gridx = 0; // Columna vacía para el espacio
+        gbc.gridy = fila;
+        panel.add(new JLabel(""), gbc);
+
         // Para la fila:
-        gbc.gridx = 0;
+        gbc.gridx = 1;
         gbc.gridy = fila;
         gbc.anchor = GridBagConstraints.EAST;
         panel.add(etiquetaFilaReno3, gbc);
 
-        gbc.gridx = 1;
+        gbc.gridx = 2;
         gbc.anchor = GridBagConstraints.WEST;
         panel.add(campoFilaReno3, gbc);
 
         // Para la columna:
-        gbc.gridx = 2;
+        gbc.gridx = 3;
         gbc.gridy = fila;
         gbc.anchor = GridBagConstraints.EAST;
         panel.add(etiquetaColumnaReno3, gbc);
 
-        gbc.gridx = 3;
+        gbc.gridx = 4;
         gbc.anchor = GridBagConstraints.WEST;
         panel.add(campoColumnaReno3, gbc);
         fila++;
@@ -611,23 +662,28 @@ public class PanelConfiguracionControlador extends JFrame {
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
         // Fila 18: Selector de la posición de la casilla Reno 4             //
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
+        // Dejar una columna vacía
+        gbc.gridx = 0; // Columna vacía para el espacio
+        gbc.gridy = fila;
+        panel.add(new JLabel(""), gbc);
+
         // Para la fila:
-        gbc.gridx = 0;
+        gbc.gridx = 1;
         gbc.gridy = fila;
         gbc.anchor = GridBagConstraints.EAST;
         panel.add(etiquetaFilaReno4, gbc);
 
-        gbc.gridx = 1;
+        gbc.gridx = 2;
         gbc.anchor = GridBagConstraints.WEST;
         panel.add(campoFilaReno4, gbc);
 
         // Para la columna:
-        gbc.gridx = 2;
+        gbc.gridx = 3;
         gbc.gridy = fila;
         gbc.anchor = GridBagConstraints.EAST;
         panel.add(etiquetaColumnaReno4, gbc);
 
-        gbc.gridx = 3;
+        gbc.gridx = 4;
         gbc.anchor = GridBagConstraints.WEST;
         panel.add(campoColumnaReno4, gbc);
         fila++;
@@ -643,23 +699,28 @@ public class PanelConfiguracionControlador extends JFrame {
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
         // Fila 20: Selector de la posición de la casilla Reno 5             //
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
+        // Dejar una columna vacía
+        gbc.gridx = 0; // Columna vacía para el espacio
+        gbc.gridy = fila;
+        panel.add(new JLabel(""), gbc);
+
         // Para la fila:
-        gbc.gridx = 0;
+        gbc.gridx = 1;
         gbc.gridy = fila;
         gbc.anchor = GridBagConstraints.EAST;
         panel.add(etiquetaFilaReno5, gbc);
 
-        gbc.gridx = 1;
+        gbc.gridx = 2;
         gbc.anchor = GridBagConstraints.WEST;
         panel.add(campoFilaReno5, gbc);
 
         // Para la columna:
-        gbc.gridx = 2;
+        gbc.gridx = 3;
         gbc.gridy = fila;
         gbc.anchor = GridBagConstraints.EAST;
         panel.add(etiquetaColumnaReno5, gbc);
 
-        gbc.gridx = 3;
+        gbc.gridx = 4;
         gbc.anchor = GridBagConstraints.WEST;
         panel.add(campoColumnaReno5, gbc);
         fila++;
@@ -675,23 +736,28 @@ public class PanelConfiguracionControlador extends JFrame {
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
         // Fila 22: Selector de la posición de la casilla Reno 6             //
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
+        // Dejar una columna vacía
+        gbc.gridx = 0; // Columna vacía para el espacio
+        gbc.gridy = fila;
+        panel.add(new JLabel(""), gbc);
+
         // Para la fila:
-        gbc.gridx = 0;
+        gbc.gridx = 1;
         gbc.gridy = fila;
         gbc.anchor = GridBagConstraints.EAST;
         panel.add(etiquetaFilaReno6, gbc);
 
-        gbc.gridx = 1;
+        gbc.gridx = 2;
         gbc.anchor = GridBagConstraints.WEST;
         panel.add(campoFilaReno6, gbc);
 
         // Para la columna:
-        gbc.gridx = 2;
+        gbc.gridx = 3;
         gbc.gridy = fila;
         gbc.anchor = GridBagConstraints.EAST;
         panel.add(etiquetaColumnaReno6, gbc);
 
-        gbc.gridx = 3;
+        gbc.gridx = 4;
         gbc.anchor = GridBagConstraints.WEST;
         panel.add(campoColumnaReno6, gbc);
         fila++;
@@ -707,23 +773,28 @@ public class PanelConfiguracionControlador extends JFrame {
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
         // Fila 24: Selector de la posición de la casilla Reno 7             //
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
+        // Dejar una columna vacía
+        gbc.gridx = 0; // Columna vacía para el espacio
+        gbc.gridy = fila;
+        panel.add(new JLabel(""), gbc);
+
         // Para la fila:
-        gbc.gridx = 0;
+        gbc.gridx = 1;
         gbc.gridy = fila;
         gbc.anchor = GridBagConstraints.EAST;
         panel.add(etiquetaFilaReno7, gbc);
 
-        gbc.gridx = 1;
+        gbc.gridx = 2;
         gbc.anchor = GridBagConstraints.WEST;
         panel.add(campoFilaReno7, gbc);
 
         // Para la columna:
-        gbc.gridx = 2;
+        gbc.gridx = 3;
         gbc.gridy = fila;
         gbc.anchor = GridBagConstraints.EAST;
         panel.add(etiquetaColumnaReno7, gbc);
 
-        gbc.gridx = 3;
+        gbc.gridx = 4;
         gbc.anchor = GridBagConstraints.WEST;
         panel.add(campoColumnaReno7, gbc);
         fila++;
@@ -739,23 +810,28 @@ public class PanelConfiguracionControlador extends JFrame {
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
         // Fila 26: Selector de la posición de la casilla Reno 8             //
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ //
+        // Dejar una columna vacía
+        gbc.gridx = 0; // Columna vacía para el espacio
+        gbc.gridy = fila;
+        panel.add(new JLabel(""), gbc);
+
         // Para la fila:
-        gbc.gridx = 0;
+        gbc.gridx = 1;
         gbc.gridy = fila;
         gbc.anchor = GridBagConstraints.EAST;
         panel.add(etiquetaFilaReno8, gbc);
 
-        gbc.gridx = 1;
+        gbc.gridx = 2;
         gbc.anchor = GridBagConstraints.WEST;
         panel.add(campoFilaReno8, gbc);
 
         // Para la columna:
-        gbc.gridx = 2;
+        gbc.gridx = 3;
         gbc.gridy = fila;
         gbc.anchor = GridBagConstraints.EAST;
         panel.add(etiquetaColumnaReno8, gbc);
 
-        gbc.gridx = 3;
+        gbc.gridx = 4;
         gbc.anchor = GridBagConstraints.WEST;
         panel.add(campoColumnaReno8, gbc);
         fila++;
@@ -768,7 +844,6 @@ public class PanelConfiguracionControlador extends JFrame {
         gbc.gridy = fila;
         gbc.gridwidth = 4;
         gbc.anchor = GridBagConstraints.CENTER;
-        gbc.insets = new Insets(50, 0, 0, 0);
         panel.add(botonEjecutar, gbc);
 
         // Añadir el panel al frame:

@@ -1,4 +1,3 @@
-
 package modelo.comportamientos.agente;
 
 import jade.core.AID;
@@ -9,12 +8,12 @@ import modelo.agentes.Agente;
 
 /**
  * @class ProponerMisionSanta
- * 
- * @brief Comportamiento para proponerse el Agente Buscador como voluntario para 
+ *
+ * @brief Comportamiento para proponerse el Agente Buscador como voluntario para
  * la misión ante Santa Claus.
  */
 public class ProponerMisionSanta extends OneShotBehaviour {
-    
+
     /**
      * @brief Instancia del agente.
      */
@@ -22,7 +21,7 @@ public class ProponerMisionSanta extends OneShotBehaviour {
 
     /**
      * @brief Constructor por defecto.
-     * 
+     *
      * @param agente Agente que se toma para la copia.
      */
     public ProponerMisionSanta(Agente agente) {
@@ -48,7 +47,7 @@ public class ProponerMisionSanta extends OneShotBehaviour {
     public void action() {
         ACLMessage msg = new ACLMessage(ACLMessage.PROPOSE);
         msg.addReceiver(new AID("Santa", AID.ISLOCALNAME));
-        msg.setContent(agente.obtenerMensajeTraducido());
+        msg.setContent(agente.obtenerMensaje());
         msg.setConversationId("Evaluacion");
         agente.send(msg);
 
@@ -58,12 +57,13 @@ public class ProponerMisionSanta extends OneShotBehaviour {
                 && msg.getPerformative() == ACLMessage.ACCEPT_PROPOSAL) {
             String contenido = normalizarTexto(msg.getContent());
             System.out.println("Respuesta recibida a peticion: " + contenido);
-            agente.establecerMensajeTraducido(contenido);
+            agente.establecerCodigoSecreto(contenido.substring(4, contenido.length() - 8));
         } else {
-            if (msg.getPerformative() == ACLMessage.REJECT_PROPOSAL)
+            if (msg.getPerformative() == ACLMessage.REJECT_PROPOSAL) {
                 System.out.println("Peticion denegada por santa");
-            else
+            } else {
                 System.out.println("Error en el protocolo de conversacion");
+            }
             agente.doDelete();
         }
     }
