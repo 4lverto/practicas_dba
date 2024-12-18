@@ -113,10 +113,11 @@ public class Agente extends Agent {
         comportamientos.addSubBehaviour(fsm);
 
         //comportamientos.addSubBehaviour(traduce pregunta de coords a santa); (este se puede poner sustituyendo al LastState del FSM anterior si quereis)
-        //comportamientos.addSubBehaviour(pregunta coords a santa);
-        //comportamientos.addSubBehaviour(se mueve a coords);(se puede hacer con un FSM poniendo en el FirstState a actualizar
-        //                                                   y uno normal a mover, los default se mueven del uno al otro y con
-        //                                                   una transicion (el numero es return en Behaviour.onEnd()) de Mover
+        //comportamientos.addSubBehaviour(pregunta coords a santa); (consultarCoordsSanta podria servir como clase, ya uqe esa esta creada,
+        //                                                           aunque renombrar a solicitar no vendria mal por consistencia)
+        //comportamientos.addSubBehaviour(se mueve a coords);(se puede hacer con un FSM poniendo en el FirstState a ActualizarMemoria
+        //                                                   y uno normal a DecidirMovimiento, los default se mueven entre uno y el otro y con
+        //                                                   una transicion (el numero es el return en Behaviour.onEnd()) de DecidirMovimiento
         //                                                   a un EntregarRenosSanta como nodo final, como idea a mi no me parece mal)
         //Este es el ultimo, ya que EntregarRenosSanta recibiria el HoHoHo si seguimos con el mismo patron
         comportamientos.addSubBehaviour(new PasosTotales(this));
