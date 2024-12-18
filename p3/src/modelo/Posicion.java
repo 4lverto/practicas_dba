@@ -71,6 +71,6 @@ public class Posicion {
 
     @Override
     public String toString() {
-        return "(" + obtenerX() + "," + obtenerY() + ")";
+        return obtenerX() + "," + obtenerY();
     }
 }

@@ -1,4 +1,4 @@
-package modelo.agentes;
+package modelo.agentes.agente;
 
 import modelo.Posicion;
 import modelo.Mapa;

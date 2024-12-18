@@ -1,9 +1,10 @@
-package modelo.comportamientos.agente;
+package modelo.agentes.agente;
 
 import jade.core.behaviours.OneShotBehaviour;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import modelo.agentes.Agente;
+import modelo.Posicion;
 
 /**
  * @class DecidirMovimiento
@@ -17,7 +18,7 @@ public class DecidirMovimiento extends OneShotBehaviour {
     /**
      * @brief Instancia del agente.
      */
-    private Agente agente;
+    private final Agente agente;
 
     /**
      * @brief Constructor por parámetro. Asigna al agente.
@@ -40,12 +41,17 @@ public class DecidirMovimiento extends OneShotBehaviour {
         } catch (InterruptedException ex) {
             Logger.getLogger(DecidirMovimiento.class.getName()).log(Level.SEVERE, null, ex);
         }
-        agente.decidirMovimiento();
+        
+        ArrayList<Posicion> camino = Astar.busqueda(agente.mapaMemoria, agente.entorno.obtenerPosAgente(), agente.posObjetivo);
+
+        if (camino != null && !camino.isEmpty()) {
+            agente.sensores = agente.entorno.actualizarPercepciones(camino.get(camino.size() - 2));
+        }
     }
 
     @Override
     public int onEnd() {
-        if (agente.obtenerPosAgente().sonIguales(agente.obtenerPosObjetivo())) {
+        if (agente.entorno.obtenerPosAgente().sonIguales(agente.posObjetivo)) {
             return 1;
         } else {
             return 0;

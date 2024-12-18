@@ -1,7 +1,7 @@
-package modelo.comportamientos.agente;
+package modelo.agentes.agente;
 
 import jade.core.behaviours.OneShotBehaviour;
-import modelo.agentes.Agente;
+import modelo.sensores.Energia;
 
 /**
  * @class PasosTotales
@@ -15,7 +15,7 @@ public class PasosTotales extends OneShotBehaviour {
     /**
      * @brief Instancia del agente.
      */
-    private Agente agente;
+    private final Agente agente;
 
     /**
      * @brief Constructor por parámetro. Asigna al agente.
@@ -33,8 +33,12 @@ public class PasosTotales extends OneShotBehaviour {
      */
     @Override
     public void action() {
-        System.out.println("\nOBJETIVO ALCANZADO");/* -> se han necesitado un total de "
-                + (agente.obtenerPasosTotales()) + " pasos.");*/
+        int pasos = 0;
+        
+        Energia energia = (Energia) agente.sensores.get(1);
+        pasos = energia.obtenerEnergia() - 1;
 
+        System.out.println("OBJETIVO ALCANZADO EN " + pasos + " PASOS");
+        agente.doDelete();
     }
 }

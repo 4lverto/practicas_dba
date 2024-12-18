@@ -1,12 +1,9 @@
-package modelo.agentes;
+package modelo.agentes.rudolph;
 
 import jade.core.Agent;
 import jade.core.behaviours.SequentialBehaviour;
-import jade.lang.acl.ACLMessage;
 import modelo.Entorno;
 import modelo.Posicion;
-import modelo.comportamientos.rudolph.EvaluarClave;
-import modelo.comportamientos.rudolph.DevolverReno;
 
 /**
  *
@@ -15,15 +12,6 @@ import modelo.comportamientos.rudolph.DevolverReno;
 public class Rudolph extends Agent {
 
     private Posicion[] renos;
-    public int renosEncontrados=1;
-    
-    public int getRenosEncontrados(){
-        return renosEncontrados;
-    }
-    
-    public void siguienteReno(){
-        renosEncontrados++;
-    }
 
     @Override
     protected void setup() {
@@ -51,10 +39,5 @@ public class Rudolph extends Agent {
 
         // Iniciar el flujo de comunicación (por ahora lo he puesto aquí):
         addBehaviour(comportamientos);
-    }
-
-    @Override
-    protected void takeDown() {
-        System.out.println("\n\tFinalizado el agente " + this.getLocalName());
     }
 }
