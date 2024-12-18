@@ -1,18 +1,20 @@
-package modelo.comportamientos.agente;
+package modelo.agentes.agente;
 
 
 import modelo.Posicion;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import java.text.Normalizer;
-import modelo.agentes.Agente;
 
 public class SolicitarPosicionSanta extends OneShotBehaviour {
 
-    private Agente agente;
-   
-    private static final Posicion posicionSanta = new Posicion(-1, -1);
-
+    private final Agente agente;
+    
+    private Posicion leerPosicion(String mensaje) {
+        String[] valores = mensaje.split(",");
+        return new Posicion(Integer.parseInt(valores[0]), Integer.parseInt(valores[1]));
+    }
+    
     /**
      * @brief Constructor por defecto.
      *
@@ -39,16 +41,17 @@ public class SolicitarPosicionSanta extends OneShotBehaviour {
      */
     @Override
     public void action() {
-        ACLMessage respuesta = agente.obtenerMensajeSanta().createReply(ACLMessage.INFORM);
-        respuesta.setContent(normalizarTexto(agente.obtenerMensaje()));
+        ACLMessage respuesta = agente.mensajeSanta.createReply(ACLMessage.INFORM);
+        respuesta.setContent(normalizarTexto(agente.mensaje));
         agente.send(respuesta);
         
         // Espera a que Santa le responda con las coordenadas
         ACLMessage mensajeCoordenadas = agente.blockingReceive();
 
         if (respuesta.getPerformative() == ACLMessage.INFORM) {
-            agente.modificarMensajeSanta(mensajeCoordenadas);
-            agente.modificarPosicionSantaClaus(mensajeCoordenadas.getContent());
+            agente.mensajeSanta = mensajeCoordenadas;
+            agente.posObjetivo = leerPosicion(mensajeCoordenadas.getContent());
+            System.out.println("\n\tPosicion santa recibida: " + agente.posObjetivo.toString());
         }
     }
 }

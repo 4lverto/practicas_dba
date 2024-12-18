@@ -1,13 +1,10 @@
-package modelo.comportamientos.agente;
+package modelo.agentes.agente;
 
 import jade.core.AID;
 import jade.core.behaviours.*;
 import jade.lang.acl.ACLMessage;
-import java.text.Normalizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import modelo.agentes.Agente;
-import modelo.comportamientos.santaclaus.EnviarEvaluacion;
 
 /**
  * @class EstablecerCanalSeguroRudolph
@@ -20,7 +17,7 @@ public class EstablecerCanalSeguroRudolph extends OneShotBehaviour {
     /**
      * @brief Instancia del agente.
      */
-    private Agente agente;
+    private final Agente agente;
 
     /**
      * @brief Constructor por defecto.
@@ -38,24 +35,24 @@ public class EstablecerCanalSeguroRudolph extends OneShotBehaviour {
     public void action() {
         ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
         msg.addReceiver(new AID("Rudolph", AID.ISLOCALNAME));
-        msg.setContent(agente.obtenerCodigoSecreto());
-        msg.setConversationId(agente.obtenerCodigoSecreto());
+        msg.setContent(agente.codigoSecreto);
+        msg.setConversationId(agente.codigoSecreto);
         
         try {
-            Thread.sleep(5000);
+            Thread.sleep(100);
         } catch (InterruptedException ex) {
             Logger.getLogger(EstablecerCanalSeguroRudolph.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println("\nAGENTE-> ESTE ES MI CÓDIGO SECRETO: '" + msg.getContent() +  "'");
+        System.out.println("\nAGENTE-> ESTE ES MI CODIGO SECRETO: '" + msg.getContent() +  "'");
         agente.send(msg);
 
         msg = this.myAgent.blockingReceive();
 
-        if (msg.getConversationId().equals(agente.obtenerCodigoSecreto())
+        if (msg.getConversationId().equals(agente.codigoSecreto)
                 && msg.getPerformative() == ACLMessage.AGREE) {
             System.out.println("\n\tRudolph ha aceptado el codigo");
-            agente.modificarMensajeRudolph(msg);
-            agente.establecerMensaje("Bro ¿Donde estas? En Plan");
+            agente.mensajeRudolph = msg;
+            agente.mensaje = "Bro ¿Donde estas? En Plan";
         } else {
             if (msg.getPerformative() == ACLMessage.REFUSE) {
                 System.out.println("\n\tRudolf ha rechazado el codigo");

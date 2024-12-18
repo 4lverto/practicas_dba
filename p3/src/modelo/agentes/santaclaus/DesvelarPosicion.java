@@ -1,8 +1,7 @@
-package modelo.comportamientos.santaclaus;
+package modelo.agentes.santaclaus;
 
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
-import modelo.agentes.SantaClaus;
 
 public class DesvelarPosicion extends OneShotBehaviour {
 
@@ -19,10 +18,10 @@ public class DesvelarPosicion extends OneShotBehaviour {
         
 
         if (mensajeSolicitudCoordenadas.getPerformative() == ACLMessage.INFORM) {
-            santaClaus.modificarMensajeAgente(mensajeSolicitudCoordenadas);
+            santaClaus.mensajeAgente = mensajeSolicitudCoordenadas;
             
-            ACLMessage mensajeConCoordenadas = santaClaus.obtenerMensajeAgente().createReply(ACLMessage.INFORM);
-            mensajeConCoordenadas.setContent(santaClaus.obtenerPosicionSantaClaus().toString());
+            ACLMessage mensajeConCoordenadas = santaClaus.mensajeAgente.createReply(ACLMessage.INFORM);
+            mensajeConCoordenadas.setContent(santaClaus.posSantaClaus.toString());
             santaClaus.send(mensajeConCoordenadas);
         }
 

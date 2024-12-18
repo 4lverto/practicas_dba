@@ -1,4 +1,4 @@
-package modelo.comportamientos.agente;
+package modelo.agentes.santaclaus;
 
 import jade.core.AID;
 import jade.core.behaviours.*;
@@ -6,7 +6,6 @@ import jade.lang.acl.ACLMessage;
 import java.text.Normalizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import modelo.agentes.Agente;
 
 /**
  * @class SolicitarTraduccionElfo
@@ -17,9 +16,8 @@ import modelo.agentes.Agente;
  */
 public class SolicitarTraduccion extends OneShotBehaviour {
 
-    private final String mensaje;
     private final String id;
-    private final Agente agente;
+    private final SantaClaus agente;
 
     /**
      * @brief Constructor por defecto.
@@ -27,10 +25,9 @@ public class SolicitarTraduccion extends OneShotBehaviour {
      * @param id id de conversacion.
      * @param agente agente
      */
-    public SolicitarTraduccion(String id, Agente agente) {
+    public SolicitarTraduccion(String id, SantaClaus agente) {
         this.id = id;
         this.agente = agente;
-        this.mensaje = agente.obtenerMensaje();
     }
 
     /**
@@ -52,23 +49,25 @@ public class SolicitarTraduccion extends OneShotBehaviour {
     public void action() {
         ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
         msg.addReceiver(new AID("Elfo", AID.ISLOCALNAME));
-        msg.setContent(mensaje);
+        msg.setContent(agente.mensaje);
         msg.setConversationId(id);
-        agente.send(msg);
 
-        System.out.println("AGENTE -> TRADUCEME ESTE MENSAJE: '" + msg.getContent() + "'");
         try {
             Thread.sleep(100);
         } catch (InterruptedException ex) {
             Logger.getLogger(SolicitarTraduccion.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        System.out.println("\nSANTA -> TRADUCEME ESTE MENSAJE: '" + msg.getContent() + "'");
+        agente.send(msg);
+
         msg = this.myAgent.blockingReceive();
 
         if (msg.getConversationId().equals(id)
                 && msg.getPerformative() == ACLMessage.INFORM) {
             String contenido = normalizarTexto(msg.getContent());
-            System.out.println("\n\tTraduccion recibida: " + contenido);
-            agente.establecerMensaje(contenido);
+            System.out.println("\n\tTraduccion recibida: '" + contenido + "'");
+            agente.mensaje = contenido;
         } else {
             System.out.println("\n\tError en el protocolo de conversacion");
             agente.doDelete();

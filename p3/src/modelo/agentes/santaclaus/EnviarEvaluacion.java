@@ -1,12 +1,9 @@
-package modelo.comportamientos.santaclaus;
+package modelo.agentes.santaclaus;
 
-import jade.core.AID;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
-import java.text.Normalizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import modelo.agentes.SantaClaus;
 
 /**
  *
@@ -30,11 +27,11 @@ public class EnviarEvaluacion extends OneShotBehaviour {
      */
     @Override
     public void action() {
-        ACLMessage msg = agente.obtenerMensajeAgente();
-        String contenido = agente.obtenerMensaje();
+        ACLMessage msg = agente.mensajeAgente;
+        String contenido = agente.mensaje;
 
         ACLMessage respuesta;
-        if (agente.obtenerAceptado()) {
+        if (agente.aceptado) {
             respuesta = msg.createReply(ACLMessage.ACCEPT_PROPOSAL);
             respuesta.setContent(contenido);
             
@@ -43,7 +40,7 @@ public class EnviarEvaluacion extends OneShotBehaviour {
             } catch (InterruptedException ex) {
                 Logger.getLogger(EnviarEvaluacion.class.getName()).log(Level.SEVERE, null, ex);
             }
-            System.out.println("\nSANTA -> '" + respuesta.getContent() +  "'");
+            System.out.println("\nSANTA -> " + respuesta.getContent() +  "");
             agente.send(respuesta);
             
         } else {

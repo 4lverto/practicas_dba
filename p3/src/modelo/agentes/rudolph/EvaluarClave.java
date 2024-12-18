@@ -1,8 +1,7 @@
-package modelo.comportamientos.rudolph;
+package modelo.agentes.rudolph;
 
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
-import modelo.agentes.Rudolph;
 
 /**
  * Clase que permite a Rudolph recibir y procesar mensajes.
@@ -12,7 +11,7 @@ public class EvaluarClave extends OneShotBehaviour {
     /**
      * @brief Instancia del agente.
      */
-    private Rudolph agente;
+    private final Rudolph agente;
 
     /**
      * @brief Constructor por defecto.

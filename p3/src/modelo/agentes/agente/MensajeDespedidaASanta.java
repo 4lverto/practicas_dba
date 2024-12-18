@@ -1,9 +1,8 @@
-package modelo.comportamientos.agente;
+package modelo.agentes.agente;
 
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import java.text.Normalizer;
-import modelo.agentes.Agente;
 
 /**
  *
@@ -11,7 +10,7 @@ import modelo.agentes.Agente;
  */
 public class MensajeDespedidaASanta extends OneShotBehaviour {
 
-    private Agente agente;
+    private final Agente agente;
 
     public MensajeDespedidaASanta(Agente agente) {
         this.agente = agente;
@@ -34,16 +33,18 @@ public class MensajeDespedidaASanta extends OneShotBehaviour {
      */
     @Override
     public void action() {
-        ACLMessage mensajeDeDespedida = agente.obtenerMensajeSanta().createReply(ACLMessage.INFORM);
-        mensajeDeDespedida.setContent(normalizarTexto(agente.obtenerMensaje()));
-        agente.send(mensajeDeDespedida);
+        ACLMessage msg = agente.mensajeSanta.createReply(ACLMessage.INFORM);
+        msg.setContent(normalizarTexto(agente.mensaje));
+        agente.send(msg);
+        
+        System.out.println("\nAGENTE-> DICE A SANTA: '" + msg.getContent() +  "'");
 
         ACLMessage respuestaDespedida = agente.blockingReceive();
 
         if (respuestaDespedida.getPerformative() == ACLMessage.INFORM) {
-            System.out.println("He recibido " + respuestaDespedida.getContent());
+            System.out.println("AGENTE -> SANTA DICE: " + respuestaDespedida.getContent());
         } else {
-            System.out.println("Error de protocolo");
+            System.out.println("AGENTE -> Error de protocolo");
         }
 
         this.agente.doDelete();

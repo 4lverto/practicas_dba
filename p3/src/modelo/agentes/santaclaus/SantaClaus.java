@@ -1,4 +1,4 @@
-package modelo.agentes;
+package modelo.agentes.santaclaus;
 
 import jade.core.Agent;
 import jade.core.behaviours.SequentialBehaviour;
@@ -6,11 +6,6 @@ import jade.lang.acl.ACLMessage;
 
 import modelo.Entorno;
 import modelo.Posicion;
-import modelo.comportamientos.santaclaus.Despedida;
-import modelo.comportamientos.santaclaus.SolicitarTraduccion;
-import modelo.comportamientos.santaclaus.EvaluarMision;
-import modelo.comportamientos.santaclaus.EnviarEvaluacion;
-import modelo.comportamientos.santaclaus.DesvelarPosicion;
 
 /**
  *
@@ -19,45 +14,16 @@ import modelo.comportamientos.santaclaus.DesvelarPosicion;
 public class SantaClaus extends Agent {
 
 
-    private String mensaje = "test";
+    protected String mensaje = "";
 
-    private boolean aceptado = false;
-    ACLMessage mensajeAgente;
+    protected boolean aceptado = false;
     
-    private Entorno entorno;
+    protected ACLMessage mensajeAgente;
     
-    Posicion posSantaClaus;     
-
-
-
-    public void establecerMensaje(String mensaje) {
-        this.mensaje = mensaje;
-    }
-
-    public String obtenerMensaje() {
-        return (this.mensaje);
-
-    }
-
-    public void establecerAceptado(boolean bool) {
-        this.aceptado = bool;
-    }
-
-    public boolean obtenerAceptado() {
-        return (this.aceptado);
-    }
-
-    public void modificarMensajeAgente(ACLMessage mensajeAgente) {
-        this.mensajeAgente = mensajeAgente;
-    }
-
-    public ACLMessage obtenerMensajeAgente() {
-        return (this.mensajeAgente);
-    }
+    protected Entorno entorno;
     
-    public Posicion obtenerPosicionSantaClaus(){
-        return this.posSantaClaus;
-    }
+    protected Posicion posSantaClaus;     
+
     
     @Override
     protected void setup() {
@@ -85,10 +51,4 @@ public class SantaClaus extends Agent {
         // Iniciar el flujo de comunicación (por ahora lo he puesto aquí):
         addBehaviour(comportamientos);
     }
-
-    @Override
-    protected void takeDown() {
-        System.out.println("\n\tFinalizado el agente " + this.getLocalName());
-    }
-
 }

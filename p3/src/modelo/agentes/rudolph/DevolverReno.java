@@ -1,13 +1,10 @@
-package modelo.comportamientos.rudolph;
+package modelo.agentes.rudolph;
 
-import modelo.agentes.Rudolph;
 import modelo.Posicion;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import modelo.agentes.Rudolph;
-import modelo.comportamientos.santaclaus.EnviarEvaluacion;
 
 /**
  *
@@ -20,12 +17,12 @@ public class DevolverReno extends CyclicBehaviour {
     /**
      * @brief Instancia del agente.
      */
-    private Rudolph agente;
+    private final Rudolph agente;
     
     /**
      * @brief 
      */
-    private Posicion[] renos;
+    private final Posicion[] renos;
 
     /**
      * @param renos
@@ -80,9 +77,8 @@ public class DevolverReno extends CyclicBehaviour {
                 } catch (InterruptedException ex) {
                     Logger.getLogger(DevolverReno.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                System.out.println("\nRUDOLPH-> EL RENO NUMERO " + agente.getRenosEncontrados() + " ESTA AQUI: '" + respuesta.getContent() +  "'");
+                System.out.println("\nRUDOLPH-> EL SIGUIENTE RENO ESTA AQUI: '" + respuesta.getContent() +  "'");
                 agente.send(respuesta);
-                agente.siguienteReno();
             } else {
                 System.out.println(("\nRUDOLPH -> EL CODIGO ES INCORRECTO"));
                 agente.doDelete();

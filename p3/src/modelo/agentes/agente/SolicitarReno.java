@@ -2,14 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package modelo.comportamientos.agente;
+package modelo.agentes.agente;
 
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import modelo.Posicion;
-import modelo.agentes.Agente;
 
 /**
  *
@@ -22,7 +21,7 @@ public class SolicitarReno extends OneShotBehaviour {
     /**
      * @brief Instancia del agente.
      */
-    private Agente agente;
+    private final Agente agente;
 
     private Posicion posicion_reno;
 
@@ -42,10 +41,10 @@ public class SolicitarReno extends OneShotBehaviour {
 
     @Override
     public void action() {
-        ACLMessage msg = agente.obtenerMensajeRudolph();
+        ACLMessage msg = agente.mensajeRudolph;
 
         ACLMessage respuesta = msg.createReply(ACLMessage.QUERY_REF);
-        respuesta.setContent(agente.obtenerPosAgente().obtenerX() + "," + agente.obtenerPosAgente().obtenerY());
+        respuesta.setContent(agente.entorno.obtenerPosAgente().obtenerX() + "," + agente.entorno.obtenerPosAgente().obtenerY());
         
         try {
             Thread.sleep(100);
@@ -57,14 +56,14 @@ public class SolicitarReno extends OneShotBehaviour {
 
         msg = this.myAgent.blockingReceive();
 
-        if (msg.getConversationId().equals(agente.obtenerCodigoSecreto())
+        if (msg.getConversationId().equals(agente.codigoSecreto)
                 && msg.getPerformative() == ACLMessage.INFORM) {
             posicion_reno = leerPosicion(msg.getContent());
-            System.out.println("\n\tPosicion reno recibida: " + posicion_reno.obtenerX() + " " + posicion_reno.obtenerY());
-            agente.modificarMensajeRudolph(msg);
-            agente.establecerPosObjetivo(posicion_reno.obtenerX(), posicion_reno.obtenerY());
+            System.out.println("\n\tPosicion reno recibida: " + posicion_reno.toString());
+            agente.mensajeRudolph = msg;
+            agente.posObjetivo = posicion_reno;
         } else {
-            System.out.println("\n\tError en el protocolo de conversacion");
+            System.out.println("AGENTE -> Error en el protocolo de conversacion");
             agente.doDelete();
         }
     }
