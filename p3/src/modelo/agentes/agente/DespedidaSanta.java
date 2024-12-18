@@ -45,10 +45,7 @@ public class DespedidaSanta extends OneShotBehaviour {
             System.out.println("AGENTE -> SANTA DICE: " + respuestaDespedida.getContent());
         } else {
             System.out.println("AGENTE -> Error de protocolo");
+            this.agente.doDelete();
         }
-
-        this.agente.doDelete();
-
     }
-
 }
